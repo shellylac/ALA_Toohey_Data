@@ -4,7 +4,10 @@ library(tidyverse)
 library(ggplot2)
 library(sf)
 library(here)
-library(showtext)
+library(rgbif)
+
+out <- name_usage(key=212, data="vernacularNames")$data
+
 
 # Define the Toohey bounding box
 # nw = -27.531057, 153.035337
@@ -32,10 +35,10 @@ galah_config(atlas = "Australia",
 
 # Get counts of species in taxa list
 counts <- galah_call() |>
-  galah_identify("koala") |>
+  galah_identify(c("reptilia", "birds", "mammals")) |>
   galah_group_by(species) |>
   galah_geolocate(b_box, type = "bbox") |>
-  galah_apply_profile(ALA) |>
+  apply_profile(ALA) |>
   galah_filter(year >= 2024) |>
   atlas_counts()
 
@@ -43,7 +46,7 @@ occurrences <- galah_call() |>
   galah_identify("koala") |>
   galah_group_by(species) |>
   galah_geolocate(b_box, type = "bbox") |>
-  galah_apply_profile(ALA) |>
+  apply_profile(ALA) |>
   galah_filter(year >= 2024) |>
   galah_select(scientificName,
                decimalLatitude,
@@ -52,3 +55,5 @@ occurrences <- galah_call() |>
                occurrenceStatus) |>
   atlas_occurrences()
 
+
+taxa <- search_taxa(c("reptilia", "birds", "mammals"))
