@@ -1,18 +1,13 @@
 library(here)
 library(galah)
 library(tidyverse)
+library(purrr)
 library(sf)
-
-
-# Source functions
-source(here("R", "functions.R"))
 
 # Configure ALA
 galah_config(atlas = "Australia",
              email = "shelly.lachish@csiro.au",
-             download_reason_id = "citizen science", #ID 11
-             caching = T,
-             directory = here("cache") # Use this if need to set cahce across R sessions
+             download_reason_id = "citizen science"
              )
 
 # Useful tools
@@ -39,33 +34,6 @@ b_box <- sf::st_bbox(c(xmin = 153.030074, xmax = 153.082805,
 
 ## Function to extract data from the ALA Interface [galah package] ----
 
-# Get counts of species in taxa list
-counts <- galah_call() |>
-  galah_identify(c("reptilia", "birds", "mammals")) |>
-  galah_group_by(species) |>
-  galah_geolocate(b_box, type = "bbox") |>
-  apply_profile(ALA) |>
-  galah_filter(year >= min_year) |>
-  atlas_counts()
-
-# Get cladistics
-cladistics <- search_taxa(counts$species)
-
-# Add cladistics to counts
-toohey_species_counts <- counts |>
-  mutate(common_name = cladistics$vernacular_name,
-         class = cladistics$class,
-         order = cladistics$order,
-         family = cladistics$family,
-         genus = cladistics$genus,
-         scientific_name = cladistics$scientific_name,
-         taxon_id = cladistics$taxon_concept_id) |>
-  # For some reason this one is missing from the auto populatio for common name
-  mutate(common_name =
-           if_else(species == "Colluricincla rufogaster", "Rufous Shrikethrush",
-                   common_name)
-         )
-
 # Get occurrences of all reptiles, birds and mammals for past 5 years
 toohey_occurrences <- galah_call() |>
   galah_identify(c("reptilia", "birds", "mammals")) |>
@@ -75,25 +43,40 @@ toohey_occurrences <- galah_call() |>
   galah_filter(year >= min_year) |>
   atlas_occurrences()
 
+# Get cladistics
+occ_cladistics <- search_taxa(unique(toohey_occurrences$scientificName))
+
 # Join cladistics to this and filter
 toohey_occs_cladistics <- toohey_occurrences |>
-  # Need to limit the scientific names to just two words (better matches with count_cladistics)
-  mutate(short_sci_name = remove_parenthesis_text(scientificName),
-         short_sci_name = remove_third_if_duplicate(short_sci_name),
-         short_sci_name = keep_first_two_words(short_sci_name)) |>
-  left_join(select(toohey_species_counts, -count), by = c("short_sci_name" = "species")) |>
-  # Now remove any records without a common name
-  filter(!is.na(common_name)) |>
-  rename(species = short_sci_name) |>
-  select(-scientificName, -taxon_id) #-recordID
+  left_join(occ_cladistics, by = c("scientificName" = "search_term")) |>
+  # For some reason these species names aren't given a vernacular name - do it manually
+  # "Tachyglossus aculeatus"   "Tropidonophis mairii"     "Colluricincla rufogaster"
+  mutate(vernacular_name = case_match(species,
+                                      "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
+                                      "Tropidonophis mairii" ~ "Common Keelback",
+                                      "Colluricincla rufogaster" ~ "Rufous Shrikethrush",
+                                      .default = vernacular_name)) |>
+  # There are some rows without species level info - remove
+  filter(!is.na(species)) |>
+  # Remove unecessary rows
+  select(-c(recordID, taxonConceptID, occurrenceStatus,
+            scientific_name_authorship, match_type, rank,
+            kingdom, phylum, issues)) |>
+  distinct()
 
+
+#Get counts by species
+toohey_counts_cladistics <- toohey_occs_cladistics |>
+  group_by(class, order, family, genus, species, vernacular_name) |>
+  count()
 
 # Save these datasets - In future just add updates
-write_rds(toohey_species_counts,
-          file = here("output_data", "toohey_species_counts.rds"),
-          compress = "gz")
-
 write_rds(toohey_occs_cladistics,
           file = here("output_data", "toohey_species_occurences.rds"),
           compress = "gz")
+
+write_rds(toohey_counts_cladistics,
+          file = here("output_data", "toohey_species_counts.rds"),
+          compress = "gz")
+
 

@@ -1,75 +1,40 @@
+# Function to get dates
 
-# Define function to check for double species names and return standard genus species
-remove_third_if_duplicate <- function(string_vec) {
-  # string_vec is a vector of strings.
 
-  # 1. Split each element of string_vec by whitespace to produce a list of character vectors.
-  #    strsplit(string_vec, "\\s+") splits on one or more spaces.
-  word_lists <- strsplit(string_vec, "\\s+")
-
-  # 2. Apply a function to each element (each list of words) using sapply.
-  #    For each vector of words:
-  #       - Check if it has at least 3 words.
-  #       - Check if the second and third words are identical.
-  #       - If so, return the first two words joined by a space.
-  #       - Otherwise, return the original words joined by a space.
-  processed_strings <- sapply(word_lists, function(words) {
-    if (length(words) >= 3 && words[2] == words[3]) {
-      # If second and third words match, return only the first two words
-      paste(words[1:2], collapse = " ")
-    } else {
-      # Otherwise, return the full, original string
-      paste(words, collapse = " ")
-    }
-  })
-
-  # 3. The result is a character vector of processed strings.
-  return(processed_strings)
+# update occurences function ----
+update_occurrences <- function(year, month, b_box){
+  galah_call() |>
+    galah_identify(c("reptilia", "birds", "mammals")) |>
+    galah_group_by(species) |>
+    galah_geolocate(b_box, type = "bbox") |>
+    apply_profile(ALA) |>
+    galah_filter(year >= as.numeric(year)) |>
+    galah_filter(month >= as.numeric(month)) |>
+    atlas_occurrences()
 }
 
 
-remove_parenthesis_text <- function(string_vec) {
-  # string_vec is a vector of strings.
-  # This function uses a regular expression to match and remove
-  # all text within parentheses, including the parentheses themselves.
+add_cladistics <- function(occ_data){
 
-  # The pattern "\\(.*?\\)" matches:
-  #   "\\(" : a literal "(" character
-  #   ".*?" : any number of characters, as few as possible (non-greedy)
-  #   "\\)" : a literal ")" character
+  # Get cladistics
+  occ_cladistics <- search_taxa(unique(occ_data$scientificName))
 
-  # Use gsub to globally substitute these patterns with an empty string.
-  cleaned_strings <- gsub("\\(.*?\\)", "", string_vec)
+  occ_data_clads <- occ_data |>
+    left_join(occ_cladistics, by = c("scientificName" = "search_term")) |>
+    # For some reason these species names aren't given a vernacular name - do it manually
+    # "Tachyglossus aculeatus"   "Tropidonophis mairii"     "Colluricincla rufogaster"
+    mutate(vernacular_name = case_match(species,
+                                        "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
+                                        "Tropidonophis mairii" ~ "Common Keelback",
+                                        "Colluricincla rufogaster" ~ "Rufous Shrikethrush",
+                                        .default = vernacular_name)) |>
+    # There may be some rows without species level info - remove
+    filter(!is.na(species)) |>
+    # Remove unecessary rows
+    select(-c(recordID, taxonConceptID, occurrenceStatus,
+              scientific_name_authorship, match_type, rank,
+              kingdom, phylum, issues))
 
-  #Remove extra internal space
-  trimmed_strings <- stringr::str_squish(cleaned_strings)
-
-  return(trimmed_strings)
-}
-
-keep_first_two_words <- function(x) {
-  # x is a vector of strings.
-
-  # 1. Split each string by whitespace.
-  word_lists <- strsplit(x, "\\s+")
-
-  # 2. For each vector of words, select the first two if available;
-  #    otherwise, return all words if fewer than two exist.
-  sapply(word_lists, function(words) {
-    if (length(words) > 2) {
-      paste(words[1:2], collapse = " ")
-    } else {
-      paste(words, collapse = " ")
-    }
-  })
-}
-
-# Example usage:
-# df <- df %>%
-#   mutate(shortened_col = keep_first_two_words(text_col))
-
-
-
-
-head(unlist(strsplit(toohey_occurrences$scientificName, " ")))
+  return(occ_data_clads)
+  }
 
