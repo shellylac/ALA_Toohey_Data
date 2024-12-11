@@ -5,9 +5,13 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 ## Table of Contents
 
 - [Project Structure](#project-structure)
+- [Description of Files](#description-of-files)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [1. Retrieve Initial Data](#1-retrieve-initial-data)
+  - [2. Update Existing Data](#2-update-existing-data)
+  - [3. Quality Assurance](#3-quality-assurance)
 - [Dependencies](#dependencies)
 - [Contributing](#contributing)
 - [License](#license)
@@ -26,7 +30,7 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 ├── README.md
 └── .gitignore
 
-### Description of Files
+## Description of Files
 
 - **R/**: Contains all R scripts used for data management.
 
@@ -57,8 +61,8 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/ALA-Data-Management.git
-   cd ALA-Data-Management
+   git clone https://github.com/shellylac/ALA_Toohey_Data.git
+   cd ALA_Toohey_Data
 
    ```
 
@@ -77,19 +81,39 @@ _Note_: Some packages like galah might require additional configuration. Refer t
 1. Retrieve Initial Data
    Run the get_ALA_data.R script to fetch the initial set of species occurrence data.
 
-````r
+```r
 source("R/get_ALA_data.R")
+```
+
+This script performs the following actions:
+
+- Configures the ALA connection.
+- Defines the geographic bounding box for data retrieval.
+- Extracts occurrences of reptiles, birds, and mammals from the past five years.
+- Enriches the data with cladistic information.
+- Saves the processed data to output_data/toohey_species_occurences.rds and output_data/toohey_species_counts.rds.
 
 2. Update Existing Data
-To update the dataset with the latest occurrences, execute the update_ALA_data.R script. This script will:
- - Fetch new occurrence data since the last update.
- - Enrich the data with cladistic information.
- - Perform quality assurance tests.
- - Merge and save the updated dataset.
+   To update the dataset with the latest occurrences, execute the update_ALA_data.R script. This script will:
+
+- Fetch new occurrence data since the last update.
+- Enrich the data with cladistic information.
+- Perform quality assurance tests.
+- Merge and save the updated dataset.
 
 ```r
 source("R/update_ALA_data.R")
-````
+```
+
+Key Steps in update_ALA_data.R:
+
+- Configuration: Sets up the ALA connection and sources necessary functions.
+- Data Loading: Reads the existing occurrence and count data.
+- Bounding Box Definition: Ensures consistency in the geographic area for updates.
+- Data Retrieval: Fetches updated occurrence data based on the latest available month and year.
+- Cladistics Addition: Integrates cladistic information into the new occurrence data.
+- Quality Assurance: Runs tests to validate the structure and integrity of the updated data.
+- Data Merging and Saving: Combines the new data with the base data, removes duplicates, recalculates counts, and saves the updated datasets.
 
 3. Quality Assurance
 
@@ -99,14 +123,22 @@ The `update_occs_testQA.R` script contains tests to validate the structure and i
 source("R/update_occs_testQA.R")
 ```
 
+What It Tests:
+
+- Ensures the dataset is a tibble (tbl_df).
+- Verifies the presence of exactly 14 specified columns.
+- Confirms the correct data types for each column.
+- Checks that latitude and longitude values fall within valid geographic ranges.
+- Validates that eventDate is in the correct datetime format.
+
 ## Dependencies
 
 The project relies on the following R packages:
 
-here: For constructing file paths.
-galah: Interface to the Atlas of Living Australia.
-tidyverse: Data manipulation and visualization.
-purrr: Functional programming tools.
-lubridate: Date and time manipulation.
-testthat: Unit testing framework.
-Ensure all dependencies are installed and properly configured before running the scripts.
+- here: For constructing file paths.
+- galah: Interface to the Atlas of Living Australia.
+- tidyverse: Data manipulation and visualization.
+- purrr: Functional programming tools.
+- lubridate: Date and time manipulation.
+- testthat: Unit testing framework.
+  Ensure all dependencies are installed and properly configured before running the scripts.
