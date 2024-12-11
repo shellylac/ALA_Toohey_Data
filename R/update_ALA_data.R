@@ -57,8 +57,23 @@ if (any(results_df$outcome %in% c("failure", "error"))) {
   message("All tests passed. Proceeding with further analysis.")
 
   # Row bind, remove duplicates and save (overwrite)
-  all_occ_data <- bind_rows(base_occs, occ_updates_cladistics) |>
+  updated_occ_data <- bind_rows(base_occs, occ_updates_cladistics) |>
     distinct()
+  
+
+  # Get new count data
+  updated_count_data <- updated_occ_data |>
+  group_by(class, order, family, genus, species, vernacular_name) |>
+  count()
+
+  # Save these updated datasets
+write_rds(updated_occ_data,
+          file = here("output_data", "toohey_species_occurences.rds"),
+          compress = "gz")
+
+write_rds(updated_count_data,
+          file = here("output_data", "toohey_species_counts.rds"),
+          compress = "gz")
 }
 
 
