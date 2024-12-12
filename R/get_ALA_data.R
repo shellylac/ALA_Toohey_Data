@@ -64,19 +64,8 @@ toohey_occs_cladistics <- toohey_occurrences |>
             kingdom, phylum, issues)) |>
   distinct()
 
-
-#Get counts by species
-toohey_counts_cladistics <- toohey_occs_cladistics |>
-  group_by(class, order, family, genus, species, vernacular_name) |>
-  count()
-
-# Save these datasets - In future just add updates
+# Save this dataset as the base data - (the github action will just run the update script in the future)
 write_rds(toohey_occs_cladistics,
           file = here("output_data", "toohey_species_occurences.rds"),
           compress = "gz")
-
-write_rds(toohey_counts_cladistics,
-          file = here("output_data", "toohey_species_counts.rds"),
-          compress = "gz")
-
 
