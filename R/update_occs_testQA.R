@@ -1,6 +1,4 @@
-library(testthat)
-library(tibble)
-
+# Run test suite for the update occs dataset
 test_that("dataset has the correct structure", {
   # Check that it is a tibble (tbl_df)
   expect_s3_class(base_occs, "tbl_df")
