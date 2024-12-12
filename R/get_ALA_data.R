@@ -40,6 +40,6 @@ occ_cladistics <- add_cladistics(toohey_occurrences)
 
 # Save this dataset as the base data - (the github action will just run the update script in the future)
 write_rds(occ_cladistics,
-          file = "./output_data/toohey_species_occurences.rds",
+          file = "./output_data/toohey_species_occurrences.rds",
           compress = "gz")
 

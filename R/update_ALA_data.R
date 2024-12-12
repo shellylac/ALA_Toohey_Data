@@ -84,7 +84,7 @@ if (any(test_results == "expectation_failure")) {
 
   # Overwrite the current occurrence data with this update
   write_rds(updated_occ_data,
-            file = "./output_data/toohey_species_occurences.rds",
+            file = "./output_data/toohey_species_occurrences.rds",
             compress = "gz")
   }
 sink()
