@@ -1,20 +1,29 @@
 # This script gets updated data from the ALA to add to the base dataset
 library(here)
 library(galah)
-library(tidyverse)
-
-# Configure ALA ----
-galah_config(atlas = "Australia",
-             email = "shelly.lachish@csiro.au",
-             download_reason_id = "citizen science"
-)
+library(tidyr)
+library(dplyr)
+library(testthat)
 
 # Source functions ----
 source(here("R", "functions.R"))
 
 
+# Set logging ----
+logfile <- get_log_filename()
+tmp <- file(logfile, open = "wt")
+sink(tmp, type = "message")
+sink(tmp, type = "output")
+
+
+# Configure ALA ----
+galah_config(atlas = "Australia",
+             email = "shelly.lachish@csiro.au",
+             download_reason_id = "citizen science"
+             )
+
 # Read in the base data ----
-base_counts <- read_rds(here("output_data", "toohey_species_counts.rds"))
+message("Reading in base occurrences ...")
 base_occs <- read_rds(here("output_data", "toohey_species_occurences.rds"))
 
 
@@ -36,44 +45,52 @@ update_month <- base_latest_month - 1
 
 
 # Get update occ data ----
+message("Downloading occurrences ...")
 occurrence_updates <- update_occurrences(year = base_latest_year,
                                         month = base_latest_month,
                                         b_box = b_box)
 
 # Add cladistics ----
+message("Adding cladistics ...")
 occ_updates_cladistics <- add_cladistics(occurrence_updates)
 
 
 # Run tests to check format of occ_updates_cladistics ----
-test_results <- test_file(here("R", "update_occs_testQA.R"))
-results_df <- as.data.frame(test_results)
+message("Running test suite ...")
+test_summary <- test_file("./R/update_occs_testQA.R")[[1]]$results
+test_results <- map_chr(test_summary, ~ attr(.x, "class")[1])
 
 # Row bind and save (overwrite) ----
 # Check if there are any failures or errors in the outcome column
-if (any(results_df$outcome %in% c("failure", "error"))) {
+if (any(test_results == "expectation_failure")) {
   stop("Data structure tests failed. Please fix the issues before proceeding.")
 
   } else {
   message("All tests passed. Proceeding with further analysis.")
 
+  # Calculate how many rows will be added
+  new_occs <- occ_updates_cladistics |>
+    anti_join(occurrence_updates,
+              by = join_by(scientificName,
+                           decimalLatitude,
+                           decimalLongitude,
+                           eventDate,
+                           dataResourceName))
+
+  message(paste0("Number of new occurrences added:", dim(new_occs)[1]))
+
   # Row bind, remove duplicates and save (overwrite)
   updated_occ_data <- bind_rows(base_occs, occ_updates_cladistics) |>
     distinct()
-  
 
-  # Get new count data
-  updated_count_data <- updated_occ_data |>
-  group_by(class, order, family, genus, species, vernacular_name) |>
-  count()
+  message(paste0("Total number of occurrences in data:", dim(updated_occ_data)[1]))
 
-  # Save these updated datasets
-write_rds(updated_occ_data,
-          file = here("output_data", "toohey_species_occurences.rds"),
-          compress = "gz")
-
-write_rds(updated_count_data,
-          file = here("output_data", "toohey_species_counts.rds"),
-          compress = "gz")
-}
+  # Overwrite the current occurrence data with this update
+  write_rds(updated_occ_data,
+            file = here("output_data", "toohey_species_occurences.rds"),
+            compress = "gz")
+  }
+sink()
+closeAllConnections()
 
 
