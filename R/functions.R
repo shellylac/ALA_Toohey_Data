@@ -31,7 +31,8 @@ add_cladistics <- function(occ_data){
     # Remove unecessary rows
     select(-c(recordID, taxonConceptID, occurrenceStatus,
               scientific_name_authorship, match_type, rank,
-              kingdom, phylum, issues))
+              kingdom, phylum, issues)) |>
+    distinct()
 
   return(occ_data_clads)
   }
