@@ -1,12 +1,10 @@
 # This script gets updated data from the ALA to add to the base dataset
-library(here)
 library(galah)
-library(tidyr)
-library(dplyr)
+library(tidyverse)
 library(testthat)
 
 # Source functions ----
-source(here("R", "functions.R"))
+source("./R/functions.R")
 
 
 # Set logging ----
@@ -46,7 +44,7 @@ update_month <- base_latest_month - 1
 
 # Get update occ data ----
 message("Downloading occurrences ...")
-occurrence_updates <- update_occurrences(year = base_latest_year,
+occurrence_updates <- get_occurrences(year = base_latest_year,
                                         month = base_latest_month,
                                         b_box = b_box)
 
@@ -61,7 +59,6 @@ test_summary <- test_file("./R/update_occs_testQA.R")[[1]]$results
 test_results <- map_chr(test_summary, ~ attr(.x, "class")[1])
 
 # Row bind and save (overwrite) ----
-# Check if there are any failures or errors in the outcome column
 if (any(test_results == "expectation_failure")) {
   stop("Data structure tests failed. Please fix the issues before proceeding.")
 
@@ -87,10 +84,9 @@ if (any(test_results == "expectation_failure")) {
 
   # Overwrite the current occurrence data with this update
   write_rds(updated_occ_data,
-            file = here("output_data", "toohey_species_occurences.rds"),
+            file = "./output_data/toohey_species_occurences.rds",
             compress = "gz")
   }
 sink()
 closeAllConnections()
-
 
