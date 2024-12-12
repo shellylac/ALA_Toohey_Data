@@ -62,13 +62,13 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 # End of https://www.toptal.com/developers/gitignore/api/r,windows
+
 #Ignore All Data/Docs/Markdown Files
 output_data/*
-docs/*
+
 #Exception to the above rules
 !output_data/.gitkeep
-!docs/.gitkeep
-!figs_reports/.gitkeep
+!output_data/toohey_species_occurrences.rds
 .Rdata
 .DS_Store
 .quarto
