@@ -42,7 +42,6 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 - **output_data/**: Stores the processed RDS files containing species occurrences and counts.
 
   - `toohey_species_occurences.rds`: Detailed occurrence records.
-  - `toohey_species_counts.rds`: Aggregated counts of species occurrences.
 
 - **README.md**: This file, providing an overview of the repository.
 
@@ -71,14 +70,15 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 Ensure you have R installed. Then, install the necessary packages:
 
 ```r
-install.packages(c("here", "galah", "dplyr", "tidyr", "purrr", "lubridate", "testthat"))
+install.packages(c("galah", "tidyverse", "testthat"))
+
 ```
 
 _Note_: Some packages like galah might require additional configuration. Refer to the [galah documentation](https://galah.ala.org.au/) for detailed instructions.
 
-## Usage
+## Notes on scripts
 
-1. Retrieve Initial Data
+1. Retrieve Initial Data (past 5 years of occurrences)
    Run the get_ALA_data.R script to fetch the initial set of species occurrence data.
 
 ```r
@@ -93,7 +93,7 @@ This script performs the following actions:
 - Enriches the data with cladistic information.
 - Saves the processed data to output_data/toohey_species_occurences.rds and output_data/toohey_species_counts.rds.
 
-2. Update Existing Data
+2. Update Existing Data (this runs regularly via a Github Action)
    To update the dataset with the latest occurrences, execute the update_ALA_data.R script. This script will:
 
 - Fetch new occurrence data since the last update.
@@ -135,10 +135,6 @@ What It Tests:
 
 The project relies on the following R packages:
 
-- here: For constructing file paths.
 - galah: Interface to the Atlas of Living Australia.
 - tidyverse: Data manipulation and visualization.
-- purrr: Functional programming tools.
-- lubridate: Date and time manipulation.
 - testthat: Unit testing framework.
-  Ensure all dependencies are installed and properly configured before running the scripts.
