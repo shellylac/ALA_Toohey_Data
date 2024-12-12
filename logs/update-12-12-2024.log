@@ -3,14 +3,14 @@ Reading in base occurrences ...
 Downloading occurrences ...
 Data returned for bounding box:
 xmin = 153.03007 xmax = 153.08281 ymin = -27.53106 ymax = -27.56138
-Querying API ■■■■■■■■■■■                       33% |  ETA:  5s
-Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA:  1s
+Querying API ■■■■■■■■■■■                       33% |  ETA: 11s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA:  3s
 Request for 29 occurrences placed in queue
 Current queue length: 1
-Downloading
-indexed 0B in  0s, 0B/sindexed 2.15GB in  0s, 2.15GB/s                                                                                                                                                                            Adding cladistics ...
+----Downloading
+indexed 0B in  0s, 0B/sindexed 2.15GB in  0s, 2.15GB/s                                                                                                                                                                          Adding cladistics ...
 Querying API ■■■■■■■■■■■■■■■■                  50% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% |  ETA:  0s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  0s
 Running test suite ...
 
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
@@ -32,4 +32,4 @@ Running test suite ...
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]All tests passed. Proceeding with further analysis.
 Number of new occurrences added:0
-Total number of occurrences in data:29692
+Total number of occurrences in data:29693
