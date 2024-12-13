@@ -6,11 +6,11 @@ xmin = 153.03007 xmax = 153.08281 ymin = -27.53106 ymax = -27.56138
 Request for 29 occurrences placed in queue
 Current queue length: 1
 Downloading
-indexed 0B in  0s, 0B/sindexed 2.15GB in  0s, 2.15GB/s                                                                                            Warning message:
-In for (i in seq_len(n)) { :
-  closing unused connection 3 (./logs/update-13-12-2024.log)
 Adding cladistics ...
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         81% |  ETA:  1s
 Running test suite ...
+
+══ Testing update_occs_testQA.R ════════════════════════════════════════════════
 
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
@@ -29,6 +29,7 @@ Running test suite ...
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 15 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]All tests passed. Proceeding with further analysis.
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ] Done!
+All tests passed. Proceeding with further analysis.
 Number of new occurrences added:0
 Total number of occurrences in data:29689
