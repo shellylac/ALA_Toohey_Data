@@ -18,7 +18,7 @@ jobs:
           use-public-rspm: true
 
       - name: Cache R packages
-      - uses: actions/cache@v2 # Cache packages so won't be compiled everytime job is run
+        uses: actions/cache@v2 # Cache packages so won't be compiled everytime job is run
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/update_ALA_data.R') }}
