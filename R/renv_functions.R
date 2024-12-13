@@ -3,3 +3,4 @@
 # renv::snapshot()
 # renv::update()
 # renv::restore()
+# renv::deactivate()

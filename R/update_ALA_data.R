@@ -1,6 +1,10 @@
 # This script gets updated data from the ALA to add to the base dataset
 library(galah)
-library(tidyverse)
+library(dplyr)
+library(readr)
+library(purrr)
+library(lubridate)
+library(sf)
 library(testthat)
 
 # Source functions ----
@@ -15,14 +19,14 @@ sink(tmp, type = "output")
 
 
 # Configure ALA ----
-galah_config(atlas = "Australia",
+galah::galah_config(atlas = "Australia",
              email = "shelly.lachish@csiro.au",
              download_reason_id = "citizen science"
              )
 
 # Read in the base data ----
 message("Reading in base occurrences ...")
-base_occs <- read_rds(here("output_data", "toohey_species_occurences.rds"))
+base_occs <- readRDS("./output_data/toohey_species_occurrences.rds")
 
 
 #> Define the Toohey bounding box ----
@@ -37,8 +41,8 @@ b_box <- sf::st_bbox(c(xmin = 153.030074, xmax = 153.082805,
 
 
 # Get latest month of occs -----
-base_latest_year <- year(max(base_occs$eventDate))
-base_latest_month <- month(max(base_occs$eventDate))
+base_latest_year <- lubridate::year(max(base_occs$eventDate))
+base_latest_month <- lubridate::month(max(base_occs$eventDate))
 update_month <- base_latest_month - 1
 
 
@@ -55,8 +59,8 @@ occ_updates_cladistics <- add_cladistics(occurrence_updates)
 
 # Run tests to check format of occ_updates_cladistics ----
 message("Running test suite ...")
-test_summary <- test_file("./R/update_occs_testQA.R")[[1]]$results
-test_results <- map_chr(test_summary, ~ attr(.x, "class")[1])
+test_summary <- testthat::test_file("./R/update_occs_testQA.R")[[1]]$results
+test_results <- purrr::map_chr(test_summary, ~ attr(.x, "class")[1])
 
 # Row bind and save (overwrite) ----
 if (any(test_results == "expectation_failure")) {
@@ -67,8 +71,8 @@ if (any(test_results == "expectation_failure")) {
 
   # Calculate how many rows will be added
   new_occs <- occ_updates_cladistics |>
-    anti_join(occurrence_updates,
-              by = join_by(scientificName,
+    dplyr::anti_join(occurrence_updates,
+              by = dplyr::join_by(scientificName,
                            decimalLatitude,
                            decimalLongitude,
                            eventDate,
@@ -77,16 +81,18 @@ if (any(test_results == "expectation_failure")) {
   message(paste0("Number of new occurrences added:", dim(new_occs)[1]))
 
   # Row bind, remove duplicates and save (overwrite)
-  updated_occ_data <- bind_rows(base_occs, occ_updates_cladistics) |>
-    distinct()
+  updated_occ_data <- dplyr::bind_rows(base_occs, occ_updates_cladistics) |>
+    dplyr::distinct()
 
   message(paste0("Total number of occurrences in data:", dim(updated_occ_data)[1]))
 
   # Overwrite the current occurrence data with this update
-  write_rds(updated_occ_data,
+  readr::write_rds(updated_occ_data,
             file = "./output_data/toohey_species_occurrences.rds",
             compress = "gz")
   }
+
+#Turn of logging
 sink()
 closeAllConnections()
 

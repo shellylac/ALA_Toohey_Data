@@ -1,38 +1,38 @@
 
 # update occurences function ----
 get_occurrences <- function(year, month, b_box){
-  galah_call() |>
-    galah_identify(c("reptilia", "birds", "mammals")) |>
-    galah_group_by(species) |>
-    galah_geolocate(b_box, type = "bbox") |>
-    apply_profile(ALA) |>
-    galah_filter(year >= as.numeric(year)) |>
-    galah_filter(month >= as.numeric(month)) |>
-    atlas_occurrences()
+  galah::galah_call() |>
+    galah::galah_identify(c("reptilia", "birds", "mammals")) |>
+    galah::galah_group_by(species) |>
+    galah::galah_geolocate(b_box, type = "bbox") |>
+    galah::apply_profile(ALA) |>
+    galah::galah_filter(year >= as.numeric(year)) |>
+    galah::galah_filter(month >= as.numeric(month)) |>
+    galah::atlas_occurrences()
 }
 
 
 add_cladistics <- function(occ_data){
 
   # Get cladistics
-  occ_cladistics <- search_taxa(unique(occ_data$scientificName))
+  occ_cladistics <- galah::search_taxa(unique(occ_data$scientificName))
 
   occ_data_clads <- occ_data |>
-    left_join(occ_cladistics, by = c("scientificName" = "search_term")) |>
+    dplyr::left_join(occ_cladistics, by = c("scientificName" = "search_term")) |>
     # For some reason these species names aren't given a vernacular name - do it manually
     # "Tachyglossus aculeatus"   "Tropidonophis mairii"     "Colluricincla rufogaster"
-    mutate(vernacular_name = case_match(species,
+    dplyr::mutate(vernacular_name = dplyr::case_match(species,
                                         "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
                                         "Tropidonophis mairii" ~ "Common Keelback",
                                         "Colluricincla rufogaster" ~ "Rufous Shrikethrush",
                                         .default = vernacular_name)) |>
     # There may be some rows without species level info - remove
-    filter(!is.na(species)) |>
+    dplyr::filter(!is.na(species)) |>
     # Remove unecessary rows
-    select(-c(recordID, taxonConceptID, occurrenceStatus,
+    dplyr::select(-c(recordID, taxonConceptID, occurrenceStatus,
               scientific_name_authorship, match_type, rank,
               kingdom, phylum, issues)) |>
-    distinct()
+    dplyr::distinct()
 
   return(occ_data_clads)
   }
