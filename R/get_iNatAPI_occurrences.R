@@ -15,7 +15,7 @@ nelng <- 153.082805
 taxa_ids <- c(3, 40151, 26036)  # Birds, Mammals, Reptiles
 taxon_id_str <- paste0("taxon_id=", taxa_ids, collapse = "&")
 
-# Build the query string
+# Build the API query string
 query_str <- paste(
   taxon_id_str,
   paste0("d1=", as.character(d1)),
@@ -45,16 +45,13 @@ fetch_page <- function(page_num) {
 }
 
 all_observations <- data.frame()
+species_list <- data.frame()
 page_num <- 1
 
 while (TRUE) {
   parsed <- fetch_page(page_num)
-  if (length(parsed$results) == 0) break
-
-  if (page_num == 1) {
-    cat("Available fields:\n")
-    print(names(parsed$results))
-  }
+  # if (length(parsed$results) == 0) break
+  if (is.null(parsed$results$id)) break
 
   fields <- c("id",
               "time_observed_at",
@@ -66,15 +63,24 @@ while (TRUE) {
               "taxon.name",
               "taxon.preferred_common_name",
               "taxon.rank",
-              "taxon.iconic_taxon_name")
+              "taxon.iconic_taxon_name",
+              "identifications")
 
   existing_fields <- fields[fields %in% names(parsed$results)]
 
   observations_df <- parsed$results[, existing_fields, drop = FALSE]
   all_observations <- rbind(all_observations, observations_df)
 
-  if (page_num >= parsed$total_pages) break
+  # if (page_num >= parsed$total_pages) break
   page_num <- page_num + 1
 }
 
-head(all_observations)
+out <- galah::search_taxa(all_observations$taxon.name)
+
+
+
+
+for(i in 1:56){
+  print(length(parsed$results$identifications[[i]]$taxon.ancestors[[1]]$name))
+}
+paste(parsed$results$identifications[[4]]$taxon.ancestors[[1]]$name, collapse = ", ")
