@@ -40,6 +40,9 @@ jobs:
             testthat
             galah
             sf
+            tidyr
+            httr
+            jsonlite
 
       # renv is part of your project, so installing it directly from CRAN or using the bootstrap in your project
       # - name: Install renv
@@ -58,7 +61,7 @@ jobs:
 
       # Run the update script
       - name: Update ALA data
-        run: Rscript -e 'source("./R/update_ALA_data.R")'
+        run: Rscript -e 'source("./R/update_occurrences_iNatAPI.R")'
 
       # Commit the changes if any back to the repo
       - name: Commit and push results
