@@ -15,10 +15,10 @@ library(jsonlite)
 source("./R/functions.R")
 
 # Set logging ----
-# logfile <- get_log_filename()
-# tmp <- file(logfile, open = "wt")
-# sink(tmp, type = "message")
-# sink(tmp, type = "output")
+logfile <- get_log_filename()
+tmp <- file(logfile, open = "wt")
+sink(tmp, type = "message")
+sink(tmp, type = "output")
 
 
 # Configure ALA ----
@@ -28,7 +28,7 @@ galah::galah_config(atlas = "Australia",
 )
 
 # Read in the base data ----
-message("Reading in base occurrences ...")
+message("\nReading in base occurrences ...")
 base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
 
 
@@ -51,7 +51,7 @@ query_str <- construct_api_query(taxa_ids,
 base_url <- "https://api.inaturalist.org/v1/observations"
 
 # Get the latest observations  -----
-message("Downloading occurrences ...")
+message("\nDownloading occurrences ...")
 
 new_occurrences <- data.frame()
 page_num <- 1
@@ -97,28 +97,28 @@ test_results <- purrr::map_chr(test_summary, ~ attr(.x, "class")[1])
 if (any(test_results == "expectation_failure")) {
   stop("Data structure tests failed. Please fix the issues before proceeding.")
 
-} else {
-  message("All tests passed. Proceeding with further analysis.")
+  } else {
+    message("\nAll tests passed. Proceeding with further analysis.")
 
-  # Get new occurrences only
-  new_occs <- occ_updates_cladistics |>
-    dplyr::anti_join(base_occs) #|> select(latitude, longitude, eventDate, eventTime, species)
+    new_occs <- occ_updates_cladistics |>
+      dplyr::anti_join(base_occs |>
+                         select(latitude, longitude, eventDate, eventTime, species))
 
-  message(paste0("Number of new occurrences added: ", dim(new_occs)[1]))
+    message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs)[1]))
 
-  # Row bind, remove duplicates and save (overwrite)
-  updated_occ_data <- dplyr::bind_rows(base_occs, new_occs)
+    # Row bind, remove duplicates and save (overwrite)
+    updated_occ_data <- dplyr::bind_rows(base_occs, new_occs)
 
-  message(paste0("Total number of occurrences in data: ", dim(updated_occ_data)[1]))
+    message(paste0("\n\nTotal number of occurrences in data: ", dim(updated_occ_data)[1]))
 
-  # Overwrite the current occurrence data with this update
-  readr::write_rds(updated_occ_data,
-                   file = "./output_data/toohey_species_occurrences.rds",
-                   compress = "gz")
-}
+    # Overwrite the current occurrence data with this update
+    readr::write_rds(updated_occ_data,
+                     file = "./output_data/toohey_species_occurrences.rds",
+                     compress = "gz")
+
+    }
 
 #Turn of logging
 sink()
 closeAllConnections()
-
 
