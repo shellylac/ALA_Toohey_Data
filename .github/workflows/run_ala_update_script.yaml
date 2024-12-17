@@ -23,10 +23,10 @@ jobs:
       #     sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
 
       - name: Cache R packages
-        uses: actions/cache@v2 # Cache packages so won't be compiled everytime job is run
+        uses: actions/cache@v3 # Cache packages so won't be compiled everytime job is run
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/update_ALA_data.R') }}
+          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/update_occurrences_iNatAPI.R') }}
           restore-keys: ${{ runner.os }}-scriptname-
 
       - name: Install packages
