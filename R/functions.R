@@ -18,10 +18,10 @@ tidy_ala_data <- function(data){
            decimalLongitude = round(as.numeric(decimalLongitude), 4)
            ) |>
     dplyr::rename(latitude = decimalLatitude, longitude = decimalLongitude) |>
-    # mutate(eventDate = if_else(grepl(" ", eventDate),
-    #                            lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane"),
-    #                            eventDate)
-    #        ) |>
+    mutate(eventDate = if_else(grepl(" ", eventDate),
+                               lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane"),
+                               eventDate)
+           ) |>
     tidyr::separate_wider_delim(eventDate,
                          delim = " ",
                          names = c("eventDate", "eventTime"),
@@ -138,7 +138,7 @@ tidy_api_newoccs <- function(data){
            class = taxon.iconic_taxon_name) |>
     dplyr::mutate(dataResourceName = "iNaturalist Australia",
            scientificName = taxon.name,
-           #eventDate = lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane")
+           eventDate = lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane")
            ) |>
     tidyr::separate_wider_delim(location, delim = ",",
                                 names = c("decimalLatitude", "decimalLongitude")) |>
