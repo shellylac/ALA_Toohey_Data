@@ -4,7 +4,6 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 
 ## Table of Contents
 
-- [Project Structure](#project-structure)
 - [Description of Files](#description-of-files)
 - [Features](#features)
 - [Installation](#installation)
@@ -17,18 +16,6 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 - [License](#license)
 - [Contact](#contact)
 
-## Project Structure
-
-├── R
-│ ├── functions.R
-│ ├── get_ALA_data.R
-│ ├── update_ALA_data.R
-│ └── update_occs_testQA.R
-├── output_data
-│ ├── toohey_species_occurences.rds
-│ └── toohey_species_counts.rds
-├── README.md
-└── .gitignore
 
 ## Description of Files
 
@@ -43,9 +30,6 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 
   - `toohey_species_occurences.rds`: Detailed occurrence records.
 
-- **README.md**: This file, providing an overview of the repository.
-
-- **.gitignore**: Specifies files and directories to be ignored by Git.
 
 ## Features
 
@@ -70,7 +54,7 @@ Welcome to the **ALA Data Management Repository**! This repository contains R sc
 Ensure you have R installed. Then, install the necessary packages:
 
 ```r
-install.packages(c("galah", "tidyverse", "testthat"))
+install.packages(c("galah", "dplyr", "readr", "lubridate", "purrr", "sf", "testthat", "httr", "jasonlite"))
 
 ```
 

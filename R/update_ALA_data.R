@@ -6,6 +6,9 @@ library(purrr)
 library(lubridate)
 library(sf)
 library(testthat)
+library(httr)
+library(jsonlite)
+
 
 # Source functions ----
 source("./R/functions.R")
@@ -54,7 +57,7 @@ occurrence_updates <- get_occurrences(year = base_latest_year,
 
 # Add cladistics ----
 message("Adding cladistics ...")
-occ_updates_cladistics <- add_cladistics(occurrence_updates)
+occ_updates_cladistics <- add_cladistics(occurrence_updates, type = "ALA")
 
 
 # Run tests to check format of occ_updates_cladistics ----

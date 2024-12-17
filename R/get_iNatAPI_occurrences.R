@@ -1,11 +1,10 @@
-library(httr)
-library(jsonlite)
+
 
 # Define date range: last 10 days
 d2 <- Sys.Date()
 d1 <- d2 - 10
 
-# Define bounding box
+# Define iNat bounding box
 swlat <- -27.561382
 swlng <- 153.030074
 nelat <- -27.531057

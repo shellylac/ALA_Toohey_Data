@@ -36,9 +36,17 @@ b_box <- sf::st_bbox(c(xmin = 153.030074, xmax = 153.082805,
 
 # Get occurrences of all reptiles, birds and mammals for past 5 years
 toohey_occurrences <- get_occurrences(year = 2024 - 5, month = 1, b_box = b_box)
+toohey_occurrences_formatted <- tidy_ala_data(toohey_occurrences)
+
+
+# Get cladistics dataset
+ala_clad_data <- galah::search_taxa(unique(toohey_occurrences_formatted$scientificName)) |> distinct()
 
 # Get cladistics - Join cladistics to this and filter to remove duplicates
-occ_cladistics <- add_cladistics(toohey_occurrences)
+occ_cladistics <- add_cladistics(occ_data = toohey_occurrences_formatted,
+                                 clad_data = ala_clad_data,
+                                 type = "ALA")
+
 
 # Save this dataset as the base data - (the github action will just run the update script in the future)
 readr::write_rds(occ_cladistics,
