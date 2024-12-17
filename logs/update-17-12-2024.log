@@ -1,13 +1,13 @@
 ✔ Matched "citizen science" to valid download reason ID 11.
+
 Reading in base occurrences ...
+
 Downloading occurrences ...
 Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
 Adding cladistics ...
-Querying API ■■■■■                             14% |  ETA: 24s
-Querying API ■■■■■■■■■■                        29% |  ETA: 10s
-Querying API ■■■■■■■■■■■■■■                    43% |  ETA:  6s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA:  2s
 Running test suite ...
+
+══ Testing update_occs_testQA.R ════════════════════════════════════════════════
 
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
@@ -27,6 +27,13 @@ Running test suite ...
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 15 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ]Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ] Done!
+
+All tests passed. Proceeding with further analysis.
+Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
+
+
 Number of new occurrences added: 0
+
+
 Total number of occurrences in data: 29702
