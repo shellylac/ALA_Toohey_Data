@@ -1,27 +1,37 @@
 
+#> Info on the the ALA profile is here
+#> https://support.ala.org.au/support/solutions/articles/6000240256-getting-started-with-the-data-profiles
+
+# Useful tools
+# fields <- show_all(fields)
+# search_fields("date")
+
+
 # update occurences function ----
-get_occurrences <- function(year, month, b_box){
+get_occurrences <- function(year, month, geo_limit){
   galah::galah_call() |>
     galah::galah_identify(c("reptilia", "birds", "mammals")) |>
     galah::galah_group_by(species) |>
-    galah::galah_geolocate(b_box, type = "bbox") |>
+    galah::galah_geolocate(geo_limit) |>
     galah::apply_profile(ALA) |>
     galah::galah_filter(year >= as.numeric(year)) |>
     galah::galah_filter(month >= as.numeric(month)) |>
     galah::atlas_occurrences()
 }
 
-# Tidy the API data
+# Tidy the ALA data
 tidy_ala_data <- function(data){
   new_data_formatted <- data |>
     dplyr::mutate(decimalLatitude = round(as.numeric(decimalLatitude), 4),
            decimalLongitude = round(as.numeric(decimalLongitude), 4)
            ) |>
     dplyr::rename(latitude = decimalLatitude, longitude = decimalLongitude) |>
-    mutate(eventDate = if_else(grepl(" ", eventDate),
-                               lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane"),
-                               eventDate)
-           ) |>
+    # mutate(eventDate = if_else(grepl(" ", eventDate),
+    #                            lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane"),
+    #                            eventDate)
+    #        ) |>
+    # There are some taxon concept ids that aren't url's
+    dplyr::filter(grepl("https://biodiversity.org.au.*", taxonConceptID)) |>
     tidyr::separate_wider_delim(eventDate,
                          delim = " ",
                          names = c("eventDate", "eventTime"),
@@ -30,7 +40,40 @@ tidy_ala_data <- function(data){
   return(new_data_formatted)
 }
 
+# Tidy the API data
+tidy_api_newoccs <- function(data){
+  new_data_formatted <- data |>
+    tidyr::drop_na(any_of(c("time_observed_at",
+                            "location",
+                            "taxon.name",
+                            "taxon.preferred_common_name",
+                            "taxon.iconic_taxon_name")))  |>
+    dplyr::rename(eventDate = time_observed_at,
+                  vernacular_name = taxon.preferred_common_name,
+                  class = taxon.iconic_taxon_name) |>
+    # Need to cast time to brisbane timezone (not UTC time)
+    dplyr::mutate(dataResourceName = "iNaturalist Australia",
+                  scientificName = taxon.name,
+                  eventDate = lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane")
+    ) |>
+    tidyr::separate_wider_delim(location, delim = ",",
+                                names = c("latitude", "longitude")) |>
+    dplyr::mutate(decimalLatitude = round(as.numeric(latitude), 4),
+                  decimalLongitude = round(as.numeric(longitude), 4)
+    ) |>
+    # Round latitude/longitude so that they match with new updates later on
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 4))) |>
+    tidyr::separate_wider_delim(eventDate,
+                                delim = " ",
+                                names = c("eventDate", "eventTime"),
+                                too_few = "align_start",
+                                too_many = "drop")
 
+  return(new_data_formatted)
+}
+
+
+# Get and add cladistics to occurrence data and wrangle ----
 add_cladistics <- function(occ_data, clad_data, type){
 
   if (type == "ALA") {
@@ -47,16 +90,12 @@ add_cladistics <- function(occ_data, clad_data, type){
                                           .default = vernacular_name)) |>
       # There may be some rows without species level info - remove
       dplyr::filter(!is.na(species)) |>
-      # There are some taxon concept ids that aren't url's
-      dplyr::filter(grepl("https://biodiversity.org.au.*", taxonConceptID)) |>
       # select final columns
       dplyr::select(c("scientificName", "latitude", "longitude", "eventDate",
                "eventTime", "dataResourceName", "scientific_name",
                "taxon_concept_id", "class", "order",
                "family", "genus", "species", "vernacular_name")) |>
       dplyr::arrange(eventDate, eventTime, species, latitude, longitude) |>
-      # Round latitude/longitude so that they match
-      dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 4))) |>
       dplyr::distinct()
 
 
@@ -72,8 +111,6 @@ add_cladistics <- function(occ_data, clad_data, type){
                  "taxon_concept_id", "class", "order",
                  "family", "genus", "species", "vernacular_name")) |>
         dplyr::arrange(eventDate, eventTime, species, latitude, longitude) |>
-        # Round latitude/longitude so that they match
-        dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~round(.x, digits = 4))) |>
         dplyr::distinct()
       }
   return(occ_data_clads)
@@ -124,35 +161,31 @@ fetch_page <- function(base_url, query_str, page_num) {
   return(parsed)
 }
 
+# Function to do the spatial interaction between bounding box occs and toohey boundary
+do_spatial_intersect <- function(occ_data, boundary_shapefile){
 
-# Tidy the API data
-tidy_api_newoccs <- function(data){
-  new_data_formatted <- data |>
-    tidyr::drop_na(any_of(c("time_observed_at",
-                            "location",
-                            "taxon.name",
-                            "taxon.preferred_common_name",
-                            "taxon.iconic_taxon_name")))  |>
-    dplyr::rename(eventDate = time_observed_at,
-           vernacular_name = taxon.preferred_common_name,
-           class = taxon.iconic_taxon_name) |>
-    dplyr::mutate(dataResourceName = "iNaturalist Australia",
-           scientificName = taxon.name,
-           eventDate = lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane")
-           ) |>
-    tidyr::separate_wider_delim(location, delim = ",",
-                                names = c("decimalLatitude", "decimalLongitude")) |>
-    dplyr::mutate(decimalLatitude = round(as.numeric(decimalLatitude), 4),
-           decimalLongitude = round(as.numeric(decimalLongitude), 4)
-           ) |>
-    dplyr::rename(latitude = decimalLatitude, longitude = decimalLongitude)  |>
-    tidyr::separate_wider_delim(eventDate,
-                         delim = " ",
-                         names = c("eventDate", "eventTime"),
-                         too_few = "align_start",
-                         too_many = "drop")
+  # Convert the new_occs data (which has lat/lon fields) into an sf object: EPSG:4326 = WGS84
+  sf_new_occs <- sf::st_as_sf(occ_data, coords = c("longitude", "latitude"), crs = 4326)
 
-  return(new_data_formatted)
-}
+  # Spatially intersect with your polygon to keep only the observations inside the polygon
+  occs_geolimited <- sf_new_occs |> sf::st_intersection(boundary_shapefile)
 
+  # Extract coordinates
+  coords <- st_coordinates(occs_geolimited)
+
+  # Add the longitude/latitude columns
+  occs_geolimited$longitude <- coords[, 1]
+  occs_geolimited$latitude <- coords[, 2]
+
+  # Drop the geometry to return a regular data frame
+  occs_geolimited_nonspatial <- occs_geolimited |>
+    st_drop_geometry() |>
+    select(-c("Name", "descriptio", "timestamp", "begin", "end", "altitudeMo",
+              "tessellate", "extrude", "visibility", "drawOrder", "icon")) |>
+    select("eventDate", "eventTime", "latitude", "longitude", "taxon.name",
+           "vernacular_name", "class", "taxon.wikipedia_url", "dataResourceName",
+           "scientificName")
+
+  return(occs_geolimited_nonspatial)
+  }
 
