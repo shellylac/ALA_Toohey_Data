@@ -10,9 +10,6 @@ galah::galah_config(atlas = "Australia",
              download_reason_id = "citizen science"
              )
 
-# Useful tools
-# fields <- show_all(fields)
-# search_fields("date")
 
 # Source functions ----
 source("./R/functions.R")
@@ -24,18 +21,19 @@ source("./R/functions.R")
 # se = -27.561382, 153.078571
 # sw = -27.555471, 153.030074
 
-b_box <- sf::st_bbox(c(xmin = 153.030074, xmax = 153.082805,
-                       ymin = -27.531057, ymax = -27.561382),
-                     crs = sf::st_crs("WGS84"))
+# b_box <- sf::st_bbox(c(xmin = 153.0302, xmax = 153.082,
+#                        ymin = -27.5312, ymax = -27.53855),
+#                      crs = sf::st_crs("WGS84"))
 
 
-#> Info on the the ALA profile is here
-#> https://support.ala.org.au/support/solutions/articles/6000240256-getting-started-with-the-data-profiles
+# Read in the Toohey Forest Boundary shapefile to limit occurrences
+toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
+
 
 ## Functions to extract data from the ALA Interface [galah package] ----
 
 # Get occurrences of all reptiles, birds and mammals for past 5 years
-toohey_occurrences <- get_occurrences(year = 2024 - 5, month = 1, b_box = b_box)
+toohey_occurrences <- get_occurrences(year = 2024 - 5, month = 1, geo_limit = toohey_outline)
 toohey_occurrences_formatted <- tidy_ala_data(toohey_occurrences)
 
 
