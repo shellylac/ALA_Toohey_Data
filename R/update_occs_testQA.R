@@ -3,10 +3,11 @@ test_that("dataset has the correct structure", {
   # Check that it is a tibble (tbl_df)
   expect_s3_class(occ_updates_cladistics, "tbl_df")
 
-  # Check that we have exactly 14 columns
+  # Check that we have exactly 15 columns
   expected_cols <- c("scientificName", "latitude", "longitude", "eventDate", "eventTime",
                      "dataResourceName", "scientific_name", "taxon_concept_id",
-                     "class", "order", "family", "genus", "species", "vernacular_name")
+                     "class", "order", "family", "genus", "species", "vernacular_name",
+                     "wikipedia_url")
   expect_equal(colnames(occ_updates_cladistics), expected_cols)
 
   # Check column types
@@ -21,6 +22,7 @@ test_that("dataset has the correct structure", {
   expect_type(occ_updates_cladistics$genus, "character")
   expect_type(occ_updates_cladistics$species, "character")
   expect_type(occ_updates_cladistics$vernacular_name, "character")
+  expect_type(occ_updates_cladistics$wikipedia_url, "character")
 
   expect_type(occ_updates_cladistics$eventDate, "character")
   expect_type(occ_updates_cladistics$eventTime, "character")
