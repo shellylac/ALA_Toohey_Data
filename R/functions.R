@@ -7,10 +7,16 @@
 # search_fields("date")
 
 
-# update occurences function ----
+#' Get occurrences data from ALA ----
+#' This function retrieves occurrences data from the Atlas of Living Australia (ALA)
+#' based on the specified year, month, and geographical limit.
+#' @param year Numeric. The year from which to start retrieving occurrences.
+#' @param month Numeric. The month from which to start retrieving occurrences.
+#' @param geo_limit A geographical limit for the occurrences data.
+#' @return A data frame containing the occurrences data.
 get_occurrences <- function(year, month, geo_limit){
   galah::galah_call() |>
-    galah::galah_identify(c("reptilia", "birds", "mammals")) |>
+    galah::galah_identify(c("reptilia", "birds", "mammals", "amphibia")) |>
     galah::galah_group_by(species) |>
     galah::galah_geolocate(geo_limit) |>
     galah::apply_profile(ALA) |>
@@ -19,11 +25,11 @@ get_occurrences <- function(year, month, geo_limit){
     galah::atlas_occurrences()
 }
 
-# Tidy the ALA data
+# Tidy the ALA data ----
 tidy_ala_data <- function(data){
   new_data_formatted <- data |>
-    dplyr::mutate(decimalLatitude = round(as.numeric(decimalLatitude), 4),
-           decimalLongitude = round(as.numeric(decimalLongitude), 4)
+    dplyr::mutate(decimalLatitude = round(as.numeric(decimalLatitude), 6),
+           decimalLongitude = round(as.numeric(decimalLongitude), 6)
            ) |>
     dplyr::rename(latitude = decimalLatitude, longitude = decimalLongitude) |>
     # mutate(eventDate = if_else(grepl(" ", eventDate),
@@ -40,29 +46,28 @@ tidy_ala_data <- function(data){
   return(new_data_formatted)
 }
 
-# Tidy the API data
+# Tidy the iNat API data ----
 tidy_api_newoccs <- function(data){
   new_data_formatted <- data |>
     tidyr::drop_na(any_of(c("time_observed_at",
                             "location",
-                            "taxon.name",
-                            "taxon.preferred_common_name",
-                            "taxon.iconic_taxon_name")))  |>
+                            "taxon.name")
+                          ))  |>
     dplyr::rename(eventDate = time_observed_at,
                   vernacular_name = taxon.preferred_common_name,
                   class = taxon.iconic_taxon_name) |>
-    # Need to cast time to brisbane timezone (not UTC time)
+    # Need to cast time to Brisbane time zone (not UTC time)
     dplyr::mutate(dataResourceName = "iNaturalist Australia",
                   scientificName = taxon.name,
                   eventDate = lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane")
     ) |>
     tidyr::separate_wider_delim(location, delim = ",",
                                 names = c("latitude", "longitude")) |>
-    dplyr::mutate(decimalLatitude = round(as.numeric(latitude), 4),
-                  decimalLongitude = round(as.numeric(longitude), 4)
+    dplyr::mutate(decimalLatitude = round(as.numeric(latitude), 6),
+                  decimalLongitude = round(as.numeric(longitude), 6)
     ) |>
     # Round latitude/longitude so that they match with new updates later on
-    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 4))) |>
+    dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~ round(.x, digits = 6))) |>
     tidyr::separate_wider_delim(eventDate,
                                 delim = " ",
                                 names = c("eventDate", "eventTime"),
@@ -127,7 +132,7 @@ get_log_filename <- function(){
 
 # Construct query string for iNat API
 construct_api_query <- function(taxa_ids, min_date, max_date){
-  # taxa_ids <- c(3, 40151, 26036)  # Birds, Mammals, Reptiles
+  # taxa_ids <- c(3, 40151, 26036, 20978)  # Birds, Mammals, Reptiles, Amphibia
   taxon_id_str <- paste0("taxon_id=", taxa_ids, collapse = "&")
 
   # Build the API query string
@@ -153,7 +158,7 @@ fetch_page <- function(base_url, query_str, page_num) {
   # Append page parameter
   full_url <- paste0(base_url, "?", query_str, "&page=", page_num)
   resp <- httr::GET(full_url)
-  if (status_code(resp) != 200) {
+  if (httr::status_code(resp) != 200) {
     stop("Failed to retrieve data. HTTP Status: ", status_code(resp))
   }
   json_data <- httr::content(resp, as = "text", encoding = "UTF-8")
@@ -167,7 +172,7 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile){
   # Convert the new_occs data (which has lat/lon fields) into an sf object: EPSG:4326 = WGS84
   sf_new_occs <- sf::st_as_sf(occ_data, coords = c("longitude", "latitude"), crs = 4326)
 
-  # Spatially intersect with your polygon to keep only the observations inside the polygon
+  # Spatially intersect with our polygon to keep only the observations inside the polygon
   occs_geolimited <- sf_new_occs |> sf::st_intersection(boundary_shapefile)
 
   # Extract coordinates
@@ -180,12 +185,67 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile){
   # Drop the geometry to return a regular data frame
   occs_geolimited_nonspatial <- occs_geolimited |>
     st_drop_geometry() |>
-    select(-c("Name", "descriptio", "timestamp", "begin", "end", "altitudeMo",
-              "tessellate", "extrude", "visibility", "drawOrder", "icon")) |>
-    select("eventDate", "eventTime", "latitude", "longitude", "taxon.name",
-           "vernacular_name", "class", "taxon.wikipedia_url", "dataResourceName",
-           "scientificName")
+     select(-c("Name", "descriptio", "timestamp", "begin", "end", "altitudeMo",
+               "tessellate", "extrude", "visibility", "drawOrder", "icon"))
 
   return(occs_geolimited_nonspatial)
-  }
+}
+
+
+# Function to correct different vernacular name spellings
+fix_common_names <- function(string){
+
+  corrected_common_names <- case_match(string,
+                                       "Australian Brushturkey" ~ "Australian Brush-turkey",
+                                       "Black-faced Cuckooshrike" ~ "Black-faced Cuckoo-shrike",
+                                       "Coastal New South Wales Australian Magpie" ~ "Australian Magpie",
+                                       "Coastal Spotted Pardalote" ~ "Spotted Pardalote",
+                                       "Common Blue-tongue" ~ "Eastern Blue-tongue",
+                                       "Dark Bar-sided Skink" ~ "Dark Barsided Skink",
+                                       "Eastern Bluetongue" ~ "Eastern Blue-tongue",
+                                       "Eastern Water Dragon" ~ "Water Dragon",
+                                       "Eastern Red-backed Fairy-wren" ~ "Red-backed Fairy-wren",
+                                       "Eastern Galah" ~ "Galah",
+                                       "Eastern Tawny Frogmouth" ~ "Tawny Frogmouth",
+                                       "Eastern Bearded Dragon" ~ "Common Bearded Dragon",
+                                       "Lively Rainbow Skink" ~ "Tussock Rainbow Skink",
+                                       "Southern Bar-sided Skink" ~ "Barred-sided Skink",
+                                       "Southern Laughing Kookaburra" ~ "Laughing Kookaburra",
+                                       "South-east Eastern Koel" ~ "Eastern Koel",
+                                       "South-eastern Glossy Black-cockatoo" ~ "Glossy Black-cockatoo",
+                                       "Tree-base Litter Skink" ~"Tree-base Litter-skink",
+                                       "Variegated Fairywren" ~ "Variegated Fairy-wren",
+                                       "Western Galah" ~ "Galah",
+                                       "Yellow-tailed Black Cockatoo" ~ "Yellow-tailed Black-cockatoo",
+                                       .default = string)
+
+  return(corrected_common_names)
+}
+
+
+# Construct Google Maps URL string
+create_google_maps_url <- function(latitude, longitude) {
+
+  # Format coordinates with 6 decimal places
+  lat <- format(round(latitude, 6), nsmall = 6)
+  lon <- format(round(longitude, 6), nsmall = 6)
+
+  # Construct Google Maps URL
+  sprintf("https://www.google.com/maps?q=%s,%s", lat, lon)
+}
+
+
+
+# Good to know
+# Regex to get first two words from a string (e.g. scientificName --> species)
+# sub("(\\w+\\s+\\w+).*", "\\1", scientificName), species))
+
+#
+# decimalplaces <- function(x) {
+#   if (abs(x - round(x)) > .Machine$double.eps^0.5) {
+#     nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed = TRUE)[[1]][[2]])
+#   } else {
+#     return(0)
+#   }
+# }
 
