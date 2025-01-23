@@ -35,16 +35,24 @@ source("./R/functions.R")
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
 toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 
+#......................................................................
+# Step 3: Get wikipedia urls from iNaturalist
+#> ONE-OFF STEP AT BEGINNING OF PROCEDURE - DO NOT RE-RUN REGULARLY!!
+#......................................................................
+# source("./R/get_ALA_data.R")
+
+# Read in Wikipedia data
+wiki_url_data <- readr::read_rds("./output_data/wiki_urls.rds")
 
 #.......................................................
-# Step 3: ALA extract from year_past years ago up to today (i.e 22/01/2025) ----
+# Step 4: ALA extract from year_past years ago up to today (i.e 22/01/2025) ----
 #.......................................................
 #> This is basically the "base records" occurrences (they are QA'd records via the ALA profile)
 #> Info on the the ALA profile is here
 #> https://support.ala.org.au/support/solutions/articles/6000240256-getting-started-with-the-data-profiles
-
-#>  This is a one off that doesn't get re-run in the updates
-#>  However every so often it is good to update recent records to QA'd records
+#> Wikipedia links are added on
+#> This is a one off that doesn't get re-run in the updates
+#> However every so often it is good to update recent records to QA'd records
 years_past = 9
 this_year <- lubridate::year(Sys.Date())
 source("./R/get_ALA_data.R")
@@ -53,8 +61,9 @@ source("./R/get_ALA_data.R")
 # We get more recent observations from the iNat API
 
 
+
 #.......................................................
-# Step 4: Update the ALA extract created above with data from iNaturalist API ----
+# Step 5: Update the ALA extract created above with data from iNaturalist API ----
 #.......................................................
 #> (from a week before the max(EventDate) up to Sys.Date()
 #> This script is what get re-run via the Github Action
