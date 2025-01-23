@@ -46,6 +46,7 @@ tidy_ala_data <- function(data){
   return(new_data_formatted)
 }
 
+
 # Tidy the iNat API data ----
 tidy_api_newoccs <- function(data){
   new_data_formatted <- data |>
@@ -111,10 +112,12 @@ add_cladistics <- function(occ_data, clad_data, type){
                                            taxon_concept_id, order,
                                            family, genus, species),
                   by = c("taxon.name" = "search_term")) |>
-        dplyr::select(c("scientificName", "latitude", "longitude", "eventDate",
-                 "eventTime", "dataResourceName", "scientific_name",
-                 "taxon_concept_id", "class", "order",
-                 "family", "genus", "species", "vernacular_name")) |>
+        dplyr::select(scientificName, latitude, longitude, eventDate,
+                      eventTime, dataResourceName, scientific_name,
+                      taxon_concept_id, class, order,
+                      family, genus, species, vernacular_name,
+                      taxon.wikipedia_url) |>
+        dplyr::rename(wikipedia_url = taxon.wikipedia_url) |>
         dplyr::arrange(eventDate, eventTime, species, latitude, longitude) |>
         dplyr::distinct()
       }
