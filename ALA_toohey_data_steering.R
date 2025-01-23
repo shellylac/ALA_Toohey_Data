@@ -13,10 +13,14 @@ library(testthat)
 library(httr)
 library(jsonlite)
 
+#.......................................................
 # Step 1 : Source functions ----
+#.......................................................
 source("./R/functions.R")
 
+#.......................................................
 # Step 2: Define the spatial limits ----
+#.......................................................
 #> Define the Toohey bounding box ----
 # nw = -27.531057, 153.035337
 # ne = -27.537956, 153.082805
@@ -32,7 +36,9 @@ source("./R/functions.R")
 toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 
 
+#.......................................................
 # Step 3: ALA extract from year_past years ago up to today (i.e 22/01/2025) ----
+#.......................................................
 #> This is basically the "base records" occurrences (they are QA'd records via the ALA profile)
 #> Info on the the ALA profile is here
 #> https://support.ala.org.au/support/solutions/articles/6000240256-getting-started-with-the-data-profiles
@@ -47,7 +53,14 @@ source("./R/get_ALA_data.R")
 # We get more recent observations from the iNat API
 
 
+#.......................................................
 # Step 4: Update the ALA extract created above with data from iNaturalist API ----
+#.......................................................
 #> (from a week before the max(EventDate) up to Sys.Date()
 #> This script is what get re-run via the Github Action
 source("./R/update_occurrences_iNatAPI.R")
+
+#> The above script also:
+#> 1. does same basic QA unit testing on the updated dataset via the script: `./R/update_occs_testQA.R`
+#> 2. Outputs content to a log file and saves the log file to a log directory
+#> 3. This script is run regularly via the GA in github - and the updated output is saved/committed to the repo
