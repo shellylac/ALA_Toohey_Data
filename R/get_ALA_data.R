@@ -5,8 +5,6 @@
 #              package to interface with ALA and spatial data to define the area
 #              of interest.
 #
-# Dependencies: galah, dplyr, readr, sf
-#
 # Outputs: Species occurrence data for Toohey Forest area
 #===============================================================================
 
@@ -34,7 +32,8 @@ occ_cladistics <- add_cladistics(occ_data = toohey_occurrences_formatted,
                                  clad_data = ala_clad_data,
                                  type = "ALA") |>
   # There was a single row with NA for vernacular name
-  tidyr::drop_na()
+  # Drop rows where species or vernacular_name are NA
+  tidyr::drop_na(c(species, vernacular_name))
 
 
 # Save this dataset as the base data - (the github action will just run the update script in the future)
