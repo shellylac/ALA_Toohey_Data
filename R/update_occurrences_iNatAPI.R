@@ -91,7 +91,6 @@ toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 new_occs_toohey <- do_spatial_intersect(new_occs_tidy, toohey_outline)
 
 
-
 # Add cladistics ----
 message("Adding cladistics ...")
 api_clad_data <- galah::search_taxa(new_occs_toohey$taxon.name) |> distinct()
@@ -115,14 +114,19 @@ if (any(test_results == "expectation_failure")) {
   } else {
     message("\nAll tests passed. Proceeding with further analysis.")
 
+    #remove duplicates from previous dataset (if any)
     new_occs_to_add <- occ_updates_cladistics |>
       dplyr::anti_join(base_occs |>
                          select(latitude, longitude, eventDate, eventTime, species))
 
     message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
 
-    # Row bind, remove duplicates
+    # Row bind,
     updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
+      # If any wikipedia links are missing fill down from same species
+      group_by(species) |>
+      fill(wikipedia_url, .direction = "downup") |>
+      ungroup() |>
       # ALA and iNat have different commonname spellings/namings - this function tries to remedy most of them
       dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
       # create the URL link for Google Maps (for use in the map)
