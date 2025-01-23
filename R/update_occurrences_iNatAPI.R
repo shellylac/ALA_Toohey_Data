@@ -1,18 +1,20 @@
-# This script gets updated data from the ALA to add to the base dataset
-library(galah)
-library(dplyr)
-library(tidyr)
-library(readr)
-library(purrr)
-library(lubridate)
-library(sf)
-library(testthat)
-library(httr)
-library(jsonlite)
+#===============================================================================
+# Script Name: update_occurrences_iNatAPI.R
+# Description: Updates species occurrence records for Toohey Forest by retrieving
+#              new observations from the iNaturalist APIs to add to the previously
+#              downloaded Atlas of Living Australia (ALA) observations.
+#              Downloads records from the last available date in the base dataset to present.
+#
+# Input: Base occurrence dataset (./output_data/toohey_species_occurrences.rds)
+# Output: Updated species occurrence records with new observations from iNaturalist
+# Process: 1. Reads existing occurrence data
+#         2. Determines date range for new records
+#         3. Queries iNat API with spatial bounds for Toohey Forest
+#         4. Cleans and wrangles new data observations (with taxonomy/cladistics)
+#         5. Appends new records to base dataset with some cleaning and wrangling
+#         6. Logs all the output for record keeping
+#===============================================================================
 
-
-# Source functions ----
-source("./R/functions.R")
 
 # Set logging ----
 logfile <- get_log_filename()
@@ -33,17 +35,18 @@ base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
 
 
 # Define date range: from max Date in base data to today
-base_date <- as.Date(max(base_occs$eventDate), format = "%Y-%m-%d")
+base_date <- as.Date(max(base_occs$eventDate), format = "%Y-%m-%d") - 7
 max_date <- Sys.Date()
 
-# Define bounding box - iNat API doesn't accept shapefily to geo limit -----
+# Define bounding box - iNat API doesn't accept shapefile to geo limit -----
+#> Later we will spatial intersect to limit to Toohey shapefile
 nelat <- -27.5312
 nelng <- 153.082
 swlat <- -27.5625
 swlng <- 153.0302
 
 # Build the API query string for Taxa of interest ----
-taxa_ids <- c(3, 40151, 26036)  # Birds, Mammals, Reptiles
+taxa_ids <- c(3, 40151, 26036, 20978)  # Birds, Mammals, Reptiles, Amphibians
 query_str <- construct_api_query(taxa_ids,
                                  min_date = base_date,
                                  max_date = max_date)
@@ -81,18 +84,23 @@ while (TRUE) {
 new_occs_tidy <- tidy_api_newoccs(new_occs)
 
 
-# Spatially filter the data to retain only occurrences in our shapefile ----
+# Spatially filter the data to retain only occurrences in our shapefile limits ----
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
 toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 
 new_occs_toohey <- do_spatial_intersect(new_occs_tidy, toohey_outline)
+
+
 
 # Add cladistics ----
 message("Adding cladistics ...")
 api_clad_data <- galah::search_taxa(new_occs_toohey$taxon.name) |> distinct()
 occ_updates_cladistics <- add_cladistics(occ_data = new_occs_toohey,
                                          clad_data = api_clad_data,
-                                         type = "iNat")
+                                         type = "iNat") |>
+  # Drop rows where species or vernacular_name are NA
+  # This can occur if they aren't match to cladistics in ALA
+  tidyr::drop_na(c(species, vernacular_name))
 
 
 # Run tests to check format of occ_updates_cladistics ----
@@ -113,8 +121,14 @@ if (any(test_results == "expectation_failure")) {
 
     message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
 
-    # Row bind, remove duplicates and save (overwrite)
-    updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add)
+    # Row bind, remove duplicates
+    updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
+      # ALA and iNat have different commonname spellings/namings - this function tries to remedy most of them
+      dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
+      # create the URL link for Google Maps (for use in the map)
+      dplyr::mutate(google_maps_url = create_google_maps_url(latitude, longitude)) |>
+      # Final check to remove any NA in species column (if any)
+      dplyr::filter(!is.na(species))
 
     message(paste0("\n\nTotal number of occurrences in data: ", dim(updated_occ_data)[1]))
 
@@ -128,4 +142,3 @@ if (any(test_results == "expectation_failure")) {
 #Turn of logging
 sink()
 closeAllConnections()
-
