@@ -44,7 +44,7 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 1
+Number of new occurrences added: 0
 
 
 Total number of occurrences in data: 33246
