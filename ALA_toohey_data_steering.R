@@ -39,7 +39,7 @@ toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 # Step 3: Get wikipedia urls from iNaturalist
 #> ONE-OFF STEP AT BEGINNING OF PROCEDURE - DO NOT RE-RUN REGULARLY!!
 #......................................................................
-# source("./R/get_ALA_data.R")
+# source("./R/prelim/wiki_names.R")
 
 # Read in Wikipedia data
 wiki_url_data <- readr::read_rds("./output_data/wiki_urls.rds")
