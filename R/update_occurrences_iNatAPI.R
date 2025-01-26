@@ -14,7 +14,7 @@
 #         5. Appends new records to base dataset with some cleaning and wrangling
 #         6. Logs all the output for record keeping
 #===============================================================================
-
+{
 library(galah)
 library(dplyr)
 library(tidyr)
@@ -25,6 +25,7 @@ library(sf)
 library(testthat)
 library(httr)
 library(jsonlite)
+}
 
 source("./R/functions.R")
 
@@ -147,6 +148,21 @@ if (any(test_results == "expectation_failure")) {
       dplyr::filter(!is.na(species))
 
     message(paste0("\n\nTotal number of occurrences in data: ", dim(updated_occ_data)[1]))
+
+    # Check whether there are species/common names mismatches
+    n_name_mismatch <- updated_occ_data |>
+      select(species, vernacular_name) |>
+      distinct() |>
+      group_by(species) |>
+      count(vernacular_name) |>
+      filter(n > 1)
+
+    if (dim(n_name_mismatch)[1] > 0) {
+      message("\n\nThe following name mismatches were found: \n\n")
+      print(n_name_mismatch)
+      } else {
+        message("No name mismatches")
+      }
 
     # Overwrite the current occurrence data with this update
     readr::write_rds(updated_occ_data,
