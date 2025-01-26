@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: "0 0 * * Sun"  # Runs every Sunday at midnight UTC
+    - cron: "0 0 * * Fri-Sun"  # Runs every Fri, Sat, and Sunday at midnight UTC
   workflow_dispatch: # Allows manual triggering if needed
 
 jobs:
