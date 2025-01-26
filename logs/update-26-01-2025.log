@@ -14,7 +14,6 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■■■■■■■■■■                     41% |  ETA:  3s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
