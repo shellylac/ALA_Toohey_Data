@@ -130,7 +130,13 @@ if (any(test_results == "expectation_failure")) {
     #remove duplicates from previous dataset (if any)
     new_occs_to_add <- occ_updates_cladistics |>
       dplyr::anti_join(base_occs |>
-                         select(latitude, longitude, eventDate, eventTime, species))
+                         select(latitude, longitude, eventDate, eventTime, species)) |>
+      dplyr::mutate(wikipedia_url =
+                      dplyr::if_else(is.na(wikipedia_url),
+                                     paste0("https://en.wikipedia.org/wiki/",
+                                            gsub(" ", "_",
+                                                 stringr::str_to_sentence(vernacular_name))),
+                                    wikipedia_url))
 
     message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
 
