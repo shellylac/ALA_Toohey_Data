@@ -15,6 +15,18 @@
 #         6. Logs all the output for record keeping
 #===============================================================================
 
+library(galah)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(purrr)
+library(lubridate)
+library(sf)
+library(testthat)
+library(httr)
+library(jsonlite)
+
+source("./R/functions.R")
 
 # Set logging ----
 logfile <- get_log_filename()
