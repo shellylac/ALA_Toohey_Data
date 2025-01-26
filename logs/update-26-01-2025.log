@@ -14,7 +14,7 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■■■■■■■■■■■■■■■■■              65% |  ETA:  1s
+Querying API ■■■■■■■■■■■■■■■                   45% |  ETA:  2s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -44,7 +44,8 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 0
+Number of new occurrences added: 3
 
 
-Total number of occurrences in data: 33240
+Total number of occurrences in data: 33243
+No name mismatches
