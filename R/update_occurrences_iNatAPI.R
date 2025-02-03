@@ -134,18 +134,13 @@ if (any(test_results == "expectation_failure")) {
 
     message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
 
-    # Get notification about any missing Wiki URLs
-    wikiurl_na <- which(is.na(new_occs_to_add$wikipedia_url))
-    message("\n\nThese species are missing wiki URLs: ")
-    print(new_occs_to_add$species[wikiurl_na])
-
     # Row bind,
     updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
       # If any wikipedia links are missing fill down from same species
       group_by(species) |>
       fill(wikipedia_url, .direction = "downup") |>
       ungroup() |>
-      # ALA and iNat have different commonname spellings/namings - this function tries to remedy most of them
+      # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
       dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
       # create the URL link for Google Maps (for use in the map)
       dplyr::mutate(google_maps_url = create_google_maps_url(latitude, longitude)) |>
@@ -154,8 +149,24 @@ if (any(test_results == "expectation_failure")) {
 
     message(paste0("\n\nTotal number of occurrences in data: ", dim(updated_occ_data)[1]))
 
+    # Get notification about any missing Wiki URLs
+    wikiurl_na <- which(is.na(updated_occ_data$wikipedia_url))
+    message("\n\nThese species are missing wiki URLs - created default URLs: ")
+    print(updated_occ_data$species[wikiurl_na])
+
+    updated_occ_data_wikiurls <- updated_occ_data |>
+      dplyr::mutate(wikipedia_url =
+                      dplyr::if_else(is.na(wikipedia_url),
+                                     paste0("https://en.wikipedia.org/wiki/",
+                                            gsub(" ", "_", stringr::str_to_sentence(vernacular_name))
+                                            ),
+                                     wikipedia_url
+                                     )
+                    )
+
+
     # Check whether there are species/common names mismatches
-    n_name_mismatch <- updated_occ_data |>
+    n_name_mismatch <- updated_occ_data_wikiurls |>
       select(species, vernacular_name) |>
       distinct() |>
       group_by(species) |>
@@ -169,13 +180,17 @@ if (any(test_results == "expectation_failure")) {
         message("No name mismatches")
       }
 
+    # Get max date in updated data
+    message("\n\nmax date in updated: ")
+    print(max(updated_occ_data_wikiurls$eventDate))
+
     # Overwrite the current occurrence data with this update
-    readr::write_rds(updated_occ_data,
+    readr::write_rds(updated_occ_data_wikiurls,
                      file = "./output_data/toohey_species_occurrences.rds",
                      compress = "gz")
 
     }
 
-#Turn of logging
+#Turn off logging
 sink()
 closeAllConnections()
