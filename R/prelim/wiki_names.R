@@ -45,6 +45,8 @@ wiki_urls <- wiki_data |>
   distinct() |>
   mutate(wikipedia_url =
            case_match(taxon.name,
+                      "Litoria caerulea" ~ "https://en.wikipedia.org/wiki/Australian_green_tree_frog",
+                      "Litoria balatus" ~ "https://en.wikipedia.org/wiki/Slender_bleating_tree_frog",
                       "Acridotheres tristis tristis" ~ "http://en.wikipedia.org/wiki/Common_myna",
                       "Alectura lathami lathami" ~ "http://en.wikipedia.org/wiki/Australian_brushturkey",
                       "Cryptoblepharus pulcher pulcher" ~ "https://en.wikipedia.org/wiki/Cryptoblepharus_pulcher",
