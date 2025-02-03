@@ -35,9 +35,12 @@ occ_cladistics <- add_cladistics(occ_data = toohey_occurrences_formatted,
   # Drop rows where species or vernacular_name are NA
   tidyr::drop_na(c(species, vernacular_name))
 
+# Get Wiki URLS
+wiki_urls_list <- readr::read_rds("./output_data/wiki_urls.rds")
 occ_cladistics_wikiurls <- occ_cladistics |>
-  left_join((wiki_url_data |> select(species, wikipedia_url)),
+  left_join((wiki_urls_list |> select(species, wikipedia_url)),
             by = "species")
+
 
 # Save this dataset as the base data - (the github action will just run the update script in the future)
 readr::write_rds(occ_cladistics_wikiurls,
