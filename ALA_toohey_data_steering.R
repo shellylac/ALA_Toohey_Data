@@ -1,7 +1,7 @@
 #> This script describes the process used to construct
 #> the ALA/iNat data that sits behind the Wild Toohey App
 #>
-
+{
 library(galah)
 library(dplyr)
 library(tidyr)
@@ -12,6 +12,7 @@ library(sf)
 library(testthat)
 library(httr)
 library(jsonlite)
+}
 
 #.......................................................
 # Step 1 : Source functions ----
@@ -42,7 +43,7 @@ toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 # source("./R/prelim/wiki_names.R")
 
 # Read in Wikipedia data
-wiki_url_data <- readr::read_rds("./output_data/wiki_urls.rds")
+# wiki_url_data <- readr::read_rds("./output_data/wiki_urls.rds")
 
 #.......................................................
 # Step 4: ALA extract from year_past years ago up to today (i.e 22/01/2025) ----
