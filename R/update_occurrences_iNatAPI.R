@@ -45,6 +45,7 @@ galah::galah_config(atlas = "Australia",
 # Read in the base data ----
 message("\nReading in base occurrences ...")
 base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
+image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 
 
 # Define date range: from max Date in base data to today
@@ -130,7 +131,9 @@ if (any(test_results == "expectation_failure")) {
     #remove duplicates from previous dataset (if any)
     new_occs_to_add <- occ_updates_cladistics |>
       dplyr::anti_join(base_occs |>
-                         select(latitude, longitude, eventDate, eventTime, species))
+                         select(latitude, longitude, eventDate, eventTime, species)) |>
+      # Add image urls
+      dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
 
     message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
 
@@ -139,6 +142,7 @@ if (any(test_results == "expectation_failure")) {
       # If any wikipedia links are missing fill down from same species
       group_by(species) |>
       fill(wikipedia_url, .direction = "downup") |>
+      fill(image_url, .direction = "downup") |>
       ungroup() |>
       # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
       dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
@@ -154,16 +158,25 @@ if (any(test_results == "expectation_failure")) {
     message("\n\nThese species are missing wiki URLs - created default URLs: ")
     print(updated_occ_data$species[wikiurl_na])
 
-    updated_occ_data_wikiurls <- updated_occ_data |>
-      dplyr::mutate(wikipedia_url =
-                      dplyr::if_else(is.na(wikipedia_url),
-                                     paste0("https://en.wikipedia.org/wiki/",
-                                            gsub(" ", "_", stringr::str_to_sentence(vernacular_name))
-                                            ),
-                                     wikipedia_url
-                                     )
-                    )
+    # Get notification about any missing Wiki URLs
+    imageurl_na <- which(is.na(updated_occ_data$image_url))
+    message("\n\nThese species are missing image URLs: ")
+    print(updated_occ_data$species[imageurl_na])
 
+    updated_occ_data_wikiurls <- updated_occ_data |>
+      dplyr::mutate(wikipedia_url  = dplyr::if_else(is.na(wikipedia_url),
+                                                    construct_wiki_url(species = species),
+                                                    wikipedia_url)) |>
+      # Process each row individually
+      rowwise() |>
+        mutate(
+          image_url = if (is.na(image_url)) {
+            safe_get_infobox_image(wikipedia_url)
+          } else {
+            image_url
+          }
+        ) |>
+        ungroup()
 
     # Check whether there are species/common names mismatches
     n_name_mismatch <- updated_occ_data_wikiurls |>
