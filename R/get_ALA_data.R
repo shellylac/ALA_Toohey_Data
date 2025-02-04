@@ -35,11 +35,27 @@ occ_cladistics <- add_cladistics(occ_data = toohey_occurrences_formatted,
   # Drop rows where species or vernacular_name are NA
   tidyr::drop_na(c(species, vernacular_name))
 
-# Get Wiki URLS
-wiki_urls_list <- readr::read_rds("./output_data/wiki_urls.rds")
+# Get Wiki URLS and Images
+wiki_urls_df <- readr::read_rds("./output_data/wiki_urls_df.rds")
+image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 occ_cladistics_wikiurls <- occ_cladistics |>
-  left_join((wiki_urls_list |> select(species, wikipedia_url)),
-            by = "species")
+  dplyr::left_join(wiki_urls_df, by = "species") |>
+  dplyr::mutate(wikipedia_url  = dplyr::if_else(is.na(wikipedia_url),
+                                                construct_wiki_url(species = species),
+                                                wikipedia_url
+                                                )
+                ) |>
+  dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url")) |>
+  # Process each row individually
+  rowwise() |>
+  mutate(
+    image_url = if (is.na(image_url)) {
+      safe_get_infobox_image(wikipedia_url)
+    } else {
+      image_url
+    }
+  ) |>
+  ungroup()
 
 
 # Save this dataset as the base data - (the github action will just run the update script in the future)
