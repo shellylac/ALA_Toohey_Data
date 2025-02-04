@@ -5,8 +5,7 @@ Reading in base occurrences ...
 Downloading occurrences ...
 Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
 Reading layer `toohey_forest_boundary' from data source 
-  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' 
-  using driver `ESRI Shapefile'
+  `C:\Users\lachishs\OneDrive - Queensland Health\Documents\Epi Work - Documents\my_files\shellylac_github\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 11 fields
 Geometry type: POLYGON
 Dimension:     XYZ
@@ -14,7 +13,62 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Matched 39 of 40 taxonomic search terms in selected atlas (Australia).
+Querying API ■■■                                8% |  ETA: 13s
+Querying API ■■■■                               9% |  ETA: 13s
+Querying API ■■■■                              11% |  ETA: 13s
+Querying API ■■■■■                             12% |  ETA: 13s
+Querying API ■■■■■                             14% |  ETA: 13s
+Querying API ■■■■■■                            16% |  ETA: 12s
+Querying API ■■■■■■                            17% |  ETA: 12s
+Querying API ■■■■■■■                           19% |  ETA: 12s
+Querying API ■■■■■■■                           20% |  ETA: 12s
+Querying API ■■■■■■■■                          22% |  ETA: 12s
+Querying API ■■■■■■■■                          23% |  ETA: 11s
+Querying API ■■■■■■■■■                         25% |  ETA: 11s
+Querying API ■■■■■■■■■                         27% |  ETA: 11s
+Querying API ■■■■■■■■■                         28% |  ETA: 11s
+Querying API ■■■■■■■■■■                        30% |  ETA: 10s
+Querying API ■■■■■■■■■■                        31% |  ETA: 10s
+Querying API ■■■■■■■■■■■                       33% |  ETA: 10s
+Querying API ■■■■■■■■■■■                       34% |  ETA: 10s
+Querying API ■■■■■■■■■■■■                      36% |  ETA: 10s
+Querying API ■■■■■■■■■■■■                      38% |  ETA:  9s
+Querying API ■■■■■■■■■■■■■                     39% |  ETA:  9s
+Querying API ■■■■■■■■■■■■■                     41% |  ETA:  9s
+Querying API ■■■■■■■■■■■■■■                    42% |  ETA:  9s
+Querying API ■■■■■■■■■■■■■■                    44% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■                   45% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■                   47% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■                  48% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■                  50% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■                  52% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■                 53% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■                 55% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■■                58% |  ETA:  6s
+Querying API ■■■■■■■■■■■■■■■■■■■               59% |  ETA:  6s
+Querying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA:  6s
+Querying API ■■■■■■■■■■■■■■■■■■■■              62% |  ETA:  6s
+Querying API ■■■■■■■■■■■■■■■■■■■■              64% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             66% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■            69% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■            70% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           72% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           75% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          77% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  3s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         81% |  ETA:  3s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% |  ETA:  3s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% |  ETA:  2s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89% |  ETA:  2s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     92% |  ETA:  1s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  1s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    95% |  ETA:  1s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    97% |  ETA:  0s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   98% |  ETA:  0s
+Matched 63 of 64 taxonomic search terms in selected atlas (Australia).
 1 unmatched search term:
 • "Hierophis viridiflavus"
 
@@ -44,14 +98,20 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 0
+Number of new occurrences added: 61
 
 
-Total number of occurrences in data: 33289
+Total number of occurrences in data: 33308
 
 
 These species are missing wiki URLs - created default URLs: 
 character(0)
+
+
+These species are missing image URLs: 
+character(0)
 No name mismatches
+
+
 max date in updated: 
 [1] "2025-02-03"
