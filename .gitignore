@@ -69,6 +69,7 @@ output_data/backup/*
 #Exception to the above rules
 !output_data/.gitkeep
 !output_data/toohey_species_occurrences.rds
+!output_data/image_urls_df.rds
 .Rdata
 .DS_Store
 .quarto
