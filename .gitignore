@@ -64,7 +64,7 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/r,windows
 
 #Ignore All Data/Docs/Markdown Files
-output_data/*
+output_data/backup/*
 
 #Exception to the above rules
 !output_data/.gitkeep
