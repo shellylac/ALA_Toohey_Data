@@ -5,7 +5,7 @@ Reading in base occurrences ...
 Downloading occurrences ...
 Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
 Reading layer `toohey_forest_boundary' from data source 
-  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' 
+  `/home/runner/work/ALA_Toohey_Data/ALA_Toohey_Data/spatial_data/toohey_forest_boundary.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 11 fields
 Geometry type: POLYGON
@@ -14,32 +14,11 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■■■■■■■                        30% |  ETA:  3s
-Querying API ■■■■■■■■■■                        32% |  ETA:  3s
-Querying API ■■■■■■■■■■■■                      35% |  ETA:  3s
-Querying API ■■■■■■■■■■■■                      37% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■                     39% |  ETA:  4s
-Querying API ■■■■■■■■■■■■■                     40% |  ETA:  4s
-Querying API ■■■■■■■■■■■■■■                    44% |  ETA:  4s
-Querying API ■■■■■■■■■■■■■■■                   46% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■                  49% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■                 54% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■■                58% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■■■               60% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■■■■              63% |  ETA:  2s
-Querying API ■■■■■■■■■■■■■■■■■■■■              65% |  ETA:  2s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■            68% |  ETA:  2s
+Querying API ■■■■■■■■■                         28% |  ETA:  5s
 Querying API ■■■■■■■■■■■■■■■■■■■■■■■           72% |  ETA:  2s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■           74% |  ETA:  2s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         79% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        82% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     95% |  ETA:  0s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  0s
 Running test suite ...
+
+══ Testing update_occs_testQA.R ════════════════════════════════════════════════
 
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
@@ -60,12 +39,13 @@ Running test suite ...
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ]
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ] Done!
+
 All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 17
+Number of new occurrences added: 0
 
 
 Total number of occurrences in data: 33325
