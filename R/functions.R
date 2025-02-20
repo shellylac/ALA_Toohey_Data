@@ -134,7 +134,7 @@ construct_wiki_url <- function(species){
 
 # Get log file name ----
 get_log_filename <- function(){
-  today <- format(Sys.Date(), "%d-%m-%Y")
+  today <- format(Sys.Date(), "%Y-%m-%d")
   log_filename <- paste0("./logs/", "update-", today, ".log")
   return(log_filename)
 }
