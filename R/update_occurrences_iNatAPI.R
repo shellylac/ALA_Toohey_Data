@@ -183,12 +183,12 @@ if (any(test_results == "expectation_failure")) {
       select(species, vernacular_name) |>
       distinct() |>
       group_by(species) |>
-      count(vernacular_name) |>
+      count() |>
       filter(n > 1)
 
     if (dim(n_name_mismatch)[1] > 0) {
       message("\n\nThe following name mismatches were found: \n\n")
-      print(n_name_mismatch)
+      print(n_name_mismatch$species)
       } else {
         message("No name mismatches")
       }
