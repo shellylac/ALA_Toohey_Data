@@ -1,7 +1,0 @@
-✔ Matched "citizen science" to valid download reason ID 11.
-
-Reading in base occurrences ...
-Error in readRDS(con, refhook = refhook) : cannot open the connection
-In addition: Warning message:
-In readRDS(con, refhook = refhook) :
-  cannot open file './output_data/image_urls_df.rds': No such file or directory
