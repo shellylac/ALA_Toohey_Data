@@ -56,18 +56,18 @@ toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 #> However every so often it is good to update recent records to QA'd records
 years_past = 9
 this_year <- lubridate::year(Sys.Date())
-source("./R/get_ALA_data.R")
-
-# Because ALA (galah) data doesn't have most recent fortnight (or so) of occurrences
-# We get more recent observations from the iNat API
-
+start_year <- this_year - years_past
+# source("./R/get_ALA_data.R")
 
 
 #.......................................................
 # Step 5: Update the ALA extract created above with data from iNaturalist API ----
 #.......................................................
+# Because ALA (galah) data doesn't have most recent fortnight (or so) of occurrences
+# We get more recent observations from the iNat API
+
 #> (from a week before the max(EventDate) up to Sys.Date()
-#> This script is what get re-run via the Github Action
+#> This script is what gets re-run via the Github Action
 source("./R/update_occurrences_iNatAPI.R")
 
 #> The above script also:

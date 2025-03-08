@@ -18,9 +18,10 @@ galah::galah_config(atlas = "Australia",
 ## Functions to extract data from the ALA Interface [galah package] ----
 
 # Get occurrences of all reptiles, birds and mammals, amphibians for past 5 years
-toohey_occurrences <- get_occurrences(year = this_year - years_past,
-                                      month = 1,
+toohey_occurrences <- get_occurrences(start_year = start_year,
+                                      start_month = 1,
                                       geo_limit = toohey_outline)
+
 toohey_occurrences_formatted <- tidy_ala_data(toohey_occurrences)
 
 

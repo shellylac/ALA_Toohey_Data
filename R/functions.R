@@ -14,15 +14,16 @@
 #' @param month Numeric. The month from which to start retrieving occurrences.
 #' @param geo_limit A geographical limit for the occurrences data.
 #' @return A data frame containing the occurrences data.
-get_occurrences <- function(year, month, geo_limit){
-  galah::galah_call() |>
-    galah::galah_identify(c("reptilia", "birds", "mammals", "amphibia")) |>
-    galah::galah_group_by(species) |>
+get_occurrences <- function(start_year, start_month, geo_limit){
+  out <- galah::galah_call() |>
+    galah::galah_identify(c("Aves", "Mammalia", "Reptilia", "Amphibia")) |>
     galah::galah_geolocate(geo_limit) |>
+    galah::galah_filter(
+      year >= start_year
+    ) |>
     galah::apply_profile(ALA) |>
-    galah::galah_filter(year >= as.numeric(year)) |>
-    galah::galah_filter(month >= as.numeric(month)) |>
     galah::atlas_occurrences()
+  return(out)
 }
 
 # Tidy the ALA data ----
@@ -234,6 +235,7 @@ fix_common_names <- function(string){
                                        "Southern Laughing Kookaburra" ~ "Laughing Kookaburra",
                                        "South-east Eastern Koel" ~ "Eastern Koel",
                                        "South-eastern Glossy Black-cockatoo" ~ "Glossy Black-cockatoo",
+                                       "Superb Fairywren" ~ "Superb Fairy-wren",
                                        "Tree-base Litter Skink" ~"Tree-base Litter-skink",
                                        "Variegated Fairywren" ~ "Variegated Fairy-wren",
                                        "Western Galah" ~ "Galah",
