@@ -211,6 +211,7 @@ fix_common_names <- function(string){
                                        "Australian King Parrot" ~ "Australian King-parrot",
                                        "Australian Water Dragon" ~ "Water Dragon",
                                        "Australian Boobook" ~ "Southern Boobook",
+                                       "Australian Rufous Fantail" ~ "Rufous Fantail",
                                        "Eastern Australian Koel" ~ "Eastern Koel",
                                        "Black-faced Cuckooshrike" ~ "Black-faced Cuckoo-shrike",
                                        "Coastal New South Wales Australian Magpie" ~ "Australian Magpie",
@@ -231,6 +232,7 @@ fix_common_names <- function(string){
                                        "Eastern White-throated Gerygone" ~ "White-throated Gerygone",
                                        "Graceful Tree Frog" ~ "Dainty Green Tree Frog",
                                        "Lively Rainbow Skink" ~ "Tussock Rainbow Skink",
+                                       "Shining Bronze Cuckoo" ~ "Shining Bronze-cuckoo",
                                        "Southern Bar-sided Skink" ~ "Barred-sided Skink",
                                        "Southern Laughing Kookaburra" ~ "Laughing Kookaburra",
                                        "South-east Eastern Koel" ~ "Eastern Koel",
@@ -240,6 +242,7 @@ fix_common_names <- function(string){
                                        "Variegated Fairywren" ~ "Variegated Fairy-wren",
                                        "Western Galah" ~ "Galah",
                                        "Yellow-tailed Black Cockatoo" ~ "Yellow-tailed Black-cockatoo",
+                                       "South-eastern Yellow-faced Honeyeater" ~ "Yellow-faced Honeyeater",
                                        .default = string)
 
   return(corrected_common_names)
