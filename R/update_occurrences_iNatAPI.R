@@ -15,21 +15,22 @@
 #         6. Logs all the output for record keeping
 #===============================================================================
 {
-library(galah)
-library(dplyr)
-library(tidyr)
-library(readr)
-library(purrr)
-library(lubridate)
-library(sf)
-library(testthat)
-library(httr)
-library(jsonlite)
+  library(galah)
+  library(dplyr)
+  library(tidyr)
+  library(readr)
+  library(purrr)
+  library(lubridate)
+  library(sf)
+  library(testthat)
+  library(httr)
+  library(jsonlite)
 }
 
 source("./R/functions.R")
 
 # Set logging ----
+
 logfile <- get_log_filename()
 tmp <- file(logfile, open = "wt")
 sink(tmp, type = "message")
@@ -37,10 +38,7 @@ sink(tmp, type = "output")
 
 
 # Configure ALA ----
-galah::galah_config(atlas = "Australia",
-                    email = "shelly.lachish@csiro.au",
-                    download_reason_id = "citizen science"
-)
+galah::galah_config(atlas = "Australia", download_reason_id = "citizen science")
 
 # Read in the base data ----
 message("\nReading in base occurrences ...")
@@ -61,9 +59,7 @@ swlng <- 153.0302
 
 # Build the API query string for Taxa of interest ----
 taxa_ids <- c(3, 40151, 26036, 20978)  # Birds, Mammals, Reptiles, Amphibians
-query_str <- construct_api_query(taxa_ids,
-                                 min_date = base_date,
-                                 max_date = max_date)
+query_str <- construct_api_query(taxa_ids, min_date = base_date, max_date = max_date)
 
 # Base URL for observations -----
 base_url <- "https://api.inaturalist.org/v1/observations"
@@ -77,14 +73,17 @@ page_num <- 1
 while (TRUE) {
   parsed <- fetch_page(base_url, query_str, page_num)
   # If there are no new occurrences  - then break loop
-  if (is.null(parsed$results$id)) break
+  if (is.null(parsed$results$id))
+    break
 
-  fields <- c("time_observed_at",
-              "location",
-              "taxon.name",
-              "taxon.preferred_common_name",
-              "taxon.iconic_taxon_name",
-              "taxon.wikipedia_url")
+  fields <- c(
+    "time_observed_at",
+    "location",
+    "taxon.name",
+    "taxon.preferred_common_name",
+    "taxon.iconic_taxon_name",
+    "taxon.wikipedia_url"
+  )
 
   existing_fields <- fields[fields %in% names(parsed$results)]
 
@@ -125,84 +124,87 @@ test_results <- purrr::map_chr(test_summary, ~ attr(.x, "class")[1])
 if (any(test_results == "expectation_failure")) {
   stop("Data structure tests failed. Please fix the issues before proceeding.")
 
+} else {
+  message("\nAll tests passed. Proceeding with further analysis.")
+
+  #remove duplicates from previous dataset (if any)
+  new_occs_to_add <- occ_updates_cladistics |>
+    dplyr::anti_join(base_occs |>
+                       select(latitude, longitude, eventDate, eventTime, species)) |>
+    # Add image urls
+    dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
+
+  message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
+
+  # Row bind,
+  updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
+    # If any wikipedia links are missing fill down from same species
+    group_by(species) |>
+    fill(wikipedia_url, .direction = "downup") |>
+    fill(image_url, .direction = "downup") |>
+    ungroup() |>
+    # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
+    dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
+    # create the URL link for Google Maps (for use in the map)
+    dplyr::mutate(google_maps_url = create_google_maps_url(latitude, longitude)) |>
+    # Final check to remove any NA in species column (if any)
+    dplyr::filter(!is.na(species))
+
+  message(paste0(
+    "\n\nTotal number of occurrences in data: ",
+    dim(updated_occ_data)[1]
+  ))
+
+  # Get notification about any missing Wiki URLs
+  wikiurl_na <- which(is.na(updated_occ_data$wikipedia_url))
+  message("\n\nThese species are missing wiki URLs - created default URLs: ")
+  print(updated_occ_data$species[wikiurl_na])
+
+  # Get notification about any missing Wiki URLs
+  imageurl_na <- which(is.na(updated_occ_data$image_url))
+  message("\n\nThese species are missing image URLs: ")
+  print(updated_occ_data$species[imageurl_na])
+
+  updated_occ_data_wikiurls <- updated_occ_data |>
+    dplyr::mutate(wikipedia_url  = dplyr::if_else(
+      is.na(wikipedia_url),
+      construct_wiki_url(species = species),
+      wikipedia_url
+    )) |>
+    # Process each row individually
+    rowwise() |>
+    mutate(image_url = if (is.na(image_url)) {
+      safe_get_infobox_image(wikipedia_url)
+    } else {
+      image_url
+    }) |>
+    ungroup()
+
+  # Check whether there are species/common names mismatches
+  n_name_mismatch <- updated_occ_data_wikiurls |>
+    select(species, vernacular_name) |>
+    distinct() |>
+    group_by(species) |>
+    count() |>
+    filter(n > 1)
+
+  if (dim(n_name_mismatch)[1] > 0) {
+    message("\n\nThe following name mismatches were found: \n\n")
+    print(n_name_mismatch$species)
   } else {
-    message("\nAll tests passed. Proceeding with further analysis.")
+    message("No name mismatches")
+  }
 
-    #remove duplicates from previous dataset (if any)
-    new_occs_to_add <- occ_updates_cladistics |>
-      dplyr::anti_join(base_occs |>
-                         select(latitude, longitude, eventDate, eventTime, species)) |>
-      # Add image urls
-      dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
+  # Get max date in updated data
+  message("\n\nmax date in updated: ")
+  print(max(updated_occ_data_wikiurls$eventDate))
 
-    message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
+  # Overwrite the current occurrence data with this update
+  readr::write_rds(updated_occ_data_wikiurls,
+                   file = "./output_data/toohey_species_occurrences.rds",
+                   compress = "gz")
 
-    # Row bind,
-    updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
-      # If any wikipedia links are missing fill down from same species
-      group_by(species) |>
-      fill(wikipedia_url, .direction = "downup") |>
-      fill(image_url, .direction = "downup") |>
-      ungroup() |>
-      # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
-      dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
-      # create the URL link for Google Maps (for use in the map)
-      dplyr::mutate(google_maps_url = create_google_maps_url(latitude, longitude)) |>
-      # Final check to remove any NA in species column (if any)
-      dplyr::filter(!is.na(species))
-
-    message(paste0("\n\nTotal number of occurrences in data: ", dim(updated_occ_data)[1]))
-
-    # Get notification about any missing Wiki URLs
-    wikiurl_na <- which(is.na(updated_occ_data$wikipedia_url))
-    message("\n\nThese species are missing wiki URLs - created default URLs: ")
-    print(updated_occ_data$species[wikiurl_na])
-
-    # Get notification about any missing Wiki URLs
-    imageurl_na <- which(is.na(updated_occ_data$image_url))
-    message("\n\nThese species are missing image URLs: ")
-    print(updated_occ_data$species[imageurl_na])
-
-    updated_occ_data_wikiurls <- updated_occ_data |>
-      dplyr::mutate(wikipedia_url  = dplyr::if_else(is.na(wikipedia_url),
-                                                    construct_wiki_url(species = species),
-                                                    wikipedia_url)) |>
-      # Process each row individually
-      rowwise() |>
-        mutate(
-          image_url = if (is.na(image_url)) {
-            safe_get_infobox_image(wikipedia_url)
-          } else {
-            image_url
-          }
-        ) |>
-        ungroup()
-
-    # Check whether there are species/common names mismatches
-    n_name_mismatch <- updated_occ_data_wikiurls |>
-      select(species, vernacular_name) |>
-      distinct() |>
-      group_by(species) |>
-      count() |>
-      filter(n > 1)
-
-    if (dim(n_name_mismatch)[1] > 0) {
-      message("\n\nThe following name mismatches were found: \n\n")
-      print(n_name_mismatch$species)
-      } else {
-        message("No name mismatches")
-      }
-
-    # Get max date in updated data
-    message("\n\nmax date in updated: ")
-    print(max(updated_occ_data_wikiurls$eventDate))
-
-    # Overwrite the current occurrence data with this update
-    readr::write_rds(updated_occ_data_wikiurls,
-                     file = "./output_data/toohey_species_occurrences.rds",
-                     compress = "gz")
-
-    }
+}
 
 #Turn off logging
 sink()

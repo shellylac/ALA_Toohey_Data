@@ -2,16 +2,16 @@
 #> the ALA/iNat data that sits behind the Wild Toohey App
 #>
 {
-library(galah)
-library(dplyr)
-library(tidyr)
-library(readr)
-library(purrr)
-library(lubridate)
-library(sf)
-library(testthat)
-library(httr)
-library(jsonlite)
+  library(galah)
+  library(dplyr)
+  library(tidyr)
+  library(readr)
+  library(purrr)
+  library(lubridate)
+  library(sf)
+  library(testthat)
+  library(httr)
+  library(jsonlite)
 }
 
 #.......................................................

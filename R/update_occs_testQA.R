@@ -4,10 +4,23 @@ test_that("dataset has the correct structure", {
   expect_s3_class(occ_updates_cladistics, "tbl_df")
 
   # Check that we have exactly 15 columns
-  expected_cols <- c("scientificName", "latitude", "longitude", "eventDate", "eventTime",
-                     "dataResourceName", "scientific_name", "taxon_concept_id",
-                     "class", "order", "family", "genus", "species", "vernacular_name",
-                     "wikipedia_url")
+  expected_cols <- c(
+    "scientificName",
+    "latitude",
+    "longitude",
+    "eventDate",
+    "eventTime",
+    "dataResourceName",
+    "scientific_name",
+    "taxon_concept_id",
+    "class",
+    "order",
+    "family",
+    "genus",
+    "species",
+    "vernacular_name",
+    "wikipedia_url"
+  )
   expect_equal(colnames(occ_updates_cladistics), expected_cols)
 
   # Check column types
@@ -33,6 +46,14 @@ test_that("dataset has the correct structure", {
 
   # Optionally, you can test for other conditions:
   # e.g., that latitude and longitude fall within valid ranges
-  expect_true(all(occ_updates_cladistics$latitude >= -90 & occ_updates_cladistics$latitude <= 90, na.rm = TRUE))
-  expect_true(all(occ_updates_cladistics$longitude >= -180 & occ_updates_cladistics$longitude <= 180, na.rm = TRUE))
+  expect_true(all(
+    occ_updates_cladistics$latitude >= -90 &
+      occ_updates_cladistics$latitude <= 90,
+    na.rm = TRUE
+  ))
+  expect_true(all(
+    occ_updates_cladistics$longitude >= -180 &
+      occ_updates_cladistics$longitude <= 180,
+    na.rm = TRUE
+  ))
 })
