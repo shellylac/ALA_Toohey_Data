@@ -280,6 +280,7 @@ fix_common_names <- function(string) {
     "Common Ring-tailed Possum" ~ "Common Ringtail Possum",
     "Copper-backed Brood Frog" ~ "Raven's Brood Frog",
     "Dark Bar-sided Skink" ~ "Dark Barsided Skink",
+    "Dainty Tree Frog" ~ "Dainty Green Tree Frog",
     "Eastern Bluetongue" ~ "Eastern Blue-tongue",
     "Eastern Water Dragon" ~ "Water Dragon",
     "Eastern Red-backed Fairy-wren" ~ "Red-backed Fairy-wren",
