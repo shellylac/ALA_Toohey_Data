@@ -160,11 +160,6 @@ if (any(test_results == "expectation_failure")) {
   message("\n\nThese species are missing wiki URLs - created default URLs: ")
   print(updated_occ_data$species[wikiurl_na])
 
-  # Get notification about any missing Wiki URLs
-  imageurl_na <- which(is.na(updated_occ_data$image_url))
-  message("\n\nThese species are missing image URLs: ")
-  print(updated_occ_data$species[imageurl_na])
-
   updated_occ_data_wikiurls <- updated_occ_data |>
     dplyr::mutate(wikipedia_url  = dplyr::if_else(
       is.na(wikipedia_url),
@@ -179,6 +174,12 @@ if (any(test_results == "expectation_failure")) {
       image_url
     }) |>
     ungroup()
+
+  # Get notification about any missing Wiki URLs
+  imageurl_na <- which(is.na(updated_occ_data_wikiurls$image_url))
+  message("\n\nThese species are missing image URLs: ")
+  print(updated_occ_data_wikiurls$species[imageurl_na])
+
 
   # Check whether there are species/common names mismatches
   n_name_mismatch <- updated_occ_data_wikiurls |>
