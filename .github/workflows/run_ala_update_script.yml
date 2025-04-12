@@ -1,0 +1,74 @@
+on:
+  schedule:
+    - cron: "10 14 * * Wed"  # Runs every Wednesday at 14:30 UTC, which is 12:10 am Thursday in Brisbane
+  workflow_dispatch: # Allows manual triggering if needed
+
+jobs:
+  update-ALA-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4.1"
+          use-public-rspm: true
+
+      # - name: Install OS dependencies # need to install libcurl for anuthing that depends on curl
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
+
+      - name: Cache R packages
+        uses: actions/cache@v3 # Cache packages so won't be compiled everytime job is run
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/get_ALA_data.R') }}
+          restore-keys: ${{ runner.os }}-scriptname-
+
+      - name: Install packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            dplyr
+            readr
+            purrr
+            lubridate
+            testthat
+            galah
+            sf
+            tidyr
+            httr
+            jsonlite
+
+      # renv is part of your project, so installing it directly from CRAN or using the bootstrap in your project
+      # - name: Install renv
+      #  run: Rscript -e 'install.packages("renv", repos = "https://cloud.r-project.org")'
+
+      # cache R packages for efficiency
+      # - name: Cache R packages
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ${{ env.R_LIBS_USER }}
+      #     key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
+
+      # After caching:
+      # - name: Restore R environment
+      #   run: Rscript -e 'renv::restore()'
+
+      # Run the update script
+      - name: Update ALA data
+        run: Rscript -e 'source("./R/get_ALA_data.R")'
+
+      # Commit the changes if any back to the repo
+      - name: Commit and push results
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add ./output_data/toohey_species_occurrences.rds
+          git add ./logs/*
+          git commit -m 'Toohey occ data updated' || echo "No changes to commit"
+          git push origin main
