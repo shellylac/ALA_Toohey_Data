@@ -32,10 +32,10 @@ source("./R/functions.R")
 # Set logging ----
 #.......................................................
 
-# logfile <- get_log_filename(type = "ala")
-# tmp <- file(logfile, open = "wt")
-# sink(tmp, type = "message")
-# sink(tmp, type = "output")
+logfile <- get_log_filename(type = "ala")
+tmp <- file(logfile, open = "wt")
+sink(tmp, type = "message")
+sink(tmp, type = "output")
 
 #.......................................................
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
