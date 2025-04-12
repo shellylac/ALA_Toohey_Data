@@ -31,7 +31,7 @@ source("./R/functions.R")
 
 # Set logging ----
 
-logfile <- get_log_filename()
+logfile <- get_log_filename(type = "inat")
 tmp <- file(logfile, open = "wt")
 sink(tmp, type = "message")
 sink(tmp, type = "output")
@@ -175,7 +175,7 @@ if (any(test_results == "expectation_failure")) {
     }) |>
     ungroup()
 
-  # Get notification about any missing Wiki URLs
+  # Get notification about any missing image URLs
   imageurl_na <- which(is.na(updated_occ_data_wikiurls$image_url))
   message("\n\nThese species are missing image URLs: ")
   print(updated_occ_data_wikiurls$species[imageurl_na])
