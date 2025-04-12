@@ -44,10 +44,10 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 35
+Number of new occurrences added: 5
 
 
-Total number of occurrences in data: 33449
+Total number of occurrences in data: 33454
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -60,4 +60,4 @@ No name mismatches
 
 
 max date in updated: 
-[1] "2025-04-10"
+[1] "2025-04-12"
