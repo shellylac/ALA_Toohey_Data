@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # Allows manual triggering if needed
 
 jobs:
-  update-ALA-data:
+  update-iNat-data:
     runs-on: ubuntu-latest
 
     steps:
