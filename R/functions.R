@@ -301,6 +301,7 @@ fix_common_names <- function(string) {
     "Variegated Fairywren" ~ "Variegated Fairy-wren",
     "Western Galah" ~ "Galah",
     "Yellow-tailed Black Cockatoo" ~ "Yellow-tailed Black-cockatoo",
+    "Scarlet Myzomela" ~ "Scarlet Honeyeater",
     "South-eastern Yellow-faced Honeyeater" ~ "Yellow-faced Honeyeater",
     .default = string
   )
