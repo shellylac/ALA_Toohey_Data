@@ -1,8 +1,9 @@
 on:
   schedule:
-    - cron: "0 0 * * Fri"  # Runs every Friday at midnight UTC
-    - cron: "0 0 * * Sat"  # Runs every Saturday at midnight UTC
-    - cron: "0 0 * * Sun"  # Runs every Sunday at midnight UTC
+    - cron: "0 15 * * Wed"  # Runs every Wed at 15:00 UTC, which is 3:00 am Thurs in Brisbane
+    - cron: "30 14 * * Thur" # Runs every Thurs at 14:30 UTC, which is 12:30 am Fri in Brisbane
+    - cron: "30 14 * * Fri" # Runs every Fri at 14:30 UTC, which is 12:30 am Sat in Brisbane
+    - cron: "30 14 * * Sat" # Runs every Sat at 14:30 UTC, which is 12:30 am Sun in Brisbane
   workflow_dispatch: # Allows manual triggering if needed
 
 jobs:
