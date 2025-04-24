@@ -100,15 +100,7 @@ occ_cladistics <- add_cladistics(
 #.......................................................
 wiki_urls_df <- readr::read_rds("./output_data/wiki_urls_df.rds")
 
-image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds") |>
-  # Replace incorrect images
-  dplyr::mutate(image_url = case_when(
-    wiki_url == "https://en.wikipedia.org/wiki/Morethia_taeniopleura" ~ "https://wildnet.itp.qld.gov.au/wws/images/3487?f=.jpg",
-    wiki_url == "https://en.wikipedia.org/wiki/Calyptotis_scutirostrum" ~ "https://wildnet.itp.qld.gov.au/wws/images/25830?f=.jpg",
-    wiki_url == "https://en.wikipedia.org/wiki/Cacophis_harriettae" ~ "https://www.snakecatchers.com.au/images/gallery/WC-image.png",
-    wiki_url == "https://en.wikipedia.org/wiki/Ophioscincus_ophioscincus" ~ "https://www.biolib.cz/IMG/GAL/364317.jpg",
-    .default = image_url)
-                )
+image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 
 #.......................................................
 # Add wikis and images
