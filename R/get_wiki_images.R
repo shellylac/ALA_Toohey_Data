@@ -75,12 +75,14 @@ urls <- unique(base_occs$wikipedia_url) # You can add more URLs here
 image_urls <- purrr::map_chr(urls, safe_get_infobox_image, .progress = TRUE)
 
 image_urls_df <- data.frame(wiki_url = urls, image_url = image_urls) |>
-  mutate(
-    image_url = dplyr::if_else(
-      wiki_url == "https://en.wikipedia.org/wiki/Ctenotus_spaldingi",
-      "https://www.jcu.edu.au/__data/assets/image/0010/97372/366939.3.jpg",
-      image_url
-    )
+  # Replace incorrect images
+  dplyr::mutate(image_url = case_when(
+    wiki_url == "https://en.wikipedia.org/wiki/Ctenotus_spaldingi" ~ "https://www.jcu.edu.au/__data/assets/image/0010/97372/366939.3.jpg",
+    wiki_url == "https://en.wikipedia.org/wiki/Morethia_taeniopleura" ~ "https://wildnet.itp.qld.gov.au/wws/images/3487?f=.jpg",
+    wiki_url == "https://en.wikipedia.org/wiki/Calyptotis_scutirostrum" ~ "https://wildnet.itp.qld.gov.au/wws/images/25830?f=.jpg",
+    wiki_url == "https://en.wikipedia.org/wiki/Cacophis_harriettae" ~ "https://www.snakecatchers.com.au/images/gallery/WC-image.png",
+    wiki_url == "https://en.wikipedia.org/wiki/Ophioscincus_ophioscincus" ~ "https://www.biolib.cz/IMG/GAL/364317.jpg",
+    .default = image_url)
   )
 
 readr::write_rds(
