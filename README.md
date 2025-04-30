@@ -1,124 +1,50 @@
-# ALA Data Management Repository
+# ALA Toohey Forest Data 
 
-Welcome to the **ALA Data Management Repository**! This repository contains R scripts designed to interact with the [Atlas of Living Australia (ALA)](https://www.ala.org.au/) data. The scripts facilitate data retrieval, updating, and quality assurance to help you manage species occurrence data efficiently.
-
-## Table of Contents
-
-- [Description of Files](#description-of-files)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [1. Retrieve Initial Data](#1-retrieve-initial-data)
-  - [2. Update Existing Data](#2-update-existing-data)
-  - [3. Quality Assurance](#3-quality-assurance)
-- [Dependencies](#dependencies)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+This repository contains R scripts designed to interact with the [Atlas of Living Australia (ALA)](https://www.ala.org.au/) data and the [iNaturalist API](https://api.inaturalist.org/). The scripts retrieve data from the ALA/iNat of vertebrate species occurrences within the [Toohey Forest Reserve area in Brisbane, Australia](https://www.brisbane.qld.gov.au/parks-and-recreation/bushland-and-wetlands/find-reserves-and-forests/toohey-forest-and-mount-gravatt-lookout), Australia and populate a database that is utilised by [Wild Toohey](https://wildspire.shinyapps.io/Wild-Toohey) shiny app. 
 
 
-## Description of Files
+## Features
+
+- **Data Retrieval**: The scripts in this repo download vertebrate species occurrence data from the ALA database within the spatial limits of the Toohey Forest reserve. As the ALA does not provide occurrence data within the last 5-7 days, the data from ALA is augmented by retrieving recent occurrences (within the last 7 days) directly from the iNaturalist API.
+
+- **Cladistics Integration**: Enriches the species occurrence data with taxonomic information for each record.
+
+- **Wikipedia links**: Enriches occurrence data by adding the wikipedia link for each record 
+
+- **URLS for images**: Enriches occurrence data by adding the URL of the image from the wikipedia link for each record. 
+
+- **Data Updating**: Uses Github Actions to automate the process of updating the dataset with the latest occurrences.
+
+- **Data Storage**: The final processed dataset is stored as a compressed RDS file for efficient retrieval by the Wild Toohey app.
+
+## Description of Key Files
 
 - **R/**: Contains all R scripts used for data management.
 
   - `functions.R`: Defines utility functions for data retrieval and processing.
   - `get_ALA_data.R`: Script to extract initial occurrence data from ALA.
-  - `update_ALA_data.R`: Updates the existing dataset with the latest data from ALA.
-  - `update_occs_testQA.R`: Contains quality assurance tests to validate updated data.
+  - `update_occurrences_iNatAPI.R`: Script to extract latest 7 days of occurrence data from the iNat API for Toohey Forest.
+  - `get_wiki_urls.R`: Script to retrieve wikipedia links for all species in the dataset.
+  - `get_wiki_images.R`: Script to retrieve URLS of species images from wikipedia links.  
+
+- **spatial_data/**: Stores the shape files that define the spatial boundary of Toohey Forest reserve.
 
 - **output_data/**: Stores the processed RDS files containing species occurrences and counts.
 
   - `toohey_species_occurences.rds`: Detailed occurrence records.
 
+- **logs/**: Stores log files created as outputs of the github actions procedures that run the `get_ALA_data.R` and `update_occurrences_iNat.R` scripts on a weekly schedule.
+ 
 
-## Features
+## Dependencies
 
-- **Data Retrieval**: Fetches species occurrence data for reptiles, birds, and mammals within a specified bounding box in Australia.
-- **Data Updating**: Automates the process of updating the dataset with the latest occurrences.
-- **Cladistics Integration**: Enriches occurrence data with cladistic information.
-- **Quality Assurance**: Implements tests to ensure data integrity and correct structure before updates.
-- **Data Storage**: Saves processed data in compressed RDS format for efficient storage and retrieval.
-
-## Installation
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/shellylac/ALA_Toohey_Data.git
-   cd ALA_Toohey_Data
-
-   ```
-
-2. **Install Required R Packages**
 
 Ensure you have R installed. Then, install the necessary packages:
 
 ```r
-install.packages(c("galah", "dplyr", "readr", "lubridate", "purrr", "sf", "testthat", "httr", "jasonlite"))
+install.packages(c("galah", "dplyr", "tidyr", "readr", "lubridate", "purrr", "sf", "testthat", "httr", "jasonlite", "rvest"))
 
 ```
 
 _Note_: Some packages like galah might require additional configuration. Refer to the [galah documentation](https://galah.ala.org.au/) for detailed instructions.
 
-## Notes on scripts
-
-1. Retrieve Initial Data (past 5 years of occurrences)
-   Run the get_ALA_data.R script to fetch the initial set of species occurrence data.
-
-```r
-source("R/get_ALA_data.R")
-```
-
-This script performs the following actions:
-
-- Configures the ALA connection.
-- Defines the geographic bounding box for data retrieval.
-- Extracts occurrences of reptiles, birds, and mammals from the past five years.
-- Enriches the data with cladistic information.
-- Saves the processed data to output_data/toohey_species_occurences.rds and output_data/toohey_species_counts.rds.
-
-2. Update Existing Data (this runs regularly via a Github Action)
-   To update the dataset with the latest occurrences, execute the update_ALA_data.R script. This script will:
-
-- Fetch new occurrence data since the last update.
-- Enrich the data with cladistic information.
-- Perform quality assurance tests.
-- Merge and save the updated dataset.
-
-```r
-source("R/update_ALA_data.R")
-```
-
-Key Steps in update_ALA_data.R:
-
-- Configuration: Sets up the ALA connection and sources necessary functions.
-- Data Loading: Reads the existing occurrence and count data.
-- Bounding Box Definition: Ensures consistency in the geographic area for updates.
-- Data Retrieval: Fetches updated occurrence data based on the latest available month and year.
-- Cladistics Addition: Integrates cladistic information into the new occurrence data.
-- Quality Assurance: Runs tests to validate the structure and integrity of the updated data.
-- Data Merging and Saving: Combines the new data with the base data, removes duplicates, recalculates counts, and saves the updated datasets.
-
-3. Quality Assurance
-
-The `update_occs_testQA.R` script contains tests to validate the structure and integrity of the updated data. It is automatically called during the update process. To run tests independently:
-
-```r
-source("R/update_occs_testQA.R")
-```
-
-What It Tests:
-
-- Ensures the dataset is a tibble (tbl_df).
-- Verifies the presence of exactly 14 specified columns.
-- Confirms the correct data types for each column.
-- Checks that latitude and longitude values fall within valid geographic ranges.
-- Validates that eventDate is in the correct datetime format.
-
-## Dependencies
-
-The project relies on the following R packages:
-
-- galah: Interface to the Atlas of Living Australia.
-- tidyverse: Data manipulation and visualization.
-- testthat: Unit testing framework.
