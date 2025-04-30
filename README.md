@@ -5,15 +5,15 @@ This repository contains R scripts designed to interact with the [Atlas of Livin
 
 ## Features
 
-- **Data Retrieval**: The scripts in this repo download vertebrate species occurrence data from the ALA database within the spatial limits of the Toohey Forest reserve. As the ALA does not provide occurrence data within the last 5-7 days, the data from ALA is augmented by retrieving recent occurrences (within the last 7 days) directly from the iNaturalist API.
+- **Data Retrieval**: The scripts in this repo download vertebrate species occurrence data from the ALA database within the spatial limits of the Toohey Forest reserve. As the ALA does not provide very recent occurrence data (within the past ~7 days), the data from ALA is augmented by retrieving recent occurrences - within the last 7 days - directly from the iNaturalist API.
 
-- **Cladistics Integration**: Enriches the species occurrence data with taxonomic information for each record.
+- **Taxonomic information**: Species occurrence data is supplemented with taxonomic information for each record.
 
-- **Wikipedia links**: Enriches occurrence data by adding the wikipedia link for each record 
+- **Wikipedia links**: Wikipedia links are retrieved for each record.
 
-- **URLS for images**: Enriches occurrence data by adding the URL of the image from the wikipedia link for each record. 
+- **URLS for images**: wikipedia image URLs are retrieved for each record. 
 
-- **Data Updating**: Uses Github Actions to automate the process of updating the dataset with the latest occurrences.
+- **Data Updating**: Github Actions are used to automate the process of updating the dataset with the latest occurrences by running scripts on a regular schedule.
 
 - **Data Storage**: The final processed dataset is stored as a compressed RDS file for efficient retrieval by the Wild Toohey app.
 
@@ -23,23 +23,21 @@ This repository contains R scripts designed to interact with the [Atlas of Livin
 
   - `functions.R`: Defines utility functions for data retrieval and processing.
   - `get_ALA_data.R`: Script to extract initial occurrence data from ALA.
-  - `update_occurrences_iNatAPI.R`: Script to extract latest 7 days of occurrence data from the iNat API for Toohey Forest.
+  - `update_occurrences_iNatAPI.R`: Script to extract latest 7 days of occurrence data from the iNat API for Toohey Forest, and append to the ALA dataset.
   - `get_wiki_urls.R`: Script to retrieve wikipedia links for all species in the dataset.
   - `get_wiki_images.R`: Script to retrieve URLS of species images from wikipedia links.  
 
 - **spatial_data/**: Stores the shape files that define the spatial boundary of Toohey Forest reserve.
 
-- **output_data/**: Stores the processed RDS files containing species occurrences and counts.
+- **output_data/**: Stores the processed RDS file (`toohey_species_occurences.rds`) containing species occurrences and counts.
 
-  - `toohey_species_occurences.rds`: Detailed occurrence records.
-
-- **logs/**: Stores log files created as outputs of the github actions procedures that run the `get_ALA_data.R` and `update_occurrences_iNat.R` scripts on a weekly schedule.
+- **logs/**: Stores log files created as outputs of the github actions procedures that run the `get_ALA_data.R` and `update_occurrences_iNat.R` scripts.
  
 
 ## Dependencies
 
 
-Ensure you have R installed. Then, install the necessary packages:
+Along with R, the scripts require these packages:
 
 ```r
 install.packages(c("galah", "dplyr", "tidyr", "readr", "lubridate", "purrr", "sf", "testthat", "httr", "jasonlite", "rvest"))
