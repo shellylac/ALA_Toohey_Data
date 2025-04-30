@@ -108,7 +108,7 @@ add_cladistics <- function(occ_data, clad_data, type) {
           .default = vernacular_name
         )
       ) |>
-      # There may be some rows without species level info - remove
+      # There will be rows without species level info (normally because the scientifiName is only genus level)
       dplyr::filter(!is.na(species)) |>
       # select final columns
       dplyr::select(c(
