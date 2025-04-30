@@ -1,6 +1,4 @@
-# This is an attempt to get wikipedia information for all species from wikitaxa package
-# Install wikitaxa from CRAN (if not already installed)
-# install.packages("wikitaxa")
+# This is sript gets wikipedia information for all species from iNat API
 
 # Define bounding box - iNat API doesn't accept shapefile to geo limit -----
 #> Later we will spatial intersect to limit to Toohey shapefile
