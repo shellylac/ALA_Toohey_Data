@@ -3,7 +3,7 @@ test_that("dataset has the correct structure", {
   # Check that it is a tibble (tbl_df)
   expect_s3_class(occ_cladistics_wikiurls, "tbl_df")
 
-  # Check that we have exactly 15 columns
+  # Check that we have exactly 16 columns
   expected_cols <- c(
     "scientificName",
     "latitude",
@@ -45,8 +45,7 @@ test_that("dataset has the correct structure", {
   expect_type(occ_cladistics_wikiurls$latitude, "double")
   expect_type(occ_cladistics_wikiurls$longitude, "double")
 
-  # Optionally, you can test for other conditions:
-  # e.g., that latitude and longitude fall within valid ranges
+  # Test latitude and longitude fall within valid ranges
   expect_true(all(
     occ_cladistics_wikiurls$latitude >= -90 &
       occ_cladistics_wikiurls$latitude <= 90,

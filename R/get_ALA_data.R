@@ -62,7 +62,7 @@ start_year <- this_year - years_past
 
 
 #.......................................................
-# Get occurrences of all reptiles, birds and mammals, amphibians for past 5 years
+# Get occurrences of all reptiles, birds and mammals, amphibians
 #.......................................................
 toohey_occurrences <- get_occurrences(
   start_year = start_year,
@@ -77,7 +77,7 @@ toohey_occurrences <- get_occurrences(
 toohey_occurrences_formatted <- tidy_ala_data(toohey_occurrences)
 
 
-# Get cladistics dataset
+# Get cladistics dataset - add taxonomic information
 ala_clad_data <- galah::search_taxa(unique(
   toohey_occurrences_formatted$scientificName
 )) |>
@@ -91,12 +91,11 @@ occ_cladistics <- add_cladistics(
   clad_data = ala_clad_data,
   type = "ALA"
 ) |>
-  # There was a single row with NA for vernacular name
-  # Drop rows where species or vernacular_name are NA
+  # Drop any rows where species or vernacular_name are NA
   tidyr::drop_na(c(species, vernacular_name))
 
 #.......................................................
-# Get Wiki URLS and Images
+# Get Wiki URLS and Images datasets (created by previously run scripts)
 #.......................................................
 wiki_urls_df <- readr::read_rds("./output_data/wiki_urls_df.rds")
 
@@ -116,7 +115,7 @@ occ_cladistics_wikiurls <- occ_cladistics |>
     )
   ) |>
   dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url")) |>
-  # Process each row individually
+  # Process each row individually - to add any missing image urls
   rowwise() |>
   mutate(
     image_url = if (is.na(image_url)) {
@@ -135,10 +134,9 @@ message("Running test suite ...")
 test_summary <- testthat::test_file("./R/get_alaoccs_testQA.R")[[1]]$results
 test_results <- purrr::map_chr(test_summary, ~ attr(.x, "class")[1])
 
-# Row bind and save (overwrite) ----
+
 if (any(test_results == "expectation_failure")) {
   stop("Data structure tests failed. Please fix the issues before proceeding.")
-
 } else {
   message("\nAll tests passed. Proceeding with further analysis.")
 }
@@ -146,9 +144,10 @@ if (any(test_results == "expectation_failure")) {
 #.......................................................
 # Print status to log
 #.......................................................
-message(paste0("\n\nTotal number of occurrences in data: ",
-               dim(occ_cladistics_wikiurls)[1])
-        )
+message(paste0(
+  "\n\nTotal number of occurrences in data: ",
+  dim(occ_cladistics_wikiurls)[1]
+))
 
 # Get max date in updated data
 message("\n\nmax date in updated: ")
@@ -178,4 +177,3 @@ readr::write_rds(
 #Turn off logging
 sink()
 closeAllConnections()
-

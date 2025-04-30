@@ -4,7 +4,7 @@ library(tidyverse)
 library(httr)
 
 
-# Function to scrape the first infobox image URL from a Wikipedia page with error handling
+# Function to retrieve the first infobox image URL from a Wikipedia page with error handling
 get_infobox_image <- function(url) {
   tryCatch(
     {
@@ -12,7 +12,7 @@ get_infobox_image <- function(url) {
       Sys.sleep(1)
 
       # Fetch the page with a user agent to mimic a regular browser
-      # By using GET() and setting a user agent, helps avoid potential blocks from the server
+      # Using GET() and setting a user agent helps avoid potential blocks from the server
       # that might occur if many requests come in rapid succession from a script
       response <- httr::GET(
         url,
@@ -58,7 +58,7 @@ get_infobox_image <- function(url) {
   )
 }
 
-# Optionally, create a safe version of the function using purrr::possibly()
+# Create a safe version of the function using purrr::possibly()
 # possibly() wraps function so that any error returns a default value (NA_character_)
 safe_get_infobox_image <- purrr::possibly(
   get_infobox_image,
@@ -68,21 +68,28 @@ safe_get_infobox_image <- purrr::possibly(
 # Read in the base data ----
 base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
 
-# Example usage:
-urls <- unique(base_occs$wikipedia_url) # You can add more URLs here
+# Get unique list of wikipedia urls:
+urls <- unique(base_occs$wikipedia_url)
 
-# Apply the function to each URL and collect the results
+# Apply the function to each URL
 image_urls <- purrr::map_chr(urls, safe_get_infobox_image, .progress = TRUE)
 
 image_urls_df <- data.frame(wiki_url = urls, image_url = image_urls) |>
   # Replace incorrect images
-  dplyr::mutate(image_url = case_when(
-    wiki_url == "https://en.wikipedia.org/wiki/Ctenotus_spaldingi" ~ "https://www.jcu.edu.au/__data/assets/image/0010/97372/366939.3.jpg",
-    wiki_url == "https://en.wikipedia.org/wiki/Morethia_taeniopleura" ~ "https://wildnet.itp.qld.gov.au/wws/images/3487?f=.jpg",
-    wiki_url == "https://en.wikipedia.org/wiki/Calyptotis_scutirostrum" ~ "https://wildnet.itp.qld.gov.au/wws/images/25830?f=.jpg",
-    wiki_url == "https://en.wikipedia.org/wiki/Cacophis_harriettae" ~ "https://www.snakecatchers.com.au/images/gallery/WC-image.png",
-    wiki_url == "https://en.wikipedia.org/wiki/Ophioscincus_ophioscincus" ~ "https://www.biolib.cz/IMG/GAL/364317.jpg",
-    .default = image_url)
+  dplyr::mutate(
+    image_url = case_when(
+      wiki_url == "https://en.wikipedia.org/wiki/Ctenotus_spaldingi" ~
+        "https://www.jcu.edu.au/__data/assets/image/0010/97372/366939.3.jpg",
+      wiki_url == "https://en.wikipedia.org/wiki/Morethia_taeniopleura" ~
+        "https://wildnet.itp.qld.gov.au/wws/images/3487?f=.jpg",
+      wiki_url == "https://en.wikipedia.org/wiki/Calyptotis_scutirostrum" ~
+        "https://wildnet.itp.qld.gov.au/wws/images/25830?f=.jpg",
+      wiki_url == "https://en.wikipedia.org/wiki/Cacophis_harriettae" ~
+        "https://www.snakecatchers.com.au/images/gallery/WC-image.png",
+      wiki_url == "https://en.wikipedia.org/wiki/Ophioscincus_ophioscincus" ~
+        "https://www.biolib.cz/IMG/GAL/364317.jpg",
+      .default = image_url
+    )
   )
 
 readr::write_rds(
@@ -91,6 +98,7 @@ readr::write_rds(
   compress = "gz"
 )
 
+# For dev testing only
 # base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
 # image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 #

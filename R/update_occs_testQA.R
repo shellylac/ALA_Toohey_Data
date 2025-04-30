@@ -44,8 +44,7 @@ test_that("dataset has the correct structure", {
   expect_type(occ_updates_cladistics$latitude, "double")
   expect_type(occ_updates_cladistics$longitude, "double")
 
-  # Optionally, you can test for other conditions:
-  # e.g., that latitude and longitude fall within valid ranges
+  # Test that latitude and longitude fall within valid ranges
   expect_true(all(
     occ_updates_cladistics$latitude >= -90 &
       occ_updates_cladistics$latitude <= 90,

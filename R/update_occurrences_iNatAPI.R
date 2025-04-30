@@ -1,9 +1,8 @@
 #===============================================================================
 # Script Name: update_occurrences_iNatAPI.R
 # Description: Updates species occurrence records for Toohey Forest by retrieving
-#              new observations from the iNaturalist APIs to add to the previously
+#              most recent observations from the iNaturalist APIs to add to the previously
 #              downloaded Atlas of Living Australia (ALA) observations.
-#              Downloads records from the last available date in the base dataset to present.
 #
 # Input: Base occurrence dataset (./output_data/toohey_species_occurrences.rds)
 # Output: Updated species occurrence records with new observations from iNaturalist
@@ -58,8 +57,12 @@ swlat <- -27.5625
 swlng <- 153.0302
 
 # Build the API query string for Taxa of interest ----
-taxa_ids <- c(3, 40151, 26036, 20978)  # Birds, Mammals, Reptiles, Amphibians
-query_str <- construct_api_query(taxa_ids, min_date = base_date, max_date = max_date)
+taxa_ids <- c(3, 40151, 26036, 20978) # Birds, Mammals, Reptiles, Amphibians
+query_str <- construct_api_query(
+  taxa_ids,
+  min_date = base_date,
+  max_date = max_date
+)
 
 # Base URL for observations -----
 base_url <- "https://api.inaturalist.org/v1/observations"
@@ -73,8 +76,7 @@ page_num <- 1
 while (TRUE) {
   parsed <- fetch_page(base_url, query_str, page_num)
   # If there are no new occurrences  - then break loop
-  if (is.null(parsed$results$id))
-    break
+  if (is.null(parsed$results$id)) break
 
   fields <- c(
     "time_observed_at",
@@ -97,7 +99,7 @@ while (TRUE) {
 new_occs_tidy <- tidy_api_newoccs(new_occs)
 
 
-# Spatially filter the data to retain only occurrences in our shapefile limits ----
+# Spatially filter (intersect) the data to retain only occurrences in our shapefile limits ----
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
 toohey_outline <- sf::st_read("./spatial_data/toohey_forest_boundary.shp")
 
@@ -107,9 +109,11 @@ new_occs_toohey <- do_spatial_intersect(new_occs_tidy, toohey_outline)
 # Add cladistics ----
 message("Adding cladistics ...")
 api_clad_data <- galah::search_taxa(new_occs_toohey$taxon.name) |> distinct()
-occ_updates_cladistics <- add_cladistics(occ_data = new_occs_toohey,
-                                         clad_data = api_clad_data,
-                                         type = "iNat") |>
+occ_updates_cladistics <- add_cladistics(
+  occ_data = new_occs_toohey,
+  clad_data = api_clad_data,
+  type = "iNat"
+) |>
   # Drop rows where species or vernacular_name are NA
   # This can occur if they aren't match to cladistics in ALA
   tidyr::drop_na(c(species, vernacular_name))
@@ -123,20 +127,24 @@ test_results <- purrr::map_chr(test_summary, ~ attr(.x, "class")[1])
 # Row bind and save (overwrite) ----
 if (any(test_results == "expectation_failure")) {
   stop("Data structure tests failed. Please fix the issues before proceeding.")
-
 } else {
   message("\nAll tests passed. Proceeding with further analysis.")
 
   #remove duplicates from previous dataset (if any)
   new_occs_to_add <- occ_updates_cladistics |>
-    dplyr::anti_join(base_occs |>
-                       select(latitude, longitude, eventDate, eventTime, species)) |>
+    dplyr::anti_join(
+      base_occs |>
+        select(latitude, longitude, eventDate, eventTime, species)
+    ) |>
     # Add image urls
     dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
 
-  message(paste0("\n\nNumber of new occurrences added: ", dim(new_occs_to_add)[1]))
+  message(paste0(
+    "\n\nNumber of new occurrences added: ",
+    dim(new_occs_to_add)[1]
+  ))
 
-  # Row bind,
+  # Row bind - append,
   updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
     # If any wikipedia links are missing fill down from same species
     group_by(species) |>
@@ -146,7 +154,9 @@ if (any(test_results == "expectation_failure")) {
     # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
     dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
     # create the URL link for Google Maps (for use in the map)
-    dplyr::mutate(google_maps_url = create_google_maps_url(latitude, longitude)) |>
+    dplyr::mutate(
+      google_maps_url = create_google_maps_url(latitude, longitude)
+    ) |>
     # Final check to remove any NA in species column (if any)
     dplyr::filter(!is.na(species))
 
@@ -160,26 +170,30 @@ if (any(test_results == "expectation_failure")) {
   message("\n\nThese species are missing wiki URLs - created default URLs: ")
   print(updated_occ_data$species[wikiurl_na])
 
+  # Add wiki and image urls - where these are missing
   updated_occ_data_wikiurls <- updated_occ_data |>
-    dplyr::mutate(wikipedia_url  = dplyr::if_else(
-      is.na(wikipedia_url),
-      construct_wiki_url(species = species),
-      wikipedia_url
-    )) |>
+    dplyr::mutate(
+      wikipedia_url = dplyr::if_else(
+        is.na(wikipedia_url),
+        construct_wiki_url(species = species),
+        wikipedia_url
+      )
+    ) |>
     # Process each row individually
     rowwise() |>
-    mutate(image_url = if (is.na(image_url)) {
-      safe_get_infobox_image(wikipedia_url)
-    } else {
-      image_url
-    }) |>
+    mutate(
+      image_url = if (is.na(image_url)) {
+        safe_get_infobox_image(wikipedia_url)
+      } else {
+        image_url
+      }
+    ) |>
     ungroup()
 
   # Get notification about any missing image URLs
   imageurl_na <- which(is.na(updated_occ_data_wikiurls$image_url))
   message("\n\nThese species are missing image URLs: ")
   print(updated_occ_data_wikiurls$species[imageurl_na])
-
 
   # Check whether there are species/common names mismatches
   n_name_mismatch <- updated_occ_data_wikiurls |>
@@ -201,10 +215,11 @@ if (any(test_results == "expectation_failure")) {
   print(max(updated_occ_data_wikiurls$eventDate))
 
   # Overwrite the current occurrence data with this update
-  readr::write_rds(updated_occ_data_wikiurls,
-                   file = "./output_data/toohey_species_occurrences.rds",
-                   compress = "gz")
-
+  readr::write_rds(
+    updated_occ_data_wikiurls,
+    file = "./output_data/toohey_species_occurrences.rds",
+    compress = "gz"
+  )
 }
 
 #Turn off logging
