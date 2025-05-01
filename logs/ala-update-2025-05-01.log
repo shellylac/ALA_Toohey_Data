@@ -1,0 +1,245 @@
+Reading layer `toohey_forest_boundary' from data source 
+  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' using driver `ESRI Shapefile'
+Simple feature collection with 1 feature and 11 fields
+Geometry type: POLYGON
+Dimension:     XYZ
+Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
+z_range:       zmin: 0 zmax: 0
+Geodetic CRS:  WGS 84
+✔ Matched "citizen science" to valid download reason ID 11.
+st_as_s2(): dropping Z and/or M coordinate
+Request for 52878 occurrences placed in queue
+Current queue length: 1
+-----Downloading
+indexed 0B in  0s, 0B/sindexed 2.15GB in  0s, 2.15GB/s                                                                                                                                               
+                     Acanthiza (Acanthiza) pusilla                       Acanthorhynchus tenuirostris 
+                                                 2                                                 72 
+                  Accipiter (Leucospiza) fasciatus             Accipiter (Leucospiza) novaehollandiae 
+                                                95                                                  2 
+             Accipiter (Paraspizias) cirrocephalus                                       ACCIPITRIDAE 
+                                                14                                                 11 
+                              Acridotheres tristis                                 Acrobates pygmaeus 
+                                                17                                                  1 
+                                   Adelotus brevis                                   Alectura lathami 
+                                                51                                               2617 
+                          Alectura lathami lathami                               Alisterus scapularis 
+                                                 3                                                394 
+                                          Amalosia                               Amaurornis moluccana 
+                                                37                                                  2 
+                         Anas (Anas) platyrhynchos                           Anas (Anas) superciliosa 
+                                                 6                                                 25 
+                                          ANATIDAE                            Anhinga novaehollandiae 
+                                                 2                                                  8 
+                             Anseranas semipalmata                Anthochaera (Anellobia) chrysoptera 
+                                                 1                                                  4 
+             Anthochaera (Anthochaera) carunculata                            Aquila (Uroaetus) audax 
+                                                 9                                                  1 
+                                             Ardea                                         Ardea alba 
+                                                 3                                                  3 
+                                    Ardea pacifica                     Artamus (Angroyan) cyanopterus 
+                                                 2                                                  1 
+                    Artamus (Artamus) leucorynchus                                               AVES 
+                                                15                                                  1 
+                     Aviceda (Aviceda) subcristata                          Aythya (Nyroca) australis 
+                                                64                                                  1 
+                                Bellatorias frerei                     Burhinus (Burhinus) grallarius 
+                                                51                                                 25 
+                        Cacatua (Cacatua) galerita                       Cacatua (Licmetis) sanguinea 
+                                               327                                                 56 
+                   Cacatua (Licmetis) tenuirostris                 Cacomantis (Cacomantis) variolosus 
+                                                 2                                                  4 
+              Cacomantis (Vidgenia) flabelliformis                                Cacophis harriettae 
+                                               137                                                  2 
+                              Cacophis squamulosus                                   Cairina moschata 
+                                                 6                                                 11 
+                                Caligavis chrysops                        Caligavis chrysops chrysops 
+                                               651                                                  1 
+         Calyptorhynchus (Calyptorhynchus) lathami  Calyptorhynchus (Calyptorhynchus) lathami lathami 
+                                               114                                                  1 
+                           Calyptotis scutirostrum                                       Carlia vivax 
+                                                 4                                                  4 
+                             Centropus phasianinus                                          Chalcites 
+                                                11                                                 20 
+                                 Chalcites lucidus                    Chalcites minutillus minutillus 
+                                                 4                                                  1 
+                          Chalcophaps longirostris                                  Chenonetta jubata 
+                                                 1                                                 61 
+                         Cincloramphus timoriensis                                 Circus approximans 
+                                                 4                                                  1 
+           Colluricincla (Colluricincla) harmonica              Colluricincla (Myiolestes) rufogaster 
+                                               440                                                  4 
+                           Columba (Columba) livia                     Columba (Janthoenas) leucomela 
+                                                34                                                  4 
+                                 Concinnia martini                                   Concinnia tenuis 
+                                                44                                                  6 
+               Coracina (Coracina) novaehollandiae                      Coracina (Coracina) papuensis 
+                                               452                                                  6 
+                             Cormobates leucophaea                                             Corvus 
+                                                 5                                                  1 
+                                       Corvus orru                               Coturnix ypsilophora 
+                                              4177                                                  1 
+                            Cracticus nigrogularis                                Cracticus torquatus 
+                                               512                                               3065 
+                                  Crinia signifera                            Cryptoblepharus pulcher 
+                                                 2                                                161 
+                   Cryptoblepharus pulcher pulcher                                  Ctenotus robustus 
+                                                 1                                                  2 
+                                Ctenotus spaldingi                                             Dacelo 
+                                                 2                                                  1 
+                      Dacelo (Dacelo) novaeguineae          Dacelo (Dacelo) novaeguineae novaeguineae 
+                                              2133                                                  1 
+              Daphoenositta (Neositta) chrysoptera                                Demansia psammophis 
+                                                 2                                                  3 
+                          Dendrelaphis punctulatus                    Dicaeum (Dicaeum) hirundinaceum 
+                                                 7                                                 84 
+                               Dicrurus bracteatus                             Diplodactylus vittatus 
+                                               419                                                160 
+                             Diporiphora australis                              Edolisoma tenuirostre 
+                                                 3                                                 49 
+                           Egretta novaehollandiae                                   Elanus axillaris 
+                                                 1                                                  2 
+                                Entomyzon cyanotis                              Eolophus roseicapilla 
+                                               469                                                279 
+                    Eolophus roseicapilla albiceps                 Eolophus roseicapilla roseicapilla 
+                                                 3                                                  1 
+                 Eopsaltria (Eopsaltria) australis                               Eudynamys orientalis 
+                                                66                                                211 
+                Eudynamys orientalis cyanocephalus                                   Eulamprus quoyii 
+                                                 2                                                  6 
+            Eurostopodus (Eurostopodus) mystacalis                              Eurystomus orientalis 
+                                                 2                                                 14 
+                         Falco (Falco) longipennis                      Falco (Hierofalco) peregrinus 
+                                                 9                                                  9 
+                        Falco (Ieracidea) berigora                                        Felis catus 
+                                                 1                                                  4 
+                   Gallinula (Gallinula) tenebrosa                                       Gehyra dubia 
+                                                63                                                  6 
+                                Geopelia humeralis                                   Geopelia placida 
+                                                 6                                                  2 
+                               Gerygone levigaster                                     Gerygone mouki 
+                                                 1                                                 13 
+                                 Gerygone olivacea                         Gerygone olivacea olivacea 
+                                                 4                                                  1 
+                             Glossopsitta concinna                                Grallina cyanoleuca 
+                                                 5                                                131 
+                                Gymnorhina tibicen                         Gymnorhina tibicen tibicen 
+                                              2729                                                  1 
+               Haliaeetus (Pontoaetus) leucogaster                              Hemidactylus frenatus 
+                                                 6                                                 17 
+               Hieraaetus (Hieraaetus) morphnoides                              Hirundapus caudacutus 
+                                                 6                                                 17 
+                         Hirundo (Hirundo) neoxena                              Intellagama lesueurii 
+                                               320                                                 34 
+                   Intellagama lesueurii lesueurii                           Lalage (Karua) leucomela 
+                                                63                                                  8 
+                             Lampropholis delicata                            Leucosarcia melanoleuca 
+                                                 6                                                  2 
+                                   Lialis burtonis                                      Lichenostomus 
+                                                19                                                  9 
+                   Lichmera (Lichmera) indistincta                              Limnodynastes peronii 
+                                                97                                                 60 
+                                   Litoria balatus                                   Litoria caerulea 
+                                                 1                                                 14 
+                                    Litoria fallax                                 Litoria gracilenta 
+                                                 5                                                 42 
+                                Lophoictinia isura                            Lopholaimus antarcticus 
+                                                62                                                  9 
+                               Lygisaurus foliorum                Macropygia (Macropygia) phasianella 
+                                                 4                                                  1 
+                     Malurus (Leggeornis) lamberti                          Malurus (Malurus) cyaneus 
+                                               410                                                 56 
+               Malurus (Musciparus) melanocephalus Malurus (Musciparus) melanocephalus melanocephalus 
+                                               161                                                  1 
+                 Manorina (Myzantha) melanocephala                      Meliphaga (Meliphaga) lewinii 
+                                              4817                                                 29 
+           Melithreptus (Melithreptus) albogularis                Melithreptus (Melithreptus) lunatus 
+                                               442                                                  7 
+                           Merops (Merops) ornatus                            Microcarbo melanoleucos 
+                                               535                                                 14 
+                                    Milvus migrans                     Monarcha (Monarcha) melanopsis 
+                                                 5                                                 25 
+                                   Morelia spilota                              Morethia taeniopleura 
+                                                60                                                  1 
+                        Myiagra (Myiagra) rubecula                         Myiagra (Seisura) inquieta 
+                                               135                                                  3 
+                             Myuchelys latisternum                  Myzomela (Myzomela) sanguinolenta 
+                                                 1                                                302 
+                    Neochmia (Aegintha) temporalis                              Ninox (Ninox) boobook 
+                                               360                                                 39 
+                       Ninox (Rhabdoglaux) strenua                           Notamacropus rufogriseus 
+                                                92                                                  2 
+                            Nycticorax caledonicus                                  Ocyphaps lophotes 
+                                                 1                                                182 
+                         Ophioscincus ophioscincus                        Oriolus (Mimeta) sagittatus 
+                                                 1                                                555 
+           Pachycephala (Alisterornis) rufiventris             Pachycephala (Pachycephala) pectoralis 
+                                               396                                                396 
+                Pardalotus (Pardalotinus) striatus                  Pardalotus (Pardalotus) punctatus 
+                                              1283                                                246 
+       Pardalotus (Pardalotus) punctatus punctatus                                Parvipsitta pusilla 
+                                                 1                                                156 
+                          Pelecanus conspicillatus                              Petaurus norfolcensis 
+                                                 4                                                 30 
+            Petrochelidon (Hylochelidon) nigricans                Petrochelidon (Petrochelidon) ariel 
+                                                18                                                 13 
+                     Petroica (Erythrodryas) rosea                Phalacrocorax (Phalacrocorax) carbo 
+                                                55                                                  2 
+        Phalacrocorax (Phalacrocorax) sulcirostris                             Phascolarctos cinereus 
+                                                 8                                               2367 
+                    Phascolarctos cinereus adustus                                           Philemon 
+                                                 1                                                  1 
+            Philemon (Microphilemon) citreogularis            Philemon (Tropidorhynchus) corniculatus 
+                                                38                                               1454 
+                          Pitta (Pitta) versicolor                  Platycercus (Platycercus) elegans 
+                                                 3                                                  1 
+                   Platycercus (Violania) adscitus                                Podargus strigoides 
+                                              1109                                               2009 
+                    Podargus strigoides strigoides                                     Pogona barbata 
+                                                 2                                                 79 
+                           Pseudechis porphyriacus                           Pseudocheirus peregrinus 
+                                                 1                                                208 
+                               Pseudonaja textilis                                Pseudophryne raveni 
+                                                 1                                                 38 
+                                      Psitteuteles                    Psophodes (Psophodes) olivaceus 
+                                                 1                                                 54 
+                                   Pteropus alecto                             Pteropus poliocephalus 
+                                                 3                                                 12 
+                               Pteropus scapulatus                              Ptilinopus magnificus 
+                                                 1                                                  2 
+                                     Rattus rattus                                    Rhinella marina 
+                                                 2                                                 48 
+                    Rhipidura (Howeavis) rufifrons                    Rhipidura (Rhipidura) albiscapa 
+                                                87                                                560 
+                Rhipidura (Sauloprocta) leucophrys                          Scythrops novaehollandiae 
+                                               138                                                 71 
+                 Sericornis (Sericornis) frontalis                             Sphecotheres vieilloti 
+                                               256                                                269 
+                              Spilopelia chinensis                              Stizoptera bichenovii 
+                                                54                                                  1 
+                     Strepera (Strepera) graculina                          Symposiachrus trivirgatus 
+                                              4215                                                 15 
+                              Synoicus ypsilophora                        Tachybaptus novaehollandiae 
+                                                 5                                                 40 
+                            Tachyglossus aculeatus                   Tachyglossus aculeatus aculeatus 
+                                                11                                                 44 
+                             Threskiornis moluccus                           Threskiornis spinicollis 
+                                                61                                                  2 
+                                Tiliqua scincoides                      Tiliqua scincoides scincoides 
+                                                17                                                  4 
+                  Todiramphus (Lazulena) macleayii                  Todiramphus (Todiramphus) sanctus 
+                                                 2                                                329 
+                                     Trichoglossus                      Trichoglossus chlorolepidotus 
+                                              4288                                               1879 
+                          Trichoglossus haematodus                              Trichosurus vulpecula 
+                                                14                                                246 
+                      Turnix (Austroturnix) varius                                    Uperoleia fusca 
+                                                15                                                  1 
+                       Vanellus (Lobipluvia) miles                                     Varanus varius 
+                                                43                                                121 
+                                     Vulpes vulpes                                   Wallabia bicolor 
+                                                12                                                 11 
+                                     Zanda funerea                       Zoothera (Zoothera) lunulata 
+                                                 3                                                  1 
+                               Zosterops lateralis 
+                                               197 
+
