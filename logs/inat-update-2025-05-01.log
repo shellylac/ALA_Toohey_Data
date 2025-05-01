@@ -5,25 +5,21 @@ Reading in base occurrences ...
 Downloading occurrences ...
 Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
 Reading layer `toohey_forest_boundary' from data source 
-  `/home/runner/work/ALA_Toohey_Data/ALA_Toohey_Data/spatial_data/toohey_forest_boundary.shp' 
-  using driver `ESRI Shapefile'
+  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 11 fields
 Geometry type: POLYGON
 Dimension:     XYZ
 Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
 Adding cladistics ...
-Querying API ■■■■■■■                           20% |  ETA:  7s
-Querying API ■■■■■■■■■■■■■■■■■                 52% |  ETA:  4s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        84% |  ETA:  1s
-Matched 42 of 44 taxonomic search terms in selected atlas (Australia).
-2 unmatched search terms:
-• "Lalage melanoptera", "Tachyspiza fasciata"
+Matched 14 of 15 taxonomic search terms in selected atlas (Australia).
+1 unmatched search term:
+• "Lalage melanoptera"
 
 Running test suite ...
-
-══ Testing update_occs_testQA.R ════════════════════════════════════════════════
 
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
@@ -44,16 +40,15 @@ Running test suite ...
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ] Done!
-
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ]
 All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 13
+Number of new occurrences added: 1
 
 
-Total number of occurrences in data: 33546
+Total number of occurrences in data: 33547
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -67,3 +62,9 @@ No name mismatches
 
 max date in updated: 
 [1] "2025-05-01"
+# A tibble: 3 × 4
+  vernacular_name eventDate  eventTime google_maps_url                                    
+  <chr>           <chr>      <chr>     <chr>                                              
+1 Squirrel Glider 2025-04-20 18:58:05  https://www.google.com/maps?q=-27.532310,153.038100
+2 Koala           2025-04-20 19:09:47  https://www.google.com/maps?q=-27.532840,153.038900
+3 Koala           2025-04-20 19:15:15  https://www.google.com/maps?q=-27.533380,153.038000
