@@ -40,18 +40,20 @@ test_that("dataset has the correct structure", {
   expect_type(occ_cladistics_wikiurls$image_url, "character")
   expect_type(occ_cladistics_wikiurls$eventDate, "character")
   expect_type(occ_cladistics_wikiurls$eventTime, "character")
-  expect_type(occ_cladistics_wikiurls$latitude, "character")
-  expect_type(occ_cladistics_wikiurls$longitude, "character")
+
+  #Numeric fields
+  expect_type(occ_cladistics_wikiurls$latitude, "double")
+  expect_type(occ_cladistics_wikiurls$longitude, "double")
 
   # Test latitude and longitude fall within valid ranges
   expect_true(all(
-    as.numeric(occ_cladistics_wikiurls$latitude) >= -90 &
-      as.numeric(occ_cladistics_wikiurls$latitude) <= 90,
+    occ_cladistics_wikiurls$latitude >= -90 &
+      occ_cladistics_wikiurls$latitude <= 90,
     na.rm = TRUE
   ))
   expect_true(all(
-    as.numeric(occ_cladistics_wikiurls$longitude) >= -180 &
-                 as.numeric(occ_cladistics_wikiurls$longitude) <= 180,
+    occ_cladistics_wikiurls$longitude >= -180 &
+                 occ_cladistics_wikiurls$longitude <= 180,
     na.rm = TRUE
   ))
 })

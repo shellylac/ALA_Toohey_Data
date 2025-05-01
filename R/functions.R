@@ -102,8 +102,6 @@ add_cladistics <- function(occ_data, clad_data, type) {
           "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
           "Tropidonophis mairii" ~ "Common Keelback",
           "Colluricincla rufogaster" ~ "Rufous Shrikethrush",
-          "Lalage melanoptera" ~ "Black-headed cuckooshrike",
-          "Tachyspiza fasciata" ~ "Brown Goshawk",
           .default = vernacular_name
         )
       ) |>

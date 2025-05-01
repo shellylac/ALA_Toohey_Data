@@ -134,8 +134,8 @@ if (any(test_results == "expectation_failure")) {
   #Format lat/long and then remove duplicates from previous dataset (if any)
   new_occs_to_add <- occ_updates_cladistics |>
     dplyr::mutate(
-      latitude = sprintf_fixed(latitude, 5),
-      longitude = sprintf_fixed(longitude, 4)
+      latitude = as.numeric(sprintf_fixed(latitude, 5)),
+      longitude = as.numeric(sprintf_fixed(longitude, 4))
     ) |>
     dplyr::anti_join(
       base_occs |>
@@ -160,11 +160,8 @@ if (any(test_results == "expectation_failure")) {
     dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
     # create the URL link for Google Maps (for use in the map)
     dplyr::mutate(
-      google_maps_url = create_google_maps_url(
-        as.numeric(latitude),
-        as.numeric(longitude)
-      )
-    ) |>
+      google_maps_url = create_google_maps_url(latitude, longitude)
+      ) |>
     # Final check to remove any NA in species column (if any)
     dplyr::filter(!is.na(species))
 

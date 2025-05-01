@@ -106,6 +106,11 @@ image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 #.......................................................
 
 occ_cladistics_wikiurls <- occ_cladistics |>
+  # Revert lat/lon to numeric fields
+  dplyr::mutate(
+    latitude = as.numeric(latitude),
+    longitude = as.numeric(longitude)
+  ) |>
   dplyr::left_join(wiki_urls_df, by = "species") |>
   dplyr::mutate(
     wikipedia_url = dplyr::if_else(
