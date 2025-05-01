@@ -109,11 +109,12 @@ new_occs_toohey <- do_spatial_intersect(new_occs_tidy, toohey_outline)
 # Add cladistics ----
 message("Adding cladistics ...")
 api_clad_data <- galah::search_taxa(new_occs_toohey$taxon.name) |> distinct()
+
 occ_updates_cladistics <- add_cladistics(
   occ_data = new_occs_toohey,
   clad_data = api_clad_data,
   type = "iNat"
-) |>
+  ) |>
   # Drop rows where species or vernacular_name are NA
   # This can occur if they aren't match to cladistics in ALA
   tidyr::drop_na(c(species, vernacular_name))
@@ -130,8 +131,12 @@ if (any(test_results == "expectation_failure")) {
 } else {
   message("\nAll tests passed. Proceeding with further analysis.")
 
-  #remove duplicates from previous dataset (if any)
+  #Format lat/long and then remove duplicates from previous dataset (if any)
   new_occs_to_add <- occ_updates_cladistics |>
+    dplyr::mutate(
+      latitude = sprintf_fixed(latitude, 5),
+      longitude = sprintf_fixed(longitude, 4)
+    ) |>
     dplyr::anti_join(
       base_occs |>
         select(latitude, longitude, eventDate, eventTime, species)
@@ -155,7 +160,10 @@ if (any(test_results == "expectation_failure")) {
     dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
     # create the URL link for Google Maps (for use in the map)
     dplyr::mutate(
-      google_maps_url = create_google_maps_url(latitude, longitude)
+      google_maps_url = create_google_maps_url(
+        as.numeric(latitude),
+        as.numeric(longitude)
+      )
     ) |>
     # Final check to remove any NA in species column (if any)
     dplyr::filter(!is.na(species))

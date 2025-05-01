@@ -24,18 +24,20 @@ get_occurrences <- function(start_year, start_month, geo_limit) {
   return(out)
 }
 
+# Function to force latitude/longitude to x decimals places
+sprintf_fixed <- function(x, n) {
+  sprintf(paste0("%.", n, "f"), x)
+}
+
 # Tidy the ALA data ----
 tidy_ala_data <- function(data) {
   new_data_formatted <- data |>
+    # Using sprintf_fixed to truncate decimal places - for duplication removal later
     dplyr::mutate(
-      decimalLatitude = round(as.numeric(decimalLatitude), 6),
-      decimalLongitude = round(as.numeric(decimalLongitude), 6)
-    ) |>
+      decimalLatitude = sprintf_fixed(decimalLatitude, 5),
+      decimalLongitude = sprintf_fixed(decimalLongitude, 4)
+      ) |>
     dplyr::rename(latitude = decimalLatitude, longitude = decimalLongitude) |>
-    # mutate(eventDate = if_else(grepl(" ", eventDate),
-    #                            lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane"),
-    #                            eventDate)
-    #        ) |>
     # There are some taxon concept ids that aren't url's
     dplyr::filter(grepl("https://biodiversity.org.au.*", taxonConceptID)) |>
     tidyr::separate_wider_delim(
@@ -58,10 +60,10 @@ tidy_api_newoccs <- function(data) {
       vernacular_name = taxon.preferred_common_name,
       class = taxon.iconic_taxon_name
     ) |>
-    # Need to cast time to Brisbane time zone (not UTC time)
     dplyr::mutate(
       dataResourceName = "iNaturalist Australia",
       scientificName = taxon.name,
+      # Need to cast time to Brisbane time zone (not UTC time)
       eventDate = lubridate::ymd_hms(eventDate, tz = "Australia/Brisbane")
     ) |>
     tidyr::separate_wider_delim(
@@ -73,11 +75,6 @@ tidy_api_newoccs <- function(data) {
       decimalLatitude = round(as.numeric(latitude), 6),
       decimalLongitude = round(as.numeric(longitude), 6)
     ) |>
-    # Round latitude/longitude so that they match with new updates later on
-    dplyr::mutate(dplyr::across(
-      dplyr::where(is.numeric),
-      ~ round(.x, digits = 6)
-    )) |>
     tidyr::separate_wider_delim(
       eventDate,
       delim = " ",
@@ -90,6 +87,7 @@ tidy_api_newoccs <- function(data) {
 }
 
 
+
 # Get and add cladistics to occurrence data and wrangle ----
 add_cladistics <- function(occ_data, clad_data, type) {
   if (type == "ALA") {
@@ -98,13 +96,14 @@ add_cladistics <- function(occ_data, clad_data, type) {
     occ_data_clads <- occ_data |>
       dplyr::left_join(clad_data, by = c("scientificName" = "search_term")) |>
       # For some reason these species names aren't given a vernacular name - do it manually
-      # "Tachyglossus aculeatus"   "Tropidonophis mairii"     "Colluricincla rufogaster"
       dplyr::mutate(
         vernacular_name = dplyr::case_match(
           species,
           "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
           "Tropidonophis mairii" ~ "Common Keelback",
           "Colluricincla rufogaster" ~ "Rufous Shrikethrush",
+          "Lalage melanoptera" ~ "Black-headed cuckooshrike",
+          "Tachyspiza fasciata" ~ "Brown Goshawk",
           .default = vernacular_name
         )
       ) |>
@@ -169,7 +168,7 @@ add_cladistics <- function(occ_data, clad_data, type) {
 }
 
 
-# Construct ssumed Wikipedia URL ----
+# Construct assumed Wikipedia URL ----
 construct_wiki_url <- function(species) {
   wiki_url <- paste0("https://en.wikipedia.org/wiki/", gsub(" ", "_", species))
 }
@@ -397,3 +396,13 @@ safe_get_infobox_image <- purrr::possibly(
 #     return(0)
 #   }
 # }
+
+count_decimal_places <- function(x){
+  sapply(
+    format(x, scientific = FALSE, trim = TRUE),    # get a clean non-sci string
+    function(z) {
+      if (!grepl("\\.", z)) return(0L)            # no “.” → 0 places
+      nchar(sub(".*\\.", "", z))                  # drop everything up to “.”, count rest
+    }
+  )
+}
