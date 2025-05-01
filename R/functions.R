@@ -382,7 +382,9 @@ safe_get_infobox_image <- purrr::possibly(
   otherwise = NA_character_
 )
 
+
 # Good to know
+# ..............
 # Regex to get first two words from a string (e.g. scientificName --> species)
 # sub("(\\w+\\s+\\w+).*", "\\1", scientificName), species))
 
@@ -395,12 +397,12 @@ safe_get_infobox_image <- purrr::possibly(
 #   }
 # }
 
-count_decimal_places <- function(x){
-  sapply(
-    format(x, scientific = FALSE, trim = TRUE),    # get a clean non-sci string
-    function(z) {
-      if (!grepl("\\.", z)) return(0L)            # no “.” → 0 places
-      nchar(sub(".*\\.", "", z))                  # drop everything up to “.”, count rest
-    }
-  )
-}
+# count_decimal_places <- function(x){
+#   sapply(
+#     format(x, scientific = FALSE, trim = TRUE),    # get a clean non-sci string
+#     function(z) {
+#       if (!grepl("\\.", z)) return(0L)            # no “.” → 0 places
+#       nchar(sub(".*\\.", "", z))                  # drop everything up to “.”, count rest
+#     }
+#   )
+# }
