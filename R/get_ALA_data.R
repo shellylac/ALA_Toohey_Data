@@ -27,6 +27,12 @@
 #.......................................................
 source("./R/functions.R")
 
+# SETS DEFAULT colours for plotly plots----
+STATS_BLUE = "#8080FF"
+STATS_RED = "#FF8080"
+STATS_ORANGE = "#FFD5A5"
+STATS_GREEN = "#B3FFB3"
+
 
 #.......................................................
 # Set logging ----
@@ -79,8 +85,7 @@ toohey_occurrences_formatted <- tidy_ala_data(toohey_occurrences)
 
 # Get cladistics dataset - add taxonomic information
 ala_clad_data <- galah::search_taxa(unique(
-  toohey_occurrences_formatted$scientificName
-)) |>
+  toohey_occurrences_formatted$scientificName)) |>
   distinct()
 
 #.......................................................
@@ -172,12 +177,69 @@ print(occ_cladistics_wikiurls$species[imageurl_na])
 #.......................................................
 # Save this dataset as the base data -
 #.......................................................
+
+toohey_species_occurrences <- occ_cladistics_wikiurls |>
+  # Add common class names - this bit is for the shiny app
+  dplyr::mutate(class_common = case_match(class,
+                                          "Aves" ~ "Birds",
+                                          "Mammalia" ~ "Mammals",
+                                          "Reptilia" ~ "Reptiles",
+                                          "Amphibia" ~ "Amphibians"),
+                class_common = factor(class_common,
+                                      levels = c("Birds", "Mammals",
+                                                 "Reptiles", "Amphibians")
+                ),
+                # Add colour for trend plots (based on class_common)
+                plot_colour = case_match(class_common,
+                                         "Birds" ~ STATS_BLUE,
+                                         "Mammals" ~ STATS_RED,
+                                         "Reptiles" ~ STATS_ORANGE,
+                                         "Amphibians" ~ STATS_GREEN),
+                # Add formatted dates for stats plots
+                year = as.factor(lubridate::year(eventDate)),
+                month = lubridate::month(eventDate, label = TRUE),
+                hour = as.factor(lubridate::hour(hms(eventTime)))
+  )
+
+# Generate the species list dataset ----
+species_list <- toohey_species_occurrences |>
+  dplyr::group_by(class_common, class, order, family, species, vernacular_name,
+                  wikipedia_url, image_url) |>
+  count(name = "Sightings") |>
+  ungroup() |>
+  rename(Class = class,  `Common name` = vernacular_name) |>
+  mutate(
+    Taxonomy = paste0("<p style=\"font-size:14px;\">",
+                      "<a href=\"", wikipedia_url, "\" target=\"_blank\">",
+                      `Common name`, "</a>", "<br>",
+                      "<b>Class</b>: ", Class, "<br>",
+                      "<b>Order</b>: ", order, "<br>",
+                      "<b>Family</b>: ", family, "<br>",
+                      "<b>Species</b>: <em>", species,
+                      "</em></p>"),
+    Image = paste0("<img src=\"", image_url,
+                   "\" height=\"120\" data-toggle=\"tooltip\" data-placement=\"center\" title=\"",
+                   `Common name`, "\"></img>", "</p>")
+  ) |>
+  arrange(desc(Sightings),
+          factor(Class, levels = c('Aves', 'Mammalia', 'Reptilia', 'Amphibia')),
+          `Common name`) |>
+  select(Class, Taxonomy, Image, Sightings)
+
+
+# Save/overwrite the current occurrence data with this update
 readr::write_rds(
-  occ_cladistics_wikiurls,
+  toohey_species_occurrences,
   file = "./output_data/toohey_species_occurrences.rds",
   compress = "gz"
 )
 
+# Save/overwrite the current species list data with this update
+readr::write_rds(
+  species_list,
+  file = "./output_data/toohey_species_list.rds",
+  compress = "gz"
+)
 
 #Turn off logging
 sink()

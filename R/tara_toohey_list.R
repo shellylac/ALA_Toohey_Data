@@ -16,21 +16,8 @@ create_select_spp_df <- function(data, spp_list) {
   return(select_data)
 }
 
-# Read in the base occs dataset
-base_occ_dataset <- readRDS("./output_data/toohey_species_occurrences.rds")
-
 # Define the species of interest
 my_species = c("Koala",
              "Squirrel Glider",
              "Feathertail Glider",
              "Short-beaked Echidna")
-
-tara_toohey_df <- create_select_spp_df(data = base_occ_dataset,
-                                       spp_list = my_species)
-
-
-# ── only print when there's data ─────────────────────────────────────────────
-if (nrow(tara_toohey_df) > 0) {
-  print(tara_toohey_df)
-}
-

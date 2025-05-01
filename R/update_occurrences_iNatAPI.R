@@ -219,17 +219,92 @@ if (any(test_results == "expectation_failure")) {
   message("\n\nmax date in updated: ")
   print(max(updated_occ_data_wikiurls$eventDate))
 
-  # Overwrite the current occurrence data with this update
+
+  message("\n\nList of Tara Toohey species detected: ")
+  tara_toohey_df <- create_select_spp_df(data = updated_occ_data_wikiurls,
+                                         spp_list = my_species)
+
+  # ── only print when there's data ─────────────────────────────────────────────
+  if (nrow(tara_toohey_df) > 0) {
+    print(tara_toohey_df)
+  }
+
+  # SETS DEFAULT colours for plotly plots----
+  STATS_BLUE = "#8080FF"
+  STATS_RED = "#FF8080"
+  STATS_ORANGE = "#FFD5A5"
+  STATS_GREEN = "#B3FFB3"
+
+
+  # Prepare occs data for Shiny app ----
+  toohey_species_occurrences <- updated_occ_data_wikiurls |>
+    # Just a catch in case an NA species gets through
+    dplyr::filter(!is.na(species)) |>
+    # Add common class names
+    dplyr::mutate(class_common = case_match(class,
+                                            "Aves" ~ "Birds",
+                                            "Mammalia" ~ "Mammals",
+                                            "Reptilia" ~ "Reptiles",
+                                            "Amphibia" ~ "Amphibians"),
+                  class_common = factor(class_common,
+                                        levels = c("Birds", "Mammals",
+                                                   "Reptiles", "Amphibians")
+                  ),
+                  # Add colour for trend plots (based on class_common)
+                  plot_colour = case_match(class_common,
+                                           "Birds" ~ STATS_BLUE,
+                                           "Mammals" ~ STATS_RED,
+                                           "Reptiles" ~ STATS_ORANGE,
+                                           "Amphibians" ~ STATS_GREEN),
+                  # Add formatted dates for stats plots
+                  year = as.factor(lubridate::year(eventDate)),
+                  month = lubridate::month(eventDate, label = TRUE),
+                  hour = as.factor(lubridate::hour(hms(eventTime)))
+    )
+
+
+  # Generate the species list dataset ----
+  species_list <- toohey_species_occurrences |>
+    dplyr::group_by(class_common, class, order, family, species, vernacular_name,
+                    wikipedia_url, image_url) |>
+    count(name = "Sightings") |>
+    ungroup() |>
+    rename(Class = class,  `Common name` = vernacular_name) |>
+    mutate(
+      Taxonomy = paste0("<p style=\"font-size:14px;\">",
+                        "<a href=\"", wikipedia_url, "\" target=\"_blank\">",
+                        `Common name`, "</a>", "<br>",
+                        "<b>Class</b>: ", Class, "<br>",
+                        "<b>Order</b>: ", order, "<br>",
+                        "<b>Family</b>: ", family, "<br>",
+                        "<b>Species</b>: <em>", species,
+                        "</em></p>"),
+      Image = paste0("<img src=\"", image_url,
+                     "\" height=\"120\" data-toggle=\"tooltip\" data-placement=\"center\" title=\"",
+                     `Common name`, "\"></img>", "</p>")
+    ) |>
+    arrange(desc(Sightings),
+            factor(Class, levels = c('Aves', 'Mammalia', 'Reptilia', 'Amphibia')),
+            `Common name`) |>
+    select(Class, Taxonomy, Image, Sightings)
+
+
+  # Save/overwrite the current occurrence data with this update
   readr::write_rds(
-    updated_occ_data_wikiurls,
+    toohey_species_occurrences,
     file = "./output_data/toohey_species_occurrences.rds",
     compress = "gz"
   )
+
+  # Save/overwrite the current species list data with this update
+  readr::write_rds(
+    species_list,
+    file = "./output_data/toohey_species_list.rds",
+    compress = "gz"
+  )
+
 }
 
-message("\n\nList of Tara Toohey species detected: ")
-source("./R/tara_toohey_list.R")
-
-#Turn off logging
+#Turn off logging ----
 sink()
 closeAllConnections()
