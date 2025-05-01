@@ -221,6 +221,11 @@ if (any(test_results == "expectation_failure")) {
 
 
   message("\n\nList of Tara Toohey species detected: ")
+  # Define the species of interest
+  my_species = c("Koala",
+                 "Squirrel Glider",
+                 "Feathertail Glider",
+                 "Short-beaked Echidna")
   tara_toohey_df <- create_select_spp_df(data = updated_occ_data_wikiurls,
                                          spp_list = my_species)
 
