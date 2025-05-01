@@ -14,11 +14,13 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■■■■■■■■■■                     39% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  0s
-Matched 21 of 23 taxonomic search terms in selected atlas (Australia).
-2 unmatched search terms:
-• "Sauria", "Lalage melanoptera"
+Querying API ■■■■                              11% |  ETA: 10s
+Querying API ■■■■■■■■■■■■                      36% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■■■■               60% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  2s
+Matched 50 of 53 taxonomic search terms in selected atlas (Australia).
+3 unmatched search terms:
+• "Sauria", "Lalage melanoptera", "Tachyspiza fasciata"
 
 Running test suite ...
 
@@ -49,7 +51,7 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 7
+Number of new occurrences added: 21
 
 
 Total number of occurrences in data: 33554
