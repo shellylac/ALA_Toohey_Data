@@ -227,6 +227,9 @@ if (any(test_results == "expectation_failure")) {
   )
 }
 
+message("\n\nList of Tara Toohey species detected: ")
+source("./R/tara_toohey_list.R")
+
 #Turn off logging
 sink()
 closeAllConnections()
