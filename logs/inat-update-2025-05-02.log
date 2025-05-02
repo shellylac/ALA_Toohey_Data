@@ -5,26 +5,24 @@ Reading in base occurrences ...
 Downloading occurrences ...
 Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
 Reading layer `toohey_forest_boundary' from data source 
-  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' using driver `ESRI Shapefile'
+  `/home/runner/work/ALA_Toohey_Data/ALA_Toohey_Data/spatial_data/toohey_forest_boundary.shp' 
+  using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 11 fields
 Geometry type: POLYGON
 Dimension:     XYZ
 Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
-Warning message:
-attribute variables are assumed to be spatially constant throughout all geometries 
 Adding cladistics ...
-Querying API ■■■■■■■■■■■■■                     40% |  ETA:  2s
-Querying API ■■■■■■■■■■■■■■■                   47% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         79% |  ETA:  1s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  0s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  0s
-Matched 50 of 53 taxonomic search terms in selected atlas (Australia).
-3 unmatched search terms:
-• "Sauria", "Lalage melanoptera", "Tachyspiza fasciata"
+Querying API ■■■■■■■■■■■■■                     38% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      88% |  ETA:  1s
+Matched 24 of 26 taxonomic search terms in selected atlas (Australia).
+2 unmatched search terms:
+• "Sauria", "Lalage melanoptera"
 
 Running test suite ...
+
+══ Testing update_occs_testQA.R ════════════════════════════════════════════════
 
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
@@ -45,15 +43,16 @@ Running test suite ...
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ]
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ] Done!
+
 All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 21
+Number of new occurrences added: 3
 
 
-Total number of occurrences in data: 33554
+Total number of occurrences in data: 33557
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -66,7 +65,7 @@ No name mismatches
 
 
 max date in updated: 
-[1] "2025-05-01"
+[1] "2025-05-02"
 
 
 List of Tara Toohey species detected: 
