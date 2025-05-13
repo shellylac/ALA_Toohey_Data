@@ -1,5 +1,6 @@
 #> Info on the the ALA profile is here
 #> https://support.ala.org.au/support/solutions/articles/6000240256-getting-started-with-the-data-profiles
+#>
 
 # Useful tools
 # fields <- show_all(fields)
@@ -36,7 +37,7 @@ tidy_ala_data <- function(data) {
     dplyr::mutate(
       decimalLatitude = sprintf_fixed(decimalLatitude, 5),
       decimalLongitude = sprintf_fixed(decimalLongitude, 4)
-      ) |>
+    ) |>
     dplyr::rename(latitude = decimalLatitude, longitude = decimalLongitude) |>
     # There are some taxon concept ids that aren't url's
     dplyr::filter(grepl("https://biodiversity.org.au.*", taxonConceptID)) |>
@@ -85,7 +86,6 @@ tidy_api_newoccs <- function(data) {
 
   return(new_data_formatted)
 }
-
 
 
 # Get and add cladistics to occurrence data and wrangle ----
@@ -385,14 +385,13 @@ safe_get_infobox_image <- purrr::possibly(
 # Function to create a subset for species in Tara Toohey part of reserve
 create_select_spp_df <- function(data, spp_list) {
   select_data <- data |>
-    dplyr::filter(eventDate >= Sys.Date()-2,
-                  vernacular_name %in% spp_list
-    ) |>
+    dplyr::filter(eventDate >= Sys.Date() - 2, vernacular_name %in% spp_list) |>
     # apply the broad spatial filter for Tara Toohey
-    filter(latitude <= -27.530755,
-           latitude >= -27.541794,
-           longitude >= 153.033571,
-           longitude <= 153.039194
+    filter(
+      latitude <= -27.530755,
+      latitude >= -27.541794,
+      longitude >= 153.033571,
+      longitude <= 153.039194
     ) |>
     # Keep selected cols
     select(vernacular_name, eventDate, eventTime, google_maps_url)

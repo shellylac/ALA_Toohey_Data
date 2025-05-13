@@ -114,7 +114,7 @@ occ_updates_cladistics <- add_cladistics(
   occ_data = new_occs_toohey,
   clad_data = api_clad_data,
   type = "iNat"
-  ) |>
+) |>
   # Drop rows where species or vernacular_name are NA
   # This can occur if they aren't match to cladistics in ALA
   tidyr::drop_na(c(species, vernacular_name))
@@ -161,7 +161,7 @@ if (any(test_results == "expectation_failure")) {
     # create the URL link for Google Maps (for use in the map)
     dplyr::mutate(
       google_maps_url = create_google_maps_url(latitude, longitude)
-      ) |>
+    ) |>
     # Final check to remove any NA in species column (if any)
     dplyr::filter(!is.na(species))
 
@@ -219,15 +219,18 @@ if (any(test_results == "expectation_failure")) {
   message("\n\nmax date in updated: ")
   print(max(updated_occ_data_wikiurls$eventDate))
 
-
   message("\n\nList of Tara Toohey species detected: ")
   # Define the species of interest
-  my_species = c("Koala",
-                 "Squirrel Glider",
-                 "Feathertail Glider",
-                 "Short-beaked Echidna")
-  tara_toohey_df <- create_select_spp_df(data = updated_occ_data_wikiurls,
-                                         spp_list = my_species)
+  my_species = c(
+    "Koala",
+    "Squirrel Glider",
+    "Feathertail Glider",
+    "Short-beaked Echidna"
+  )
+  tara_toohey_df <- create_select_spp_df(
+    data = updated_occ_data_wikiurls,
+    spp_list = my_species
+  )
 
   # ── only print when there's data ─────────────────────────────────────────────
   if (nrow(tara_toohey_df) > 0) {
@@ -240,59 +243,89 @@ if (any(test_results == "expectation_failure")) {
   STATS_ORANGE = "#FFD5A5"
   STATS_GREEN = "#B3FFB3"
 
-
   # Prepare occs data for Shiny app ----
   toohey_species_occurrences <- updated_occ_data_wikiurls |>
     # Just a catch in case an NA species gets through
     dplyr::filter(!is.na(species)) |>
     # Add common class names
-    dplyr::mutate(class_common = case_match(class,
-                                            "Aves" ~ "Birds",
-                                            "Mammalia" ~ "Mammals",
-                                            "Reptilia" ~ "Reptiles",
-                                            "Amphibia" ~ "Amphibians"),
-                  class_common = factor(class_common,
-                                        levels = c("Birds", "Mammals",
-                                                   "Reptiles", "Amphibians")
-                  ),
-                  # Add colour for trend plots (based on class_common)
-                  plot_colour = case_match(class_common,
-                                           "Birds" ~ STATS_BLUE,
-                                           "Mammals" ~ STATS_RED,
-                                           "Reptiles" ~ STATS_ORANGE,
-                                           "Amphibians" ~ STATS_GREEN),
-                  # Add formatted dates for stats plots
-                  year = as.factor(lubridate::year(eventDate)),
-                  month = lubridate::month(eventDate, label = TRUE),
-                  hour = as.factor(lubridate::hour(hms(eventTime)))
+    dplyr::mutate(
+      class_common = case_match(
+        class,
+        "Aves" ~ "Birds",
+        "Mammalia" ~ "Mammals",
+        "Reptilia" ~ "Reptiles",
+        "Amphibia" ~ "Amphibians"
+      ),
+      class_common = factor(
+        class_common,
+        levels = c("Birds", "Mammals", "Reptiles", "Amphibians")
+      ),
+      # Add colour for trend plots (based on class_common)
+      plot_colour = case_match(
+        class_common,
+        "Birds" ~ STATS_BLUE,
+        "Mammals" ~ STATS_RED,
+        "Reptiles" ~ STATS_ORANGE,
+        "Amphibians" ~ STATS_GREEN
+      ),
+      # Add formatted dates for stats plots
+      year = as.factor(lubridate::year(eventDate)),
+      month = lubridate::month(eventDate, label = TRUE),
+      hour = as.factor(lubridate::hour(hms(eventTime)))
     )
-
 
   # Generate the species list dataset ----
   species_list <- toohey_species_occurrences |>
-    dplyr::group_by(class_common, class, order, family, species, vernacular_name,
-                    wikipedia_url, image_url) |>
+    dplyr::group_by(
+      class_common,
+      class,
+      order,
+      family,
+      species,
+      vernacular_name,
+      wikipedia_url,
+      image_url
+    ) |>
     count(name = "Sightings") |>
     ungroup() |>
-    rename(Class = class,  `Common name` = vernacular_name) |>
+    rename(Class = class, `Common name` = vernacular_name) |>
     mutate(
-      Taxonomy = paste0("<p style=\"font-size:14px;\">",
-                        "<a href=\"", wikipedia_url, "\" target=\"_blank\">",
-                        `Common name`, "</a>", "<br>",
-                        "<b>Class</b>: ", Class, "<br>",
-                        "<b>Order</b>: ", order, "<br>",
-                        "<b>Family</b>: ", family, "<br>",
-                        "<b>Species</b>: <em>", species,
-                        "</em></p>"),
-      Image = paste0("<img src=\"", image_url,
-                     "\" height=\"120\" data-toggle=\"tooltip\" data-placement=\"center\" title=\"",
-                     `Common name`, "\"></img>", "</p>")
+      Taxonomy = paste0(
+        "<p style=\"font-size:14px;\">",
+        "<a href=\"",
+        wikipedia_url,
+        "\" target=\"_blank\">",
+        `Common name`,
+        "</a>",
+        "<br>",
+        "<b>Class</b>: ",
+        Class,
+        "<br>",
+        "<b>Order</b>: ",
+        order,
+        "<br>",
+        "<b>Family</b>: ",
+        family,
+        "<br>",
+        "<b>Species</b>: <em>",
+        species,
+        "</em></p>"
+      ),
+      Image = paste0(
+        "<img src=\"",
+        image_url,
+        "\" height=\"120\" data-toggle=\"tooltip\" data-placement=\"center\" title=\"",
+        `Common name`,
+        "\"></img>",
+        "</p>"
+      )
     ) |>
-    arrange(desc(Sightings),
-            factor(Class, levels = c('Aves', 'Mammalia', 'Reptilia', 'Amphibia')),
-            `Common name`) |>
+    arrange(
+      desc(Sightings),
+      factor(Class, levels = c('Aves', 'Mammalia', 'Reptilia', 'Amphibia')),
+      `Common name`
+    ) |>
     select(Class, Taxonomy, Image, Sightings)
-
 
   # Save/overwrite the current occurrence data with this update
   readr::write_rds(
@@ -307,7 +340,6 @@ if (any(test_results == "expectation_failure")) {
     file = "./output_data/toohey_species_list.rds",
     compress = "gz"
   )
-
 }
 
 #Turn off logging ----
