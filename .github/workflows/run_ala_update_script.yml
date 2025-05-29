@@ -1,75 +1,88 @@
+# .github/workflows/update-ala-data.yml
+# -------------------------------------
+# Weekly overnight job that refreshes Toohey Forest ALA records, every Thurs
+# commits the updated .rds file + log files, and pushes
+# them back to the main branch.
+#
+#  ▸ Uses `setup-renv@v2`  ➜  renv::restore() + smart caching
+#  ▸ Explicitly targets the new Ubuntu 24.04 runner image
+#  ▸ Installs a few build-time system libraries just in case
+#  ▸ Still runs under R 4.4.1 (switch to 4.5.0 when ready)
+
+name: Update ALA data
+
 on:
   schedule:
-    - cron: "10 14 * * Wed"  # Runs every Wednesday at 14:30 UTC, which is 12:10 am Thursday in Brisbane
-  workflow_dispatch: # Allows manual triggering if needed
+    # Every Wednesday at 14 :10 UTC  →  Thursday 00 :10 (AEST, Brisbane)
+    - cron: '10 14 * * Wed'
+  workflow_dispatch:          # allow manual runs
 
 jobs:
   update-ALA-data:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04     # deterministic; avoids silent image flips
+
+    env:
+      # Keep renv’s cache inside the workspace so the cache action can save it
+      RENV_PATHS_CACHE: ${{ github.workspace }}/.renv
 
     steps:
+      # ---------------------------------------------------
+      # 0 – checkout
+      # ---------------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up R
+      # ---------------------------------------------------
+      # 1 – R toolchain
+      # ---------------------------------------------------
+      - name: Set up R (4.4.1)
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.4.1"
-          use-public-rspm: true
+          r-version: '4.4.1'
+          use-public-rspm: true      # binaries when available
 
-      # - name: Install OS dependencies # need to install libcurl for anuthing that depends on curl
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
+      # ---------------------------------------------------
+      # 2 – system libraries (needed if some packages arrive only as source)
+      # ---------------------------------------------------
+      - name: Install system libraries
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libgit2-dev
 
-      - name: Cache R packages
-        uses: actions/cache@v3 # Cache packages so won't be compiled everytime job is run
+      # ---------------------------------------------------
+      # 3 – restore & cache the renv library
+      #     (runs `renv::restore()` behind the scenes)
+      # ---------------------------------------------------
+      - name: Restore renv library
+        uses: r-lib/actions/setup-renv@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/get_ALA_data.R') }}
-          restore-keys: ${{ runner.os }}-scriptname-
+          # bump this number if you ever need to nuke-and-rebuild the cache
+          cache-version: 2
 
-      - name: Install packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: |
-            pak
-            dplyr
-            readr
-            purrr
-            lubridate
-            testthat
-            galah
-            sf
-            tidyr
-            httr
-            jsonlite
-
-      # renv is part of your project, so installing it directly from CRAN or using the bootstrap in your project
-      # - name: Install renv
-      #  run: Rscript -e 'install.packages("renv", repos = "https://cloud.r-project.org")'
-
-      # cache R packages for efficiency
-      # - name: Cache R packages
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ${{ env.R_LIBS_USER }}
-      #     key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
-
-      # After caching:
-      # - name: Restore R environment
-      #   run: Rscript -e 'renv::restore()'
-
-      # Run the update script
+      # ---------------------------------------------------
+      # 4 – run the data-update script
+      # ---------------------------------------------------
       - name: Update ALA data
-        run: Rscript -e 'source("./R/get_ALA_data.R")'
+        run: Rscript -e 'source("R/get_ALA_data.R")'
 
-      # Commit the changes if any back to the repo
+      # ---------------------------------------------------
+      # 5 – commit & push artefacts (if they changed)
+      # ---------------------------------------------------
+      - name: Configure git identity
+        run: |
+          git config --global user.name  "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
       - name: Commit and push results
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add ./output_data/toohey_species_occurrences.rds
-          git add ./logs/*
-          git commit -m 'Toohey occ data updated' || echo "No changes to commit"
-          git push origin main
+          git add output_data/toohey_species_occurrences.rds || true
+          git add logs || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Automated ALA data update"
+            git push origin HEAD:main
+          else
+            echo "No changes to commit"
+          fi
