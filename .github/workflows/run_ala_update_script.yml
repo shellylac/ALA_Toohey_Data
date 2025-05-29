@@ -13,76 +13,72 @@ name: Update ALA data
 
 on:
   schedule:
-    # Every Wednesday at 14 :10 UTC  →  Thursday 00 :10 (AEST, Brisbane)
-    - cron: '10 14 * * Wed'
-  workflow_dispatch:          # allow manual runs
+    - cron: "10 14 * * Wed"  # Runs every Wednesday at 14:10 UTC, which is 12:10 am Thursday in Brisbane
+  workflow_dispatch: # Allows manual triggering if needed
 
 jobs:
   update-ALA-data:
-    runs-on: ubuntu-24.04     # deterministic; avoids silent image flips
-
-    env:
-      # Keep renv’s cache inside the workspace so the cache action can save it
-      RENV_PATHS_CACHE: ${{ github.workspace }}/.renv
+    runs-on: ubuntu-latest
 
     steps:
-      # ---------------------------------------------------
-      # 0 – checkout
-      # ---------------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # Updated to v4
 
-      # ---------------------------------------------------
-      # 1 – R toolchain
-      # ---------------------------------------------------
-      - name: Set up R (4.4.1)
+      - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: '4.4.1'
-          use-public-rspm: true      # binaries when available
+          r-version: "4.5.0"  # Updated to latest stable R version
+          use-public-rspm: true
 
-      # ---------------------------------------------------
-      # 2 – system libraries (needed if some packages arrive only as source)
-      # ---------------------------------------------------
-      - name: Install system libraries
+      - name: Cache R packages
+        uses: actions/cache@v4  # Updated to v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-packages-${{ hashFiles('**/DESCRIPTION') }}-v2
+          restore-keys: |
+            ${{ runner.os }}-r-packages-
+
+      - name: Install system dependencies
         run: |
-          sudo apt-get update -qq
+          sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             libcurl4-openssl-dev \
+            libxml2-dev \
             libssl-dev \
-            libgit2-dev
+            libgdal-dev \
+            libudunits2-dev
 
-      # ---------------------------------------------------
-      # 3 – restore & cache the renv library
-      #     (runs `renv::restore()` behind the scenes)
-      # ---------------------------------------------------
-      - name: Restore renv library
-        uses: r-lib/actions/setup-renv@v2
-        with:
-          # bump this number if you ever need to nuke-and-rebuild the cache
-          cache-version: 2
-
-      # ---------------------------------------------------
-      # 4 – run the data-update script
-      # ---------------------------------------------------
-      - name: Update ALA data
-        run: Rscript -e 'source("R/get_ALA_data.R")'
-
-      # ---------------------------------------------------
-      # 5 – commit & push artefacts (if they changed)
-      # ---------------------------------------------------
-      - name: Configure git identity
+      - name: Install R packages
         run: |
-          git config --global user.name  "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          Rscript -e "
+          # Install packages directly without renv
+          packages <- c('pak', 'dplyr', 'readr', 'purrr', 'lubridate',
+                       'testthat', 'galah', 'sf', 'tidyr', 'httr', 'jsonlite')
+
+          # Check which packages need installation
+          installed <- rownames(installed.packages())
+          to_install <- packages[!packages %in% installed]
+
+          if (length(to_install) > 0) {
+            install.packages(to_install, repos = 'https://cloud.r-project.org')
+          }
+
+          # Verify all packages loaded successfully
+          for (pkg in packages) {
+            if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+              stop(paste('Failed to load package:', pkg))
+            }
+          }
+          "
+
+      - name: Update ALA data
+        run: Rscript -e 'source("./R/get_ALA_data.R")'
 
       - name: Commit and push results
         run: |
-          git add output_data/toohey_species_occurrences.rds || true
-          git add logs || true
-          if ! git diff --cached --quiet; then
-            git commit -m "Automated ALA data update"
-            git push origin HEAD:main
-          else
-            echo "No changes to commit"
-          fi
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add ./output_data/toohey_species_occurrences.rds
+          git add ./logs/*
+          git commit -m 'Toohey occ data updated [$(date)]' || echo "No changes to commit"
+          git push origin main
