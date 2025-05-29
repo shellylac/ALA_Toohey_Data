@@ -1,3 +1,10 @@
+# -------------------------------------
+# Weekly overnight jobs that refreshes Toohey Forest ALA records with recent iNat
+# data, every Thurs-Sun
+# commits the updated .rds file + log files, and pushes them back to the main branch.
+
+name: Update iNAT data
+
 on:
   schedule:
     - cron: "0 15 * * Wed"  # Runs every Wed at 15:00 UTC, which is 3:00 am Thurs in Brisbane
@@ -12,59 +19,57 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Updated to v4
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.4.1"
+          r-version: "4.5.0"  # Updated to latest stable R version
           use-public-rspm: true
 
-      # - name: Install OS dependencies # need to install libcurl for anuthing that depends on curl
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
-
       - name: Cache R packages
-        uses: actions/cache@v3 # Cache packages so won't be compiled everytime job is run
+        uses: actions/cache@v4  # Updated to v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/update_occurrences_iNatAPI.R') }}
-          restore-keys: ${{ runner.os }}-scriptname-
+          key: ${{ runner.os }}-r-packages-${{ hashFiles('**/DESCRIPTION') }}-v2
+          restore-keys: |
+            ${{ runner.os }}-r-packages-
 
-      - name: Install packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: |
-            pak
-            dplyr
-            readr
-            purrr
-            lubridate
-            testthat
-            galah
-            sf
-            tidyr
-            httr
-            jsonlite
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libcurl4-openssl-dev \
+            libxml2-dev \
+            libssl-dev \
+            libgdal-dev \
+            libudunits2-dev
 
-      # renv is part of your project, so installing it directly from CRAN or using the bootstrap in your project
-      # - name: Install renv
-      #  run: Rscript -e 'install.packages("renv", repos = "https://cloud.r-project.org")'
+      - name: Install R packages
+        run: |
+          Rscript -e "
+          # Install packages directly without renv
+          packages <- c('pak', 'dplyr', 'readr', 'purrr', 'lubridate',
+                       'testthat', 'galah', 'sf', 'tidyr', 'httr', 'jsonlite')
 
-      # cache R packages for efficiency
-      # - name: Cache R packages
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ${{ env.R_LIBS_USER }}
-      #     key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
+          # Check which packages need installation
+          installed <- rownames(installed.packages())
+          to_install <- packages[!packages %in% installed]
 
-      # After caching:
-      # - name: Restore R environment
-      #   run: Rscript -e 'renv::restore()'
+          if (length(to_install) > 0) {
+            install.packages(to_install, repos = 'https://cloud.r-project.org')
+          }
+
+          # Verify all packages loaded successfully
+          for (pkg in packages) {
+            if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
+              stop(paste('Failed to load package:', pkg))
+            }
+          }
+          "
 
       # Run the update script
-      - name: Update ALA data
+      - name: Update ALA data with iNat data
         run: Rscript -e 'source("./R/update_occurrences_iNatAPI.R")'
 
       # Commit the changes if any back to the repo
@@ -74,5 +79,5 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add ./output_data/toohey_species_occurrences.rds
           git add ./logs/*
-          git commit -m 'Toohey occ data updated' || echo "No changes to commit"
+          git commit -m 'Toohey occ data updated [$(date)]' || echo "No changes to commit"
           git push origin main

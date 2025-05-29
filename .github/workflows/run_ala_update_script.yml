@@ -3,11 +3,7 @@
 # Weekly overnight job that refreshes Toohey Forest ALA records, every Thurs
 # commits the updated .rds file + log files, and pushes
 # them back to the main branch.
-#
-#  ▸ Uses `setup-renv@v2`  ➜  renv::restore() + smart caching
-#  ▸ Explicitly targets the new Ubuntu 24.04 runner image
-#  ▸ Installs a few build-time system libraries just in case
-#  ▸ Still runs under R 4.4.1 (switch to 4.5.0 when ready)
+
 
 name: Update ALA data
 
