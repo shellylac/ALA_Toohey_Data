@@ -36,6 +36,7 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
+            pak
             dplyr
             readr
             purrr
