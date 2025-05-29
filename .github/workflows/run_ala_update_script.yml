@@ -1,71 +1,74 @@
 # .github/workflows/update-ala-data.yml
-# -------------------------------------
-# Weekly job that refreshes Toohey Forest ALA records every Thurs,
-# commits the updated .rds file + log files, and pushes
-# them back to the main branch.
-
-name: Update ALA data
-
 on:
   schedule:
-    - cron: '10 14 * * Wed'     # Wed 14:10 UTC  → Thu 00:10 AEST
+    - cron: '10 14 * * Wed'          # Wed 14:10 UTC → Thu 00:10 AEST
   workflow_dispatch:
 
 jobs:
   update-ALA-data:
-    runs-on: ubuntu-24.04        # explicit image
-
-    env:
-      RENV_PATHS_CACHE: ${{ github.workspace }}/.renv
+    runs-on: ubuntu-latest           # keep using latest
 
     steps:
-      # 0 ───────────────────────────────────────────
+      # -------------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      # 1 ───────────────────────────────────────────
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: '4.5.0'
           use-public-rspm: true
 
-      # 2 ───────────────────────────────────────────
+      # -------------------------------------------------
+      # NEW: system libraries that the failing packages need
+      # -------------------------------------------------
       - name: Install system libraries
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            libcurl4-openssl-dev \
-            libssl-dev \
-            libgit2-dev \
-            libudunits2-dev \
-            libgdal-dev \
-            libgeos-dev \
-            libproj-dev
+            libcurl4-openssl-dev \   # curl/httr
+            libssl-dev \             # openssl users
+            libgit2-dev \            # git2r / pak
+            libudunits2-dev \        # units / sf
+            libgdal-dev libgeos-dev libproj-dev \  # sf
+            libsecret-1-dev          # keyring
+      # If something else complains later, just add its dev package here.
 
-      # 3 ───────────────────────────────────────────
-      - name: Restore renv library
-        uses: r-lib/actions/setup-renv@v2
+      # -------------------------------------------------
+      # Cache — bump the key so the first run rebuilds a clean cache
+      # -------------------------------------------------
+      - name: Cache R packages
+        uses: actions/cache@v3
         with:
-          cache-version: 2           # forces a clean cache the first run
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-scriptname-v2-${{ hashFiles('./R/get_ALA_data.R') }}
+          restore-keys: ${{ runner.os }}-scriptname-v2-
 
-      # 4 ───────────────────────────────────────────
+      # -------------------------------------------------
+      - name: Install packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            dplyr
+            readr
+            purrr
+            lubridate
+            testthat
+            galah
+            sf
+            tidyr
+            httr
+            jsonlite
+
+      # -------------------------------------------------
       - name: Update ALA data
-        run: Rscript -e 'source("R/get_ALA_data.R")'
-
-      # 5 ───────────────────────────────────────────
-      - name: Configure git identity
-        run: |
-          git config --global user.name  "GitHub Actions"
-          git config --global user.email "actions@github.com"
+        run: Rscript -e 'source("./R/get_ALA_data.R")'
 
       - name: Commit and push results
         run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name  "GitHub Actions"
           git add output_data/toohey_species_occurrences.rds || true
           git add logs || true
-          if ! git diff --cached --quiet; then
-            git commit -m "Automated ALA data update"
-            git push origin HEAD:main
-          else
-            echo "No changes to commit"
-          fi
+          git commit -m 'Toohey occ data updated' || echo "No changes to commit"
+          git push origin main
