@@ -1,3 +1,10 @@
+# -------------------------------------
+# Weekly overnight job that refreshes Toohey Forest ALA records
+# data, every Thurs
+# commits the updated .rds file + log files, and pushes them back to the main branch.
+
+name: Update ALA data
+
 on:
   schedule:
     - cron: "10 14 * * Wed"  # Runs every Wednesday at 14:30 UTC, which is 12:10 am Thursday in Brisbane
@@ -9,21 +16,21 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4  # CHANGE: Updated from v3
+        uses: actions/checkout@v4
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.5.0"  # CHANGE: Updated from 4.4.1
+          r-version: "4.5.0"
           use-public-rspm: true
 
-      - name: Install OS dependencies  # CHANGE: Uncommented this section
+      - name: Install OS dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
 
       - name: Cache R packages
-        uses: actions/cache@v4  # CHANGE: Updated from v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/get_ALA_data.R') }}

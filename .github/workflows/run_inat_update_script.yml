@@ -19,57 +19,45 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.5.0"  # Updated to latest stable R version
+          r-version: "4.5.0"
           use-public-rspm: true
 
-      - name: Cache R packages
-        uses: actions/cache@v4  # Updated to v4
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-packages-${{ hashFiles('**/DESCRIPTION') }}-v2
-          restore-keys: |
-            ${{ runner.os }}-r-packages-
-
-      - name: Install system dependencies
+      - name: Install OS dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            libcurl4-openssl-dev \
-            libxml2-dev \
-            libssl-dev \
-            libgdal-dev \
-            libudunits2-dev
+          sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
 
-      - name: Install R packages
-        run: |
-          Rscript -e "
-          # Install packages directly without renv
-          packages <- c('pak', 'dplyr', 'readr', 'purrr', 'lubridate',
-                       'testthat', 'galah', 'sf', 'tidyr', 'httr', 'jsonlite')
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/get_ALA_data.R') }}
+          restore-keys: ${{ runner.os }}-scriptname-
 
-          # Check which packages need installation
-          installed <- rownames(installed.packages())
-          to_install <- packages[!packages %in% installed]
-
-          if (length(to_install) > 0) {
-            install.packages(to_install, repos = 'https://cloud.r-project.org')
-          }
-
-          # Verify all packages loaded successfully
-          for (pkg in packages) {
-            if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
-              stop(paste('Failed to load package:', pkg))
-            }
-          }
-          "
+      - name: Install packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        env:
+          RENV_PROJECT: null  # CHANGE: This tells setup-r-dependencies to ignore renv
+        with:
+          packages: |
+            dplyr
+            readr
+            purrr
+            lubridate
+            testthat
+            galah
+            sf
+            tidyr
+            httr
+            jsonlite
 
       # Run the update script
-      - name: Update ALA data with iNat data
+      - name: Update ALA data with iNAT recent
         run: Rscript -e 'source("./R/update_occurrences_iNatAPI.R")'
 
       # Commit the changes if any back to the repo
@@ -79,5 +67,5 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add ./output_data/toohey_species_occurrences.rds
           git add ./logs/*
-          git commit -m 'Toohey occ data updated [$(date)]' || echo "No changes to commit"
+          git commit -m 'Toohey occ data updated' || echo "No changes to commit"
           git push origin main
