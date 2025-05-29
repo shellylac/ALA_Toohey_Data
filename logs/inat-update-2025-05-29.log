@@ -14,7 +14,6 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA:  1s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -44,10 +43,10 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 15
+Number of new occurrences added: 2
 
 
-Total number of occurrences in data: 33565
+Total number of occurrences in data: 33567
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -60,7 +59,7 @@ No name mismatches
 
 
 max date in updated: 
-[1] "2025-05-28"
+[1] "2025-05-29"
 
 
 List of Tara Toohey species detected: 
