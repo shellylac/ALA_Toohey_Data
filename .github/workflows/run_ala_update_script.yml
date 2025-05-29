@@ -1,80 +1,71 @@
 # .github/workflows/update-ala-data.yml
 # -------------------------------------
-# Weekly overnight job that refreshes Toohey Forest ALA records, every Thurs
+# Weekly job that refreshes Toohey Forest ALA records every Thurs,
 # commits the updated .rds file + log files, and pushes
 # them back to the main branch.
-
 
 name: Update ALA data
 
 on:
   schedule:
-    - cron: "10 14 * * Wed"  # Runs every Wednesday at 14:10 UTC, which is 12:10 am Thursday in Brisbane
-  workflow_dispatch: # Allows manual triggering if needed
+    - cron: '10 14 * * Wed'     # Wed 14:10 UTC  → Thu 00:10 AEST
+  workflow_dispatch:
 
 jobs:
   update-ALA-data:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04        # explicit image
+
+    env:
+      RENV_PATHS_CACHE: ${{ github.workspace }}/.renv
 
     steps:
+      # 0 ───────────────────────────────────────────
       - name: Check out repository
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4
 
+      # 1 ───────────────────────────────────────────
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.5.0"  # Updated to latest stable R version
+          r-version: '4.5'
           use-public-rspm: true
 
-      - name: Cache R packages
-        uses: actions/cache@v4  # Updated to v4
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-packages-${{ hashFiles('**/DESCRIPTION') }}-v2
-          restore-keys: |
-            ${{ runner.os }}-r-packages-
-
-      - name: Install system dependencies
+      # 2 ───────────────────────────────────────────
+      - name: Install system libraries
         run: |
-          sudo apt-get update
+          sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
             libcurl4-openssl-dev \
-            libxml2-dev \
             libssl-dev \
+            libgit2-dev \
+            libudunits2-dev \        # ← fixes the error
             libgdal-dev \
-            libudunits2-dev
+            libgeos-dev \
+            libproj-dev
 
-      - name: Install R packages
-        run: |
-          Rscript -e "
-          # Install packages directly without renv
-          packages <- c('pak', 'dplyr', 'readr', 'purrr', 'lubridate',
-                       'testthat', 'galah', 'sf', 'tidyr', 'httr', 'jsonlite')
+      # 3 ───────────────────────────────────────────
+      - name: Restore renv library
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 2           # forces a clean cache the first run
 
-          # Check which packages need installation
-          installed <- rownames(installed.packages())
-          to_install <- packages[!packages %in% installed]
-
-          if (length(to_install) > 0) {
-            install.packages(to_install, repos = 'https://cloud.r-project.org')
-          }
-
-          # Verify all packages loaded successfully
-          for (pkg in packages) {
-            if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
-              stop(paste('Failed to load package:', pkg))
-            }
-          }
-          "
-
+      # 4 ───────────────────────────────────────────
       - name: Update ALA data
-        run: Rscript -e 'source("./R/get_ALA_data.R")'
+        run: Rscript -e 'source("R/get_ALA_data.R")'
+
+      # 5 ───────────────────────────────────────────
+      - name: Configure git identity
+        run: |
+          git config --global user.name  "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Commit and push results
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add ./output_data/toohey_species_occurrences.rds
-          git add ./logs/*
-          git commit -m 'Toohey occ data updated [$(date)]' || echo "No changes to commit"
-          git push origin main
+          git add output_data/toohey_species_occurrences.rds || true
+          git add logs || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Automated ALA data update"
+            git push origin HEAD:main
+          else
+            echo "No changes to commit"
+          fi
