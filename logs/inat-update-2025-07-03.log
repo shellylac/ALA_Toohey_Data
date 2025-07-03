@@ -14,9 +14,15 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■■■■                           20% |  ETA:  8s
-Querying API ■■■■■■■■■■■■■■■■                  50% |  ETA:  5s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  2s
+Querying API ■■■■                              10% |  ETA: 25s
+Querying API ■■■■■■■                           20% |  ETA: 22s
+Querying API ■■■■■■■■■■                        31% |  ETA: 19s
+Querying API ■■■■■■■■■■■■■■                    42% |  ETA: 16s
+Querying API ■■■■■■■■■■■■■■■■■                 53% |  ETA: 13s
+Querying API ■■■■■■■■■■■■■■■■■■■■              64% |  ETA: 10s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           74% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       85% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  1s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -46,10 +52,10 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 8
+Number of new occurrences added: 47
 
 
-Total number of occurrences in data: 33741
+Total number of occurrences in data: 33747
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -63,8 +69,7 @@ character(0)
 The following name mismatches were found: 
 
 
-[1] "Crinia signifera"       "Demansia psammophis"    "Malurus melanocephalus"
-[4] "Tachyglossus aculeatus"
+[1] "Crinia signifera"       "Tachyglossus aculeatus"
 
 
 max date in updated: 
