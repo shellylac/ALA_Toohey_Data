@@ -12,22 +12,18 @@ st_as_s2(): dropping Z and/or M coordinate
 Request for 53271 occurrences placed in queue
 Current queue length: 1
 -----Downloading
-Querying API ■■■                                7% |  ETA: 47s
-Querying API ■■■■■                             12% |  ETA: 44s
-Querying API ■■■■■■■                           19% |  ETA: 41s
-Querying API ■■■■■■■■                          25% |  ETA: 38s
-Querying API ■■■■■■■■■■                        30% |  ETA: 35s
-Querying API ■■■■■■■■■■■■                      37% |  ETA: 32s
-Querying API ■■■■■■■■■■■■■■                    43% |  ETA: 29s
-Querying API ■■■■■■■■■■■■■■■■                  49% |  ETA: 25s
-Querying API ■■■■■■■■■■■■■■■■■                 55% |  ETA: 23s
-Querying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA: 20s
-Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA: 16s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA: 13s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         79% |  ETA: 11s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       85% |  ETA:  7s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  4s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    97% |  ETA:  2s
+Querying API ■■■                                6% |  ETA: 35s
+Querying API ■■■■■                             14% |  ETA: 32s
+Querying API ■■■■■■■■                          22% |  ETA: 29s
+Querying API ■■■■■■■■■■                        30% |  ETA: 25s
+Querying API ■■■■■■■■■■■■■                     39% |  ETA: 22s
+Querying API ■■■■■■■■■■■■■■■                   47% |  ETA: 19s
+Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA: 16s
+Querying API ■■■■■■■■■■■■■■■■■■■■              64% |  ETA: 13s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA: 10s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         81% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    98% |  ETA:  1s
 Running test suite ...
 
 ══ Testing get_alaoccs_testQA.R ════════════════════════════════════════════════
