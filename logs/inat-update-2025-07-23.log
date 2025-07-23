@@ -1,11 +1,11 @@
 ✔ Matched "citizen science" to valid download reason ID 11.
-G3;
+
 Reading in base occurrences ...
-gG3;
+
 Downloading occurrences ...
-gG3;Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
-gReading layer `toohey_forest_boundary' from data source 
-  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' 
+Date in ISO8601 format; converting timezone from UTC to "Australia/Brisbane".
+Reading layer `toohey_forest_boundary' from data source 
+  `/home/runner/work/ALA_Toohey_Data/ALA_Toohey_Data/spatial_data/toohey_forest_boundary.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 11 fields
 Geometry type: POLYGON
@@ -13,11 +13,15 @@ Dimension:     XYZ
 Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
-Warning message:
-attribute variables are assumed to be spatially constant throughout all geometries 
-G3;Adding cladistics ...
-gG3;Running test suite ...
-g
+Adding cladistics ...
+Querying API ■■■■■                             13% |  ETA: 11s
+Querying API ■■■■■■■■■■■                       35% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■■■■               59% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         81% |  ETA:  2s
+Running test suite ...
+
+══ Testing update_occs_testQA.R ════════════════════════════════════════════════
+
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 2 ]
@@ -37,29 +41,29 @@ attribute variables are assumed to be spatially constant throughout all geometri
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ]G3;
-All tests passed. Proceeding with further analysis.
-gJoining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
-G3;
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ] Done!
 
-Number of new occurrences added: 0
-gG3;
+All tests passed. Proceeding with further analysis.
+Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
+
+
+Number of new occurrences added: 17
+
 
 Total number of occurrences in data: 33918
-gG3;
+
 
 These species are missing wiki URLs - created default URLs: 
-gcharacter(0)
-G3;
+character(0)
+
 
 These species are missing image URLs: 
-gcharacter(0)
-G3;No name mismatches
-gG3;
+[1] "Trichosurus caninus"
+No name mismatches
+
 
 max date in updated: 
-g[1] "2025-07-23"
-G3;
+[1] "2025-07-23"
+
 
 List of Tara Toohey species detected: 
-g
