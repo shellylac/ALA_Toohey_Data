@@ -15,9 +15,9 @@ z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
 Querying API ■■■■■■■■                          22% |  ETA:  8s
-Querying API ■■■■■■■■■■■■■■■■■                 52% |  ETA:  5s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  2s
-Matched 48 of 50 taxonomic search terms in selected atlas (Australia).
+Querying API ■■■■■■■■■■■■■■■■                  49% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          78% |  ETA:  2s
+Matched 53 of 55 taxonomic search terms in selected atlas (Australia).
 2 unmatched search terms:
 • "Anura", "Anura"
 
@@ -50,7 +50,7 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 2
+Number of new occurrences added: 19
 
 
 Total number of occurrences in data: 33954
