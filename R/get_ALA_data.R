@@ -62,10 +62,9 @@ galah::galah_config(
 #.......................................................
 # Set parameters for ALA download
 #.......................................................
-years_past = 9
+# years_past = 9
 this_year <- lubridate::year(Sys.Date())
-start_year <- this_year - years_past
-
+start_year <- 2016
 
 #.......................................................
 # Get occurrences of all reptiles, birds and mammals, amphibians
