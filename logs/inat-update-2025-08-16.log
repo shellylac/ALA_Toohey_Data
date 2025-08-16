@@ -14,10 +14,11 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■                              11% |  ETA: 12s
-Querying API ■■■■■■■■■■■                       33% |  ETA:  9s
-Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA:  6s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          77% |  ETA:  3s
+Querying API ■■■■                              10% |  ETA: 13s
+Querying API ■■■■■■■■■■                        31% |  ETA: 10s
+Querying API ■■■■■■■■■■■■■■■■■                 52% |  ETA:  7s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           75% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  1s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -47,10 +48,10 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 0
+Number of new occurrences added: 1
 
 
-Total number of occurrences in data: 34060
+Total number of occurrences in data: 34061
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -63,7 +64,11 @@ No name mismatches
 
 
 max date in updated: 
-[1] "2025-08-15"
+[1] "2025-08-16"
 
 
 List of Tara Toohey species detected: 
+# A tibble: 1 × 4
+  vernacular_name      eventDate  eventTime google_maps_url                     
+  <chr>                <chr>      <chr>     <chr>                               
+1 Short-beaked Echidna 2025-08-16 22:00:37  https://www.google.com/maps?q=-27.5…
