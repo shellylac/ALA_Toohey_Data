@@ -14,12 +14,12 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■                                7% |  ETA: 16s
-Querying API ■■■■■■■■■                         25% |  ETA: 13s
-Querying API ■■■■■■■■■■■■■■                    43% |  ETA: 10s
-Querying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA:  7s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         79% |  ETA:  4s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  1s
+Querying API ■■■                                7% |  ETA: 17s
+Querying API ■■■■■■■■                          23% |  ETA: 14s
+Querying API ■■■■■■■■■■■■■                     40% |  ETA: 11s
+Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89% |  ETA:  2s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -49,7 +49,7 @@ All tests passed. Proceeding with further analysis.
 Joining with `by = join_by(latitude, longitude, eventDate, eventTime, species)`
 
 
-Number of new occurrences added: 20
+Number of new occurrences added: 0
 
 
 Total number of occurrences in data: 34672
