@@ -35,26 +35,15 @@ jobs:
       - name: Cache R packages
         uses: actions/cache@v4
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/get_ALA_data.R') }}
-          restore-keys: ${{ runner.os }}-scriptname-
+          path: ~/.local/share/renv/cache
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
 
-      - name: Install packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        env:
-          RENV_PROJECT: null  # CHANGE: This tells setup-r-dependencies to ignore renv
-        with:
-          packages: |
-            dplyr
-            readr
-            purrr
-            lubridate
-            testthat
-            galah
-            sf
-            tidyr
-            httr
-            jsonlite
+      - name: Restore renv library
+        run: |
+          Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
+          Rscript -e 'renv::restore()'
 
       # Run the update script
       - name: Update ALA data with iNAT recent
