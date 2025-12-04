@@ -1,5 +1,5 @@
 Reading layer `toohey_forest_boundary' from data source 
-  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' 
+  `/home/runner/work/ALA_Toohey_Data/ALA_Toohey_Data/spatial_data/toohey_forest_boundary.shp' 
   using driver `ESRI Shapefile'
 Simple feature collection with 1 feature and 11 fields
 Geometry type: POLYGON
@@ -8,99 +8,33 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 ✔ Matched "citizen science" to valid download reason ID 11.
-G3;st_as_s2(): dropping Z and/or M coordinate
-gRequest for 54378 occurrences placed in queue
+st_as_s2(): dropping Z and/or M coordinate
+Request for 54378 occurrences placed in queue
 Current queue length: 1
--------Downloading
-indexed 0B in  0s, 0B/sindexed 2.15GB in  0s, 2.15GB/s                                                                                G3;Querying API ■■■                                8% |  ETA: 14s
-gG3;Querying API ■■■                                8% |  ETA: 15s
-gG3;Querying API ■■■■                              10% |  ETA: 15s
-gG3;Querying API ■■■■                              10% |  ETA: 15s
-gG3;Querying API ■■■■■                             12% |  ETA: 15s
-gG3;Querying API ■■■■■                             13% |  ETA: 15s
-gG3;Querying API ■■■■■                             14% |  ETA: 16s
-gG3;Querying API ■■■■■                             14% |  ETA: 17s
-gG3;Querying API ■■■■■■                            16% |  ETA: 17s
-gG3;Querying API ■■■■■■                            17% |  ETA: 16s
-gG3;Querying API ■■■■■■                            17% |  ETA: 16s
-gG3;Querying API ■■■■■■■                           19% |  ETA: 16s
-gG3;Querying API ■■■■■■■                           19% |  ETA: 16s
-gG3;Querying API ■■■■■■■                           20% |  ETA: 16s
-gG3;Querying API ■■■■■■■                           21% |  ETA: 16s
-gG3;Querying API ■■■■■■■■                          22% |  ETA: 16s
-gG3;Querying API ■■■■■■■■                          22% |  ETA: 16s
-gG3;Querying API ■■■■■■■■                          24% |  ETA: 16s
-gG3;Querying API ■■■■■■■■                          24% |  ETA: 16s
-gG3;Querying API ■■■■■■■■■                         26% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■                         27% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■                         28% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■                         28% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■■                        28% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■■                        29% |  ETA: 16s
-gG3;Querying API ■■■■■■■■■■                        30% |  ETA: 16s
-gG3;Querying API ■■■■■■■■■■                        31% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■■                        31% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■■■                       33% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■■■                       34% |  ETA: 15s
-gG3;Querying API ■■■■■■■■■■■                       35% |  ETA: 14s
-gG3;Querying API ■■■■■■■■■■■■                      36% |  ETA: 14s
-gG3;Querying API ■■■■■■■■■■■■                      37% |  ETA: 14s
-gG3;Querying API ■■■■■■■■■■■■■                     38% |  ETA: 13s
-gG3;Querying API ■■■■■■■■■■■■■                     40% |  ETA: 13s
-gG3;Querying API ■■■■■■■■■■■■■                     41% |  ETA: 13s
-gG3;Querying API ■■■■■■■■■■■■■■                    42% |  ETA: 12s
-gG3;Querying API ■■■■■■■■■■■■■■                    43% |  ETA: 12s
-gG3;Querying API ■■■■■■■■■■■■■■                    44% |  ETA: 12s
-gG3;Querying API ■■■■■■■■■■■■■■■                   46% |  ETA: 12s
-gG3;Querying API ■■■■■■■■■■■■■■■                   46% |  ETA: 11s
-gG3;Querying API ■■■■■■■■■■■■■■■                   47% |  ETA: 11s
-gG3;Querying API ■■■■■■■■■■■■■■■                   48% |  ETA: 11s
-gG3;Querying API ■■■■■■■■■■■■■■■■                  49% |  ETA: 11s
-gG3;Querying API ■■■■■■■■■■■■■■■■                  51% |  ETA: 10s
-gG3;Querying API ■■■■■■■■■■■■■■■■■                 52% |  ETA: 10s
-gG3;Querying API ■■■■■■■■■■■■■■■■■                 53% |  ETA: 10s
-gG3;Querying API ■■■■■■■■■■■■■■■■■                 55% |  ETA:  9s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA:  9s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■                58% |  ETA:  9s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■               59% |  ETA:  9s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■               60% |  ETA:  8s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■               62% |  ETA:  8s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■              63% |  ETA:  7s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■              65% |  ETA:  7s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■             66% |  ETA:  7s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA:  6s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■             68% |  ETA:  6s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■            69% |  ETA:  6s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■            70% |  ETA:  6s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA:  6s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■           72% |  ETA:  6s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA:  5s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■           75% |  ETA:  5s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          76% |  ETA:  5s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          77% |  ETA:  4s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         79% |  ETA:  4s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  4s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         82% |  ETA:  4s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% |  ETA:  3s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        84% |  ETA:  3s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% |  ETA:  3s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  3s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% |  ETA:  2s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      90% |  ETA:  2s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  2s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     92% |  ETA:  1s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  1s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    95% |  ETA:  1s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  1s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    97% |  ETA:  1s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    98% |  ETA:  0s
-gG3;Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% |  ETA:  0s
-gG3;Matched 228 of 229 taxonomic search terms in selected atlas (Australia).
-gG3;1 unmatched search term:
-gG3;• "ANURA"
-g
-G3;Running test suite ...
-g
+-----Downloading
+Querying API ■■                                 3% |  ETA: 46s
+Querying API ■■■■                               9% |  ETA: 43s
+Querying API ■■■■■■                            16% |  ETA: 40s
+Querying API ■■■■■■■■                          22% |  ETA: 37s
+Querying API ■■■■■■■■■■                        28% |  ETA: 33s
+Querying API ■■■■■■■■■■■                       35% |  ETA: 30s
+Querying API ■■■■■■■■■■■■■                     41% |  ETA: 27s
+Querying API ■■■■■■■■■■■■■■■                   48% |  ETA: 24s
+Querying API ■■■■■■■■■■■■■■■■■                 55% |  ETA: 21s
+Querying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA: 18s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA: 15s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           74% |  ETA: 12s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  9s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  6s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     93% |  ETA:  3s
+Matched 228 of 229 taxonomic search terms in selected atlas (Australia).
+1 unmatched search term:
+• "ANURA"
+
+Running test suite ...
+
+══ Testing get_alaoccs_testQA.R ════════════════════════════════════════════════
+
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 2 ]
@@ -121,20 +55,21 @@ Current queue length: 1
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ]
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ]
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 20 ]G3;
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 20 ] Done!
+
 All tests passed. Proceeding with further analysis.
-gG3;
+
 
 Total number of occurrences in data: 34922
-gG3;
+
 
 max date in updated: 
-g[1] "2025-11-27"
-G3;
+[1] "2025-11-27"
+
 
 These species are missing wiki URLs - created default URLs: 
-gcharacter(0)
-G3;
+character(0)
+
 
 These species are missing image URLs: 
-gcharacter(0)
+character(0)
