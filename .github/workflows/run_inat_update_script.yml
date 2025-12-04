@@ -35,7 +35,8 @@ jobs:
             libudunits2-dev \
             libgdal-dev \
             libgeos-dev \
-            libproj-dev
+            libproj-dev \
+            libsecret-1-dev
 
       - name: Cache R packages
         uses: actions/cache@v4
