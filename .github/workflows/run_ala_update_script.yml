@@ -12,7 +12,7 @@ on:
 
 jobs:
   update-ALA-data:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # Pinned to Ubuntu 24.04 LTS
 
     steps:
       - name: Check out repository
@@ -27,31 +27,26 @@ jobs:
       - name: Install OS dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
+          sudo apt-get install -y --no-install-recommends \
+            libcurl4-openssl-dev \
+            libudunits2-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev \
+            libsecret-1-dev
 
       - name: Cache R packages
         uses: actions/cache@v4
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-scriptname-${{ hashFiles('./R/get_ALA_data.R') }}
-          restore-keys: ${{ runner.os }}-scriptname-
+          path: renv/library
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
 
-      - name: Install packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        env:
-          RENV_PROJECT: null  # CHANGE: This tells setup-r-dependencies to ignore renv
-        with:
-          packages: |
-            dplyr
-            readr
-            purrr
-            lubridate
-            testthat
-            galah
-            sf
-            tidyr
-            httr
-            jsonlite
+      - name: Restore renv library
+        run: |
+          Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
+          Rscript -e 'renv::restore()'
 
       - name: Update ALA data
         run: Rscript -e 'source("./R/get_ALA_data.R")'
