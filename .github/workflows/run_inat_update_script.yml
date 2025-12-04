@@ -15,7 +15,7 @@ on:
 
 jobs:
   update-iNat-data:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # Pinned to Ubuntu 24.04 LTS
 
     steps:
       - name: Check out repository
@@ -30,7 +30,12 @@ jobs:
       - name: Install OS dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libcurl4-openssl-dev
+          sudo apt-get install -y --no-install-recommends \
+            libcurl4-openssl-dev \
+            libudunits2-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev
 
       - name: Cache R packages
         uses: actions/cache@v4
