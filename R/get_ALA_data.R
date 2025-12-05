@@ -38,10 +38,26 @@ STATS_GREEN = "#B3FFB3"
 # Set logging ----
 #.......................................................
 
-logfile <- get_log_filename(type = "ala")
-tmp <- file(logfile, open = "wt")
-sink(tmp, type = "message")
-sink(tmp, type = "output")
+# Set logging ----
+logfile <- get_log_filename(type = "inat")
+log_conn <- file(logfile, open = "wt")
+
+# Ensure cleanup happens no matter what
+on.exit(
+  {
+    sink(type = "message")
+    sink(type = "output")
+    if (exists("log_conn") && isOpen(log_conn)) {
+      close(log_conn)
+    }
+  },
+  add = TRUE
+)
+
+# Now redirect output
+sink(log_conn, type = "message")
+sink(log_conn, type = "output")
+
 
 #.......................................................
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
@@ -274,6 +290,7 @@ readr::write_rds(
   compress = "gz"
 )
 
-#Turn off logging
-sink()
-closeAllConnections()
+# Turn off logging ----
+sink(type = "message")
+sink(type = "output")
+close(log_conn)

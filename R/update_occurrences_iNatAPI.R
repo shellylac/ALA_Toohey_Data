@@ -29,11 +29,24 @@
 source("./R/functions.R")
 
 # Set logging ----
-
 logfile <- get_log_filename(type = "inat")
-tmp <- file(logfile, open = "wt")
-sink(tmp, type = "message")
-sink(tmp, type = "output")
+log_conn <- file(logfile, open = "wt")
+
+# Ensure cleanup happens no matter what
+on.exit(
+  {
+    sink(type = "message")
+    sink(type = "output")
+    if (exists("log_conn") && isOpen(log_conn)) {
+      close(log_conn)
+    }
+  },
+  add = TRUE
+)
+
+# Now redirect output
+sink(log_conn, type = "message")
+sink(log_conn, type = "output")
 
 
 # Configure ALA ----
@@ -342,6 +355,7 @@ if (any(test_results == "expectation_failure")) {
   )
 }
 
-#Turn off logging ----
-sink()
-closeAllConnections()
+# Turn off logging ----
+sink(type = "message")
+sink(type = "output")
+close(log_conn)
