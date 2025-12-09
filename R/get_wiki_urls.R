@@ -20,12 +20,67 @@ base_url <- "https://api.inaturalist.org/v1/observations"
 
 wiki_data <- data.frame()
 page_num <- 1
+max_retries <- 3
+retry_delay <- 5 # seconds
 
 while (TRUE) {
-  parsed <- fetch_page(base_url, query_str, page_num)
-  # If there are no new occurrences  - then break loop
-  if (is.null(parsed$results$id)) break
+  # Add delay between requests to respect rate limits
+  if (page_num > 1) {
+    Sys.sleep(1) # 1 second delay between pages
+  }
 
+  # Add extra delay every 25 pages (roughly every minute)
+  if (page_num %% 20 == 0) {
+    print(paste("Pausing for 30 seconds at page", page_num))
+    Sys.sleep(30)
+  }
+
+  # Retry logic
+  success <- FALSE
+  for (attempt in 1:max_retries) {
+    tryCatch(
+      {
+        parsed <- fetch_page(base_url, query_str, page_num)
+        success <- TRUE
+        print(paste('Done parsing page', page_num))
+        break # Exit retry loop on success
+      },
+      error = function(e) {
+        if (grepl("403", e$message)) {
+          warning(paste(
+            "Rate limit hit on page",
+            page_num,
+            "- attempt",
+            attempt
+          ))
+          if (attempt < max_retries) {
+            Sys.sleep(retry_delay * attempt) # Exponential backoff
+          }
+        } else {
+          stop(e) # Re-throw non-403 errors
+        }
+      }
+    )
+  }
+
+  # If all retries failed, save progress and exit
+  if (!success) {
+    warning(paste(
+      "Failed after",
+      max_retries,
+      "attempts. Saving progress up to page",
+      page_num - 1
+    ))
+    break
+  }
+
+  # If no results, we've reached the end
+  if (is.null(parsed$results$id) || length(parsed$results$id) == 0) {
+    print("No more results - completed successfully")
+    break
+  }
+
+  # Extract wiki fields
   wiki_fields <- c(
     "taxon.name",
     "taxon.preferred_common_name",
@@ -34,14 +89,24 @@ while (TRUE) {
   )
 
   wiki_existing_fields <- wiki_fields[wiki_fields %in% names(parsed$results)]
-
   wiki_observations_df <- parsed$results[, wiki_existing_fields, drop = FALSE]
   wiki_data <- dplyr::bind_rows(wiki_data, wiki_observations_df)
+
+  # Optional: Save progress periodically
+  if (page_num %% 10 == 0) {
+    saveRDS(wiki_data, paste0("wiki_data_checkpoint_page_", page_num, ".rds"))
+    print(paste(
+      "Checkpoint saved at page",
+      page_num,
+      "- Total rows:",
+      nrow(wiki_data)
+    ))
+  }
 
   page_num <- page_num + 1
 }
 
-
+# Update with extra URLS
 wiki_urls <- wiki_data |>
   distinct() |>
   mutate(
@@ -105,13 +170,13 @@ wiki_urls <- wiki_data |>
 #                  compress = "gz")
 #..................................................................................
 
-missing_species_urls <- readr::read_rds(
-  "./output_data/missing_species_urls.rds"
-)
+# missing_species_urls <- readr::read_rds(
+#   "./output_data/missing_species_urls.rds"
+# )
 
 wiki_urls_list <- wiki_urls |>
   select(species, wikipedia_url) |>
-  bind_rows(missing_species_urls) |>
+  # bind_rows(missing_species_urls) |>
   distinct(species, .keep_all = TRUE)
 
 
