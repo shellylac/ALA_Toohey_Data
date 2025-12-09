@@ -118,7 +118,7 @@ occ_cladistics <- add_cladistics(
 #.......................................................
 # Get Wiki URLS and Images datasets (created by previously run scripts)
 #.......................................................
-wiki_urls_df <- readr::read_rds("./output_data/wiki_urls_df.rds")
+wiki_urls_df <- readr::read_rds("./output_data/wiki_urls.rds")
 
 image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 
