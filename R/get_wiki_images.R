@@ -81,13 +81,16 @@ image_urls_df <- data.frame(wiki_url = urls, image_url = image_urls) |>
       wiki_url == "https://en.wikipedia.org/wiki/Ctenotus_spaldingi" ~
         "https://www.jcu.edu.au/__data/assets/image/0010/97372/366939.3.jpg",
       wiki_url == "https://en.wikipedia.org/wiki/Morethia_taeniopleura" ~
-        "https://wildnet.itp.qld.gov.au/wws/images/3487?f=.jpg",
+        "https://www.jcu.edu.au/discover-nature-at-jcu/animals/reptiles-and-amphibians-by-scientific-name/morethia-taeniopleura/366173.3.jpg",
       wiki_url == "https://en.wikipedia.org/wiki/Calyptotis_scutirostrum" ~
-        "https://wildnet.itp.qld.gov.au/wws/images/25830?f=.jpg",
+        "https://n.b5z.net/i/u/10092244/i/Calyptotis_scutirostrum550a.jpg",
       wiki_url == "https://en.wikipedia.org/wiki/Cacophis_harriettae" ~
         "https://www.snakecatchers.com.au/images/gallery/WC-image.png",
       wiki_url == "https://en.wikipedia.org/wiki/Ophioscincus_ophioscincus" ~
         "https://www.biolib.cz/IMG/GAL/364317.jpg",
+      wiki_url ==
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_LC.svg/250px-Status_iucn3.1_LC.svg.png" ~
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Dubious_Dtella_foraging_in_the_house.jpg/500px-Dubious_Dtella_foraging_in_the_house.jpg",
       .default = image_url
     )
   )
@@ -101,7 +104,7 @@ readr::write_rds(
 # For dev testing only
 # base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
 # image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
-#
+
 # base_occs_imageurls <- base_occs |>
 #   dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
 #
