@@ -258,7 +258,7 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile) {
 }
 
 
-# Function to correct different vernacular name spellings
+# Function to correct different vernacular name spellings ----
 fix_common_names <- function(string) {
   corrected_common_names <- case_match(
     string,
@@ -271,6 +271,7 @@ fix_common_names <- function(string) {
     "Australian Shining Bronze-cuckoo" ~ "Shining Bronze-cuckoo",
     "Australian Sacred Kingfisher" ~ "Sacred Kingfisher",
     "Australian Peregrine Falcon" ~ "Peregrine Falcon",
+    "Australasian Great Cormorant" ~ "Great Cormorant",
     "Buff-breasted Scrubwren" ~ "White-browed Scrubwren",
     "Black-faced Cuckooshrike" ~ "Black-faced Cuckoo-shrike",
     "Coastal New South Wales Australian Magpie" ~ "Australian Magpie",
@@ -295,6 +296,7 @@ fix_common_names <- function(string) {
     "Eastern Koel" ~ "Torresian Eastern Koel",
     "Graceful Tree Frog" ~ "Dainty Green Tree Frog",
     "Grey Shrikethrush" ~ "Grey Shrike-thrush",
+    "Gray Shrikethrush" ~ "Grey Shrike-thrush",
     "Green Figbird" ~ "Australasian Figbird",
     "Lively Rainbow Skink" ~ "Tussock Rainbow-skink",
     "Tussock Rainbow Skink" ~ "Tussock Rainbow-skink",
