@@ -77,7 +77,7 @@ image_urls <- purrr::map_chr(urls, safe_get_infobox_image, .progress = TRUE)
 image_urls_df <- data.frame(wiki_url = urls, image_url = image_urls) |>
   # Replace incorrect images
   dplyr::mutate(
-    image_url = case_when(
+    image_url = dplyr::case_when(
       wiki_url == "https://en.wikipedia.org/wiki/Ctenotus_spaldingi" ~
         "https://www.jcu.edu.au/__data/assets/image/0010/97372/366939.3.jpg",
       wiki_url == "https://en.wikipedia.org/wiki/Morethia_taeniopleura" ~
@@ -88,8 +88,7 @@ image_urls_df <- data.frame(wiki_url = urls, image_url = image_urls) |>
         "https://www.snakecatchers.com.au/images/gallery/WC-image.png",
       wiki_url == "https://en.wikipedia.org/wiki/Ophioscincus_ophioscincus" ~
         "https://www.biolib.cz/IMG/GAL/364317.jpg",
-      wiki_url ==
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Status_iucn3.1_LC.svg/250px-Status_iucn3.1_LC.svg.png" ~
+      wiki_url == "http://en.wikipedia.org/wiki/Dubious_dtella" ~
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Dubious_Dtella_foraging_in_the_house.jpg/500px-Dubious_Dtella_foraging_in_the_house.jpg",
       .default = image_url
     )
