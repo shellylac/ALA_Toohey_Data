@@ -294,6 +294,7 @@ fix_common_names <- function(string) {
     "Eastern Short-beaked Echidna" ~ "Short-beaked Echidna",
     "Eastern Australian Koel" ~ "Torresian Eastern Koel",
     "Eastern Koel" ~ "Torresian Eastern Koel",
+    "South-east Eastern Koel" ~ "Torresian Eastern Koel",
     "Graceful Tree Frog" ~ "Dainty Green Tree Frog",
     "Grey Shrikethrush" ~ "Grey Shrike-thrush",
     "Gray Shrikethrush" ~ "Grey Shrike-thrush",
@@ -307,7 +308,6 @@ fix_common_names <- function(string) {
     "Southern Bar-sided Skink" ~ "Barred-sided Skink",
     "Southern Laughing Kookaburra" ~ "Laughing Kookaburra",
     "Masked Lapwing" ~ "Southern Masked Lapwing",
-    "South-east Eastern Koel" ~ "Eastern Koel",
     "South-eastern Glossy Black-cockatoo" ~ "Glossy Black-cockatoo",
     "South-eastern Grey Fantail" ~ "Grey Fantail",
     "Superb Fairywren" ~ "Superb Fairy-wren",
@@ -320,6 +320,45 @@ fix_common_names <- function(string) {
     "Yellow-tailed Black Cockatoo" ~ "Yellow-tailed Black-cockatoo",
     "Scarlet Myzomela" ~ "Scarlet Honeyeater",
     "South-eastern Yellow-faced Honeyeater" ~ "Yellow-faced Honeyeater",
+    "Eastern Sulphur-crested Cockatoo" ~ "Sulphur-crested Cockatoo",
+    "Eastern Little Corella" ~ "Little Corella",
+    "South-east Eastern Spinebill" ~ "Eastern Spinebill",
+    "Southern Australian King-parrot" ~ "Australian King-parrot",
+    "Eastern Grey Shrike-thrush" ~ "Grey Shrike-thrush",
+    "Mainland Black-faced Cuckoo-shrike" ~ "Black-faced Cuckoo-shrike",
+    "Australian Torresian Crow" ~ "Torresian Crow",
+    "Eastern Pied Butcherbird" ~ "Pied Butcherbird",
+    "South-eastern Grey Butcherbird" ~ "Grey Butcherbird",
+    "Southern Spangled Drongo" ~ "Spangled Drongo",
+    "Eastern Common Cicadabird" ~ "Cicadabird",
+    "Eastern Blue-faced Honeyeater" ~ "Blue-faced Honeyeater",
+    "North-eastern Yellow Robin" ~ "Eastern Yellow Robin",
+    "Southern Magpie-lark" ~ "Magpie-lark",
+    "Eastern Welcome Swallow" ~ "Welcome Swallow",
+    "Eastern Brown Honeyeater" ~ "Brown Honeyeater",
+    "Northern Superb Fairy-wren" ~ "Superb Fairy-wren",
+    "Southern Lewin's Honeyeater" ~ "Lewin's Honeyeater",
+    "Eastern White-throated Honeyeater" ~ "White-throated Honeyeater",
+    "Eastern Leaden Flycatcher" ~ "Leaden Flycatcher",
+    "Southern Red-browed Finch" ~ "Red-browed Finch",
+    "Eastern Olive-backed Oriole" ~ "Olive-backed Oriole",
+    "Eastern Golden Whistler" ~ "Golden Whistler",
+    "Southern Rufous Whistler" ~ "Rufous Whistler",
+    "Eastern Striated Pardalote" ~ "Striated Pardalote",
+    "Black-headed Pardalote" ~ "Striated Pardalote",
+    "Mainland Tree Martin" ~ "Tree Martin",
+    "Southern Noisy Friarbird" ~ "Noisy Friarbird",
+    "Southern Pale-headed Rosella" ~ "Pale-headed Rosella",
+    "South-east Eastern Whipbird" ~ "Eastern Whipbird",
+    "Southern Willie Wagtail" ~ "Willie Wagtail",
+    "North-eastern Rufous Fantail" ~ "Rufous Fantail",
+    "Central East Coast White-browed Scrubwren" ~ "White-browed Scrubwren",
+    "Eastern Pied Currawong" ~ "Pied Currawong",
+    "Southern Spectacled Monarch" ~ "Spectacled Monarch",
+    "Swamp Quail" ~ "Brown Quail",
+    "Eastern Forest Kingfisher" ~ "Forest Kingfisher",
+    "Eastern Rainbow Lorikeet" ~ "Rainbow Lorikeet",
+    "Eastern Silvereye" ~ "Silvereye",
     .default = string
   )
 
@@ -439,3 +478,18 @@ create_select_spp_df <- function(data, spp_list) {
 #     }
 #   )
 # }
+
+# Function to work out which mismatched common name should be retained
+count_mismatched_names <- function(data, bad_name) {
+  count_dat <- data |>
+    filter(species %in% bad_name) |>
+    group_by(vernacular_name) |>
+    summarise(count = n()) |>
+    arrange(count)
+  dput(count_dat$vernacular_name)
+}
+
+# results_df <- map_dfr(list, \(bad) {
+#   vern <- count_mismatched_names(toohey_species_occurrences, bad)
+#   tibble(inputbad_name = vern[1], outpugood_name = vern[2])
+# })
