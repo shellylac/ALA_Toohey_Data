@@ -42,6 +42,12 @@ message("\nReading in base occurrences ...")
 base_occs <- readr::read_rds("./output_data/toohey_species_occurrences.rds")
 image_urls_df <- readr::read_rds("./output_data/image_urls_df.rds")
 
+# Read in corrections files
+name_corrections <- readr::read_csv(
+  "./R/common_name_corrections.csv",
+  trim_ws = TRUE,
+  show_col_types = FALSE
+)
 
 # Define date range: from max Date in base data to today
 base_date <- as.Date(max(base_occs$eventDate), format = "%Y-%m-%d") - 7
@@ -112,7 +118,8 @@ new_occs_toohey <- do_spatial_intersect(new_occs_tidy, toohey_outline)
 
 # Add cladistics ----
 message("Adding cladistics ...")
-api_clad_data <- galah::search_taxa(new_occs_toohey$taxon.name) |> distinct()
+api_clad_data <- galah::search_taxa(new_occs_toohey$taxon.name) |>
+  dplyr::distinct()
 
 occ_updates_cladistics <- add_cladistics(
   occ_data = new_occs_toohey,
@@ -165,7 +172,9 @@ if (any(test_results == "expectation_failure")) {
     tidyr::fill(image_url, .direction = "downup") |>
     ungroup() |>
     # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
-    dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
+    dplyr::mutate(
+      vernacular_name = fix_common_names(vernacular_name, name_corrections)
+    ) |>
     # create the URL link for Google Maps (for use in the map)
     dplyr::mutate(
       google_maps_url = create_google_maps_url(latitude, longitude)

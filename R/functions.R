@@ -269,109 +269,23 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile) {
 
 
 # Function to correct different vernacular name spellings ----
-fix_common_names <- function(string) {
-  corrected_common_names <- dplyr::case_match(
-    string,
-    "Australian Brushturkey" ~ "Australian Brush-turkey",
-    "Australian King Parrot" ~ "Australian King-parrot",
-    "Australian Water Dragon" ~ "Water Dragon",
-    "Australian Boobook" ~ "Southern Boobook",
-    "Australian Pacific Baza" ~ "Pacific Baza",
-    "Australian Rufous Fantail" ~ "Rufous Fantail",
-    "Australian Shining Bronze-cuckoo" ~ "Shining Bronze-cuckoo",
-    "Australian Sacred Kingfisher" ~ "Sacred Kingfisher",
-    "Australian Peregrine Falcon" ~ "Peregrine Falcon",
-    "Australasian Great Cormorant" ~ "Great Cormorant",
-    "Buff-breasted Scrubwren" ~ "White-browed Scrubwren",
-    "Black-faced Cuckooshrike" ~ "Black-faced Cuckoo-shrike",
-    "Coastal New South Wales Australian Magpie" ~ "Australian Magpie",
-    "Coastal Spotted Pardalote" ~ "Spotted Pardalote",
-    "Coastal Carpet Python" ~ "Carpet Python",
-    "Common Blue-tongue" ~ "Eastern Blue-tongue",
-    "Common Bluetongue" ~ "Eastern Blue-tongue",
-    "Common Ring-tailed Possum" ~ "Common Ringtail Possum",
-    "Copper-backed Brood Frog" ~ "Raven's Brood Frog",
-    "Dark Bar-sided Skink" ~ "Dark Barsided Skink",
-    "Dainty Tree Frog" ~ "Dainty Green Tree Frog",
-    "Eastern Bluetongue" ~ "Eastern Blue-tongue",
-    "Eastern Water Dragon" ~ "Water Dragon",
-    "Eastern Red-backed Fairy-wren" ~ "Red-backed Fairy-wren",
-    "Eastern Galah" ~ "Galah",
-    "Eastern Tawny Frogmouth" ~ "Tawny Frogmouth",
-    "Eastern Bearded Dragon" ~ "Common Bearded Dragon",
-    "Eastern Water Skink" ~ "Eastern Water-skink",
-    "Eastern White-throated Gerygone" ~ "White-throated Gerygone",
-    "Eastern Short-beaked Echidna" ~ "Short-beaked Echidna",
-    "Eastern Australian Koel" ~ "Torresian Eastern Koel",
-    "Eastern Koel" ~ "Torresian Eastern Koel",
-    "South-east Eastern Koel" ~ "Torresian Eastern Koel",
-    "Graceful Tree Frog" ~ "Dainty Green Tree Frog",
-    "Grey Shrikethrush" ~ "Grey Shrike-thrush",
-    "Gray Shrikethrush" ~ "Grey Shrike-thrush",
-    "Green Figbird" ~ "Australasian Figbird",
-    "Lively Rainbow Skink" ~ "Tussock Rainbow-skink",
-    "Tussock Rainbow Skink" ~ "Tussock Rainbow-skink",
-    "Pale-flecked Garden Sunskink" ~ "Common garden skink",
-    "Red-backed Fairywren" ~ "Red-backed Fairy-wren",
-    "Shining Bronze Cuckoo" ~ "Shining Bronze-cuckoo",
-    "New Zealand Shining Bronze-cuckoo" ~ "Shining Bronze-cuckoo",
-    "Southern Bar-sided Skink" ~ "Barred-sided Skink",
-    "Southern Laughing Kookaburra" ~ "Laughing Kookaburra",
-    "Masked Lapwing" ~ "Southern Masked Lapwing",
-    "South-eastern Glossy Black-cockatoo" ~ "Glossy Black-cockatoo",
-    "South-eastern Grey Fantail" ~ "Grey Fantail",
-    "Superb Fairywren" ~ "Superb Fairy-wren",
-    "Tasmanian Swamp Quail" ~ "Brown Quail",
-    "Tree-base Litter Skink" ~ "Tree-base Litter-skink",
-    "Tussock Rainbow Skink" ~ "Tussock Rainbow-skink",
-    "Variegated Fairywren" ~ "Variegated Fairy-wren",
-    "Western Galah" ~ "Galah",
-    "Wet Tropics Spectacled Monarch" ~ "Spectacled Monarch",
-    "Yellow-tailed Black Cockatoo" ~ "Yellow-tailed Black-cockatoo",
-    "Scarlet Myzomela" ~ "Scarlet Honeyeater",
-    "South-eastern Yellow-faced Honeyeater" ~ "Yellow-faced Honeyeater",
-    "Eastern Sulphur-crested Cockatoo" ~ "Sulphur-crested Cockatoo",
-    "Eastern Little Corella" ~ "Little Corella",
-    "South-east Eastern Spinebill" ~ "Eastern Spinebill",
-    "Southern Australian King-parrot" ~ "Australian King-parrot",
-    "Eastern Grey Shrike-thrush" ~ "Grey Shrike-thrush",
-    "Mainland Black-faced Cuckoo-shrike" ~ "Black-faced Cuckoo-shrike",
-    "Australian Torresian Crow" ~ "Torresian Crow",
-    "Eastern Pied Butcherbird" ~ "Pied Butcherbird",
-    "South-eastern Grey Butcherbird" ~ "Grey Butcherbird",
-    "Southern Spangled Drongo" ~ "Spangled Drongo",
-    "Eastern Common Cicadabird" ~ "Cicadabird",
-    "Eastern Blue-faced Honeyeater" ~ "Blue-faced Honeyeater",
-    "North-eastern Yellow Robin" ~ "Eastern Yellow Robin",
-    "Southern Magpie-lark" ~ "Magpie-lark",
-    "Eastern Welcome Swallow" ~ "Welcome Swallow",
-    "Eastern Brown Honeyeater" ~ "Brown Honeyeater",
-    "Northern Superb Fairy-wren" ~ "Superb Fairy-wren",
-    "Southern Lewin's Honeyeater" ~ "Lewin's Honeyeater",
-    "Eastern White-throated Honeyeater" ~ "White-throated Honeyeater",
-    "Eastern Leaden Flycatcher" ~ "Leaden Flycatcher",
-    "Southern Red-browed Finch" ~ "Red-browed Finch",
-    "Eastern Olive-backed Oriole" ~ "Olive-backed Oriole",
-    "Eastern Golden Whistler" ~ "Golden Whistler",
-    "Southern Rufous Whistler" ~ "Rufous Whistler",
-    "Eastern Striated Pardalote" ~ "Striated Pardalote",
-    "Black-headed Pardalote" ~ "Striated Pardalote",
-    "Mainland Tree Martin" ~ "Tree Martin",
-    "Southern Noisy Friarbird" ~ "Noisy Friarbird",
-    "Southern Pale-headed Rosella" ~ "Pale-headed Rosella",
-    "South-east Eastern Whipbird" ~ "Eastern Whipbird",
-    "Southern Willie Wagtail" ~ "Willie Wagtail",
-    "North-eastern Rufous Fantail" ~ "Rufous Fantail",
-    "Central East Coast White-browed Scrubwren" ~ "White-browed Scrubwren",
-    "Eastern Pied Currawong" ~ "Pied Currawong",
-    "Southern Spectacled Monarch" ~ "Spectacled Monarch",
-    "Swamp Quail" ~ "Brown Quail",
-    "Eastern Forest Kingfisher" ~ "Forest Kingfisher",
-    "Eastern Rainbow Lorikeet" ~ "Rainbow Lorikeet",
-    "Eastern Silvereye" ~ "Silvereye",
-    .default = string
-  )
-
+fix_common_names <- function(string, corrections_file) {
+  corrected_common_names <- tibble::tibble(
+    .row_id = seq_along(string),
+    input_name_wrong = string
+  ) |>
+    dplyr::left_join(
+      corrections_file,
+      by = dplyr::join_by(input_name_wrong)
+    ) |>
+    dplyr::arrange(.row_id) |>
+    dplyr::mutate(
+      corrected_common_name = dplyr::coalesce(
+        output_name_good,
+        input_name_wrong
+      )
+    ) |>
+    dplyr::pull(corrected_common_name)
   return(corrected_common_names)
 }
 
@@ -498,7 +412,8 @@ count_mismatched_names <- function(data, bad_name) {
   dput(count_dat$vernacular_name)
 }
 
+# list <- c("Demansia psammophis", "Pseudocheirus peregrinus")
 # results_df <- map_dfr(list, \(bad) {
-#   vern <- count_mismatched_names(toohey_species_occurrences, bad)
+#   vern <- count_mismatched_names(updated_occ_data_wikiurls, bad)
 #   tibble(inputbad_name = vern[1], outpugood_name = vern[2])
 # })
