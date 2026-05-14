@@ -1,0 +1,41 @@
+Reading layer `toohey_forest_boundary' from data source 
+  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' using driver `ESRI Shapefile'
+Simple feature collection with 1 feature and 11 fields
+Geometry type: POLYGON
+Dimension:     XYZ
+Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
+z_range:       zmin: 0 zmax: 0
+Geodetic CRS:  WGS 84
+✔ Matched "citizen science" to valid download reason ID 11.
+st_as_s2(): dropping Z and/or M coordinate
+Request for 68200 occurrences placed in queue.
+Current queue length: 1
+------Downloading .  Downloading .. Downloading ...Downloading  ..Downloading   .Downloading    Downloading .  Querying API ■■■                                7% |  ETA: 16sQuerying API ■■■                                8% |  ETA: 16sQuerying API ■■■■                               9% |  ETA: 17sQuerying API ■■■■                              10% |  ETA: 17sQuerying API ■■■■                              11% |  ETA: 16sQuerying API ■■■■■                             12% |  ETA: 16sQuerying API ■■■■■                             14% |  ETA: 16sQuerying API ■■■■■                             15% |  ETA: 15sQuerying API ■■■■■■                            16% |  ETA: 15sQuerying API ■■■■■■                            16% |  ETA: 17sQuerying API ■■■■■■                            18% |  ETA: 16sQuerying API ■■■■■■■                           19% |  ETA: 16sQuerying API ■■■■■■■                           20% |  ETA: 16sQuerying API ■■■■■■■                           21% |  ETA: 15sQuerying API ■■■■■■■■                          23% |  ETA: 15sQuerying API ■■■■■■■■                          24% |  ETA: 15sQuerying API ■■■■■■■■                          25% |  ETA: 15sQuerying API ■■■■■■■■■                         26% |  ETA: 14sQuerying API ■■■■■■■■■                         27% |  ETA: 14sQuerying API ■■■■■■■■■                         28% |  ETA: 14sQuerying API ■■■■■■■■■■                        29% |  ETA: 14sQuerying API ■■■■■■■■■■                        30% |  ETA: 13sQuerying API ■■■■■■■■■■■                       32% |  ETA: 13sQuerying API ■■■■■■■■■■■                       33% |  ETA: 13sQuerying API ■■■■■■■■■■■                       34% |  ETA: 12sQuerying API ■■■■■■■■■■■■                      36% |  ETA: 12sQuerying API ■■■■■■■■■■■■                      37% |  ETA: 12sQuerying API ■■■■■■■■■■■■■                     38% |  ETA: 11sQuerying API ■■■■■■■■■■■■■                     40% |  ETA: 11sQuerying API ■■■■■■■■■■■■■                     41% |  ETA: 11sQuerying API ■■■■■■■■■■■■■■                    42% |  ETA: 10sQuerying API ■■■■■■■■■■■■■■                    44% |  ETA: 10sQuerying API ■■■■■■■■■■■■■■■                   45% |  ETA: 10sQuerying API ■■■■■■■■■■■■■■■                   47% |  ETA: 10sQuerying API ■■■■■■■■■■■■■■■                   48% |  ETA:  9sQuerying API ■■■■■■■■■■■■■■■■                  49% |  ETA:  9sQuerying API ■■■■■■■■■■■■■■■■                  51% |  ETA:  9sQuerying API ■■■■■■■■■■■■■■■■■                 52% |  ETA:  8sQuerying API ■■■■■■■■■■■■■■■■■                 54% |  ETA:  8sQuerying API ■■■■■■■■■■■■■■■■■■                55% |  ETA:  8sQuerying API ■■■■■■■■■■■■■■■■■■                57% |  ETA:  7sQuerying API ■■■■■■■■■■■■■■■■■■                58% |  ETA:  7sQuerying API ■■■■■■■■■■■■■■■■■■■               59% |  ETA:  7sQuerying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA:  7sQuerying API ■■■■■■■■■■■■■■■■■■■■              62% |  ETA:  6sQuerying API ■■■■■■■■■■■■■■■■■■■■              63% |  ETA:  6sQuerying API ■■■■■■■■■■■■■■■■■■■■              65% |  ETA:  6sQuerying API ■■■■■■■■■■■■■■■■■■■■■             66% |  ETA:  6sQuerying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA:  6sQuerying API ■■■■■■■■■■■■■■■■■■■■■■            69% |  ETA:  5sQuerying API ■■■■■■■■■■■■■■■■■■■■■■            70% |  ETA:  5sQuerying API ■■■■■■■■■■■■■■■■■■■■■■            72% |  ETA:  5sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA:  5sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■           74% |  ETA:  4sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■          76% |  ETA:  4sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■          77% |  ETA:  4sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■         79% |  ETA:  4sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  3sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■         82% |  ETA:  3sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% |  ETA:  3sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        84% |  ETA:  3sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% |  ETA:  2sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  2sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89% |  ETA:  2sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      90% |  ETA:  2sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  1sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     93% |  ETA:  1sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  1sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    96% |  ETA:  1sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    97% |  ETA:  0sQuerying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   99% |  ETA:  0s                                                              Warning message:
+There was 1 warning in `dplyr::mutate()`.
+ℹ In argument: `vernacular_name = dplyr::case_match(...)`.
+Caused by warning:
+! `case_match()` was deprecated in dplyr 1.2.0.
+ℹ Please use `recode_values()` instead.
+This warning is displayed once per session.
+Call ]8;;x-r-run:lifecycle::last_lifecycle_warnings()lifecycle::last_lifecycle_warnings()]8;; to see where this warning was generated. 
+Running test suite ...
+
+══ Testing get_alaoccs_testQA.R ════════════════════════════════════════════════════════════════════════════════════════════════════
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 2 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 4 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 6 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 7 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 8 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 9 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 10 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 11 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 12 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 13 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 15 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 20 ] Done!
+
+All tests passed. Proceeding with further analysis.
+
+
+Total number of occurrences in data: 47289
+
+
+max date in updated: 
+[1] "2026-05-10"
+
+
+These species are missing wiki URLs - created default URLs: 
+character(0)
+
+
+These species are missing image URLs: 
+character(0)
