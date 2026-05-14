@@ -39,10 +39,10 @@ STATS_GREEN = "#B3FFB3"
 #.......................................................
 
 # Set logging ----
-logfile <- get_log_filename(type = "ala")
-tmp <- file(logfile, open = "wt")
-sink(tmp, type = "message")
-sink(tmp, type = "output")
+# logfile <- get_log_filename(type = "ala")
+# tmp <- file(logfile, open = "wt")
+# sink(tmp, type = "message")
+# sink(tmp, type = "output")
 
 #.......................................................
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
@@ -116,7 +116,7 @@ occ_cladistics_wikiurls <- occ_cladistics |>
     latitude = as.numeric(latitude),
     longitude = as.numeric(longitude)
   ) |>
-  dplyr::left_join(wiki_urls_df, by = "species") |>
+  dplyr::left_join(wiki_urls_df, by = dplyr::join_by("species")) |>
   dplyr::mutate(
     wikipedia_url = dplyr::if_else(
       is.na(wikipedia_url),
@@ -124,17 +124,20 @@ occ_cladistics_wikiurls <- occ_cladistics |>
       wikipedia_url
     )
   ) |>
-  dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url")) |>
+  dplyr::left_join(
+    image_urls_df,
+    by = dplyr::join_by("wikipedia_url" == "wiki_url")
+  ) |>
   # Process each row individually - to add any missing image urls
-  rowwise() |>
-  mutate(
+  dplyr::rowwise() |>
+  dplyr::mutate(
     image_url = if (is.na(image_url)) {
       safe_get_infobox_image(wikipedia_url)
     } else {
       image_url
     }
   ) |>
-  ungroup()
+  dplyr::ungroup()
 
 
 #.......................................................
@@ -208,7 +211,7 @@ toohey_species_occurrences <- occ_cladistics_wikiurls |>
 
 # Generate the species list dataset ----
 species_list <- toohey_species_occurrences |>
-  dplyr::group_by(
+  dplyr::count(
     class_common,
     class,
     order,
@@ -216,10 +219,9 @@ species_list <- toohey_species_occurrences |>
     species,
     vernacular_name,
     wikipedia_url,
-    image_url
+    image_url,
+    name = "Sightings"
   ) |>
-  count(name = "Sightings") |>
-  ungroup() |>
   rename(Class = class, `Common name` = vernacular_name) |>
   mutate(
     Taxonomy = paste0(
@@ -259,22 +261,21 @@ species_list <- toohey_species_occurrences |>
   ) |>
   dplyr::select(Class, Taxonomy, Image, Sightings)
 
-
 # Save/overwrite the current occurrence data with this update
-readr::write_rds(
-  toohey_species_occurrences,
-  file = "./output_data/toohey_species_occurrences.rds",
-  compress = "gz"
-)
+# readr::write_rds(
+#   toohey_species_occurrences,
+#   file = "./output_data/toohey_species_occurrences.rds",
+#   compress = "gz"
+# )
 
-# Save/overwrite the current species list data with this update
-readr::write_rds(
-  species_list,
-  file = "./output_data/toohey_species_list.rds",
-  compress = "gz"
-)
+# # Save/overwrite the current species list data with this update
+# readr::write_rds(
+#   species_list,
+#   file = "./output_data/toohey_species_list.rds",
+#   compress = "gz"
+# )
 
 # Turn off logging ----
-sink(type = "message")
-sink(type = "output")
-close(tmp)
+# sink(type = "message")
+# sink(type = "output")
+# close(tmp)

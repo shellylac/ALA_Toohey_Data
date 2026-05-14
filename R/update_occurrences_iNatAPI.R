@@ -29,10 +29,10 @@
 source("./R/functions.R")
 
 # Set logging ----
-logfile <- get_log_filename(type = "inat")
-tmp <- file(logfile, open = "wt")
-sink(tmp, type = "message")
-sink(tmp, type = "output")
+# logfile <- get_log_filename(type = "inat")
+# tmp <- file(logfile, open = "wt")
+# sink(tmp, type = "message")
+# sink(tmp, type = "output")
 
 # Configure ALA ----
 galah::galah_config(atlas = "Australia", download_reason_id = "citizen science")
@@ -143,10 +143,14 @@ if (any(test_results == "expectation_failure")) {
     ) |>
     dplyr::anti_join(
       base_occs |>
-        dplyr::select(latitude, longitude, eventDate, eventTime, species)
+        dplyr::select(latitude, longitude, eventDate, eventTime, species),
+      by = dplyr::join_by(latitude, longitude, eventDate, eventTime, species)
     ) |>
     # Add image urls
-    dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
+    dplyr::left_join(
+      image_urls_df,
+      by = dplyr::join_by("wikipedia_url" == "wiki_url")
+    )
 
   message(paste0(
     "\n\nNumber of new occurrences added: ",
@@ -157,8 +161,8 @@ if (any(test_results == "expectation_failure")) {
   updated_occ_data <- dplyr::bind_rows(base_occs, new_occs_to_add) |>
     # If any wikipedia links are missing fill down from same species
     group_by(species) |>
-    fill(wikipedia_url, .direction = "downup") |>
-    fill(image_url, .direction = "downup") |>
+    tidyr::fill(wikipedia_url, .direction = "downup") |>
+    tidyr::fill(image_url, .direction = "downup") |>
     ungroup() |>
     # ALA and iNat have different common name spellings/namings - this function tries to remedy most of them
     dplyr::mutate(vernacular_name = fix_common_names(vernacular_name)) |>
@@ -206,10 +210,8 @@ if (any(test_results == "expectation_failure")) {
 
   # Check whether there are species/common names mismatches
   n_name_mismatch <- updated_occ_data_wikiurls |>
-    dplyr::select(species, vernacular_name) |>
-    dplyr::distinct() |>
-    dplyr::group_by(species) |>
-    dplyr::count() |>
+    dplyr::distinct(species, vernacular_name) |>
+    dplyr::count(species) |>
     dplyr::filter(n > 1)
 
   if (dim(n_name_mismatch)[1] > 0) {
@@ -280,7 +282,7 @@ if (any(test_results == "expectation_failure")) {
 
   # Generate the species list dataset ----
   species_list <- toohey_species_occurrences |>
-    dplyr::group_by(
+    dplyr::count(
       class_common,
       class,
       order,
@@ -288,10 +290,9 @@ if (any(test_results == "expectation_failure")) {
       species,
       vernacular_name,
       wikipedia_url,
-      image_url
+      image_url,
+      name = "Sightings"
     ) |>
-    count(name = "Sightings") |>
-    ungroup() |>
     rename(Class = class, `Common name` = vernacular_name) |>
     mutate(
       Taxonomy = paste0(
@@ -331,22 +332,22 @@ if (any(test_results == "expectation_failure")) {
     ) |>
     dplyr::select(Class, Taxonomy, Image, Sightings)
 
-  # Save/overwrite the current occurrence data with this update
-  readr::write_rds(
-    toohey_species_occurrences,
-    file = "./output_data/toohey_species_occurrences.rds",
-    compress = "gz"
-  )
+  #   # Save/overwrite the current occurrence data with this update
+  #   readr::write_rds(
+  #     toohey_species_occurrences,
+  #     file = "./output_data/toohey_species_occurrences.rds",
+  #     compress = "gz"
+  #   )
 
-  # Save/overwrite the current species list data with this update
-  readr::write_rds(
-    species_list,
-    file = "./output_data/toohey_species_list.rds",
-    compress = "gz"
-  )
+  #   # Save/overwrite the current species list data with this update
+  #   readr::write_rds(
+  #     species_list,
+  #     file = "./output_data/toohey_species_list.rds",
+  #     compress = "gz"
+  #   )
 }
 
-# Turn off logging ----
-sink(type = "message")
-sink(type = "output")
-close(tmp)
+# # Turn off logging ----
+# sink(type = "message")
+# sink(type = "output")
+# close(tmp)

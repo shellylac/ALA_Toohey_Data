@@ -93,7 +93,10 @@ add_cladistics <- function(occ_data, clad_data, type) {
     # Get cladistics
 
     occ_data_clads <- occ_data |>
-      dplyr::left_join(clad_data, by = c("scientificName" = "search_term")) |>
+      dplyr::left_join(
+        clad_data,
+        by = dplyr::join_by("scientificName" == "search_term")
+      ) |>
       # For some reason these species names aren't given a vernacular name - do it manually
       dplyr::mutate(
         vernacular_name = dplyr::case_match(
@@ -138,7 +141,7 @@ add_cladistics <- function(occ_data, clad_data, type) {
             genus,
             species
           ),
-        by = c("taxon.name" = "search_term")
+        by = dplyr::join_by("taxon.name" == "search_term")
       ) |>
       dplyr::select(
         scientificName,
@@ -490,8 +493,7 @@ create_select_spp_df <- function(data, spp_list) {
 count_mismatched_names <- function(data, bad_name) {
   count_dat <- data |>
     dplyr::filter(species %in% bad_name) |>
-    dplyr::group_by(vernacular_name) |>
-    dplyr::summarise(count = n()) |>
+    dplyr::count(vernacular_name, name = "count") |>
     dplyr::arrange(count)
   dput(count_dat$vernacular_name)
 }
