@@ -29,10 +29,10 @@
 source("./R/functions.R")
 
 # Set logging ----
-# logfile <- get_log_filename(type = "inat")
-# tmp <- file(logfile, open = "wt")
-# sink(tmp, type = "message")
-# sink(tmp, type = "output")
+logfile <- get_log_filename(type = "inat")
+tmp <- file(logfile, open = "wt")
+sink(tmp, type = "message")
+sink(tmp, type = "output")
 
 # Configure ALA ----
 galah::galah_config(atlas = "Australia", download_reason_id = "citizen science")
@@ -341,22 +341,22 @@ if (any(test_results == "expectation_failure")) {
     ) |>
     dplyr::select(Class, Taxonomy, Image, Sightings)
 
-  #   # Save/overwrite the current occurrence data with this update
-  #   readr::write_rds(
-  #     toohey_species_occurrences,
-  #     file = "./output_data/toohey_species_occurrences.rds",
-  #     compress = "gz"
-  #   )
+  # Save/overwrite the current occurrence data with this update
+  readr::write_rds(
+    toohey_species_occurrences,
+    file = "./output_data/toohey_species_occurrences.rds",
+    compress = "gz"
+  )
 
-  #   # Save/overwrite the current species list data with this update
-  #   readr::write_rds(
-  #     species_list,
-  #     file = "./output_data/toohey_species_list.rds",
-  #     compress = "gz"
-  #   )
+  # Save/overwrite the current species list data with this update
+  readr::write_rds(
+    species_list,
+    file = "./output_data/toohey_species_list.rds",
+    compress = "gz"
+  )
 }
 
-# # Turn off logging ----
-# sink(type = "message")
-# sink(type = "output")
-# close(tmp)
+# Turn off logging ----
+sink(type = "message")
+sink(type = "output")
+close(tmp)

@@ -39,10 +39,10 @@ STATS_GREEN = "#B3FFB3"
 #.......................................................
 
 # Set logging ----
-# logfile <- get_log_filename(type = "ala")
-# tmp <- file(logfile, open = "wt")
-# sink(tmp, type = "message")
-# sink(tmp, type = "output")
+logfile <- get_log_filename(type = "ala")
+tmp <- file(logfile, open = "wt")
+sink(tmp, type = "message")
+sink(tmp, type = "output")
 
 #.......................................................
 # Read in the Toohey Forest Boundary shapefile to limit occurrences
@@ -262,20 +262,20 @@ species_list <- toohey_species_occurrences |>
   dplyr::select(Class, Taxonomy, Image, Sightings)
 
 # Save/overwrite the current occurrence data with this update
-# readr::write_rds(
-#   toohey_species_occurrences,
-#   file = "./output_data/toohey_species_occurrences.rds",
-#   compress = "gz"
-# )
+readr::write_rds(
+  toohey_species_occurrences,
+  file = "./output_data/toohey_species_occurrences.rds",
+  compress = "gz"
+)
 
-# # Save/overwrite the current species list data with this update
-# readr::write_rds(
-#   species_list,
-#   file = "./output_data/toohey_species_list.rds",
-#   compress = "gz"
-# )
+# Save/overwrite the current species list data with this update
+readr::write_rds(
+  species_list,
+  file = "./output_data/toohey_species_list.rds",
+  compress = "gz"
+)
 
 # Turn off logging ----
-# sink(type = "message")
-# sink(type = "output")
-# close(tmp)
+sink(type = "message")
+sink(type = "output")
+close(tmp)
