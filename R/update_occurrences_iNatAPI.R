@@ -143,7 +143,7 @@ if (any(test_results == "expectation_failure")) {
     ) |>
     dplyr::anti_join(
       base_occs |>
-        select(latitude, longitude, eventDate, eventTime, species)
+        dplyr::select(latitude, longitude, eventDate, eventTime, species)
     ) |>
     # Add image urls
     dplyr::left_join(image_urls_df, by = c("wikipedia_url" = "wiki_url"))
@@ -206,11 +206,11 @@ if (any(test_results == "expectation_failure")) {
 
   # Check whether there are species/common names mismatches
   n_name_mismatch <- updated_occ_data_wikiurls |>
-    select(species, vernacular_name) |>
-    distinct() |>
-    group_by(species) |>
-    count() |>
-    filter(n > 1)
+    dplyr::select(species, vernacular_name) |>
+    dplyr::distinct() |>
+    dplyr::group_by(species) |>
+    dplyr::count() |>
+    dplyr::filter(n > 1)
 
   if (dim(n_name_mismatch)[1] > 0) {
     message("\n\nThe following name mismatches were found: \n\n")
@@ -329,7 +329,7 @@ if (any(test_results == "expectation_failure")) {
       factor(Class, levels = c('Aves', 'Mammalia', 'Reptilia', 'Amphibia')),
       `Common name`
     ) |>
-    select(Class, Taxonomy, Image, Sightings)
+    dplyr::select(Class, Taxonomy, Image, Sightings)
 
   # Save/overwrite the current occurrence data with this update
   readr::write_rds(

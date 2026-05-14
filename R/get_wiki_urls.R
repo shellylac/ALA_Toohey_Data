@@ -110,7 +110,7 @@ while (TRUE) {
 wiki_urls <- wiki_data |>
   distinct() |>
   mutate(
-    wikipedia_url = case_match(
+    wikipedia_url = dplyr::case_match(
       taxon.name,
       "Litoria caerulea" ~
         "https://en.wikipedia.org/wiki/Australian_green_tree_frog",
@@ -158,9 +158,9 @@ wiki_urls <- wiki_data |>
 #..................................................................................
 # # This was a one off to find the missing Wikipages I needed after the above
 # missing_species_urls <- occ_cladistics_wikiurls |>
-#   filter(is.na(wikipedia_url)) |>
-#   distinct(species, vernacular_name) |>
-#   mutate(wikipedia_url = paste0(
+#   dplyr::filter(is.na(wikipedia_url)) |>
+#   dplyr::distinct(species, vernacular_name) |>
+#   dplyr::mutate(wikipedia_url = paste0(
 #     "https://en.wikipedia.org/wiki/",
 #     gsub(" ", "_", stringr::str_to_sentence(vernacular_name))
 #     ))
@@ -175,7 +175,7 @@ wiki_urls <- wiki_data |>
 # )
 
 wiki_urls_list <- wiki_urls |>
-  select(species, wikipedia_url) |>
+  dplyr::select(species, wikipedia_url) |>
   # bind_rows(missing_species_urls) |>
   distinct(species, .keep_all = TRUE)
 

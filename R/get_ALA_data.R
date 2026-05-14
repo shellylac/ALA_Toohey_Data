@@ -181,7 +181,7 @@ print(occ_cladistics_wikiurls$species[imageurl_na])
 toohey_species_occurrences <- occ_cladistics_wikiurls |>
   # Add common class names - this bit is for the shiny app
   dplyr::mutate(
-    class_common = case_match(
+    class_common = dplyr::case_match(
       class,
       "Aves" ~ "Birds",
       "Mammalia" ~ "Mammals",
@@ -193,7 +193,7 @@ toohey_species_occurrences <- occ_cladistics_wikiurls |>
       levels = c("Birds", "Mammals", "Reptiles", "Amphibians")
     ),
     # Add colour for trend plots (based on class_common)
-    plot_colour = case_match(
+    plot_colour = dplyr::case_match(
       class_common,
       "Birds" ~ STATS_BLUE,
       "Mammals" ~ STATS_RED,
@@ -257,7 +257,7 @@ species_list <- toohey_species_occurrences |>
     factor(Class, levels = c('Aves', 'Mammalia', 'Reptilia', 'Amphibia')),
     `Common name`
   ) |>
-  select(Class, Taxonomy, Image, Sightings)
+  dplyr::select(Class, Taxonomy, Image, Sightings)
 
 
 # Save/overwrite the current occurrence data with this update

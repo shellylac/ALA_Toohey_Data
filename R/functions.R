@@ -236,7 +236,7 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile) {
   occs_geolimited <- sf_new_occs |> sf::st_intersection(boundary_shapefile)
 
   # Extract coordinates
-  coords <- st_coordinates(occs_geolimited)
+  coords <- sf::st_coordinates(occs_geolimited)
 
   # Add the longitude/latitude columns
   occs_geolimited$longitude <- coords[, 1]
@@ -244,8 +244,8 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile) {
 
   # Drop the geometry to return a regular data frame
   occs_geolimited_nonspatial <- occs_geolimited |>
-    st_drop_geometry() |>
-    select(
+    sf::st_drop_geometry() |>
+    dplyr::select(
       -c(
         "Name",
         "descriptio",
@@ -267,7 +267,7 @@ do_spatial_intersect <- function(occ_data, boundary_shapefile) {
 
 # Function to correct different vernacular name spellings ----
 fix_common_names <- function(string) {
-  corrected_common_names <- case_match(
+  corrected_common_names <- dplyr::case_match(
     string,
     "Australian Brushturkey" ~ "Australian Brush-turkey",
     "Australian King Parrot" ~ "Australian King-parrot",
@@ -450,14 +450,14 @@ create_select_spp_df <- function(data, spp_list) {
   select_data <- data |>
     dplyr::filter(eventDate >= Sys.Date() - 2, vernacular_name %in% spp_list) |>
     # apply the broad spatial filter for Tara Toohey
-    filter(
+    dplyr::filter(
       latitude <= -27.530755,
       latitude >= -27.541794,
       longitude >= 153.033571,
       longitude <= 153.039194
     ) |>
     # Keep selected cols
-    select(vernacular_name, eventDate, eventTime, google_maps_url)
+    dplyr::select(vernacular_name, eventDate, eventTime, google_maps_url)
 
   return(select_data)
 }
@@ -489,10 +489,10 @@ create_select_spp_df <- function(data, spp_list) {
 # Function to work out which mismatched common name should be retained
 count_mismatched_names <- function(data, bad_name) {
   count_dat <- data |>
-    filter(species %in% bad_name) |>
-    group_by(vernacular_name) |>
-    summarise(count = n()) |>
-    arrange(count)
+    dplyr::filter(species %in% bad_name) |>
+    dplyr::group_by(vernacular_name) |>
+    dplyr::summarise(count = n()) |>
+    dplyr::arrange(count)
   dput(count_dat$vernacular_name)
 }
 
