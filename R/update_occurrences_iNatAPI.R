@@ -264,7 +264,7 @@ if (any(test_results == "expectation_failure")) {
     dplyr::filter(!is.na(species)) |>
     # Add common class names
     dplyr::mutate(
-      class_common = case_match(
+      class_common = dplyr::recode_values(
         class,
         "Aves" ~ "Birds",
         "Mammalia" ~ "Mammals",
@@ -276,7 +276,7 @@ if (any(test_results == "expectation_failure")) {
         levels = c("Birds", "Mammals", "Reptiles", "Amphibians")
       ),
       # Add colour for trend plots (based on class_common)
-      plot_colour = case_match(
+      plot_colour = dplyr::recode_values(
         class_common,
         "Birds" ~ STATS_BLUE,
         "Mammals" ~ STATS_RED,

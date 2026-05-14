@@ -184,7 +184,7 @@ print(occ_cladistics_wikiurls$species[imageurl_na])
 toohey_species_occurrences <- occ_cladistics_wikiurls |>
   # Add common class names - this bit is for the shiny app
   dplyr::mutate(
-    class_common = dplyr::case_match(
+    class_common = dplyr::recode_values(
       class,
       "Aves" ~ "Birds",
       "Mammalia" ~ "Mammals",
@@ -196,7 +196,7 @@ toohey_species_occurrences <- occ_cladistics_wikiurls |>
       levels = c("Birds", "Mammals", "Reptiles", "Amphibians")
     ),
     # Add colour for trend plots (based on class_common)
-    plot_colour = dplyr::case_match(
+    plot_colour = dplyr::recode_values(
       class_common,
       "Birds" ~ STATS_BLUE,
       "Mammals" ~ STATS_RED,
