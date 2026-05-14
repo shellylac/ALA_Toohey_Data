@@ -99,7 +99,7 @@ add_cladistics <- function(occ_data, clad_data, type) {
       ) |>
       # For some reason these species names aren't given a vernacular name - do it manually
       dplyr::mutate(
-        vernacular_name = dplyr::case_match(
+        vernacular_name = dplyr::recode_values(
           species,
           "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
           "Tropidonophis mairii" ~ "Common Keelback",

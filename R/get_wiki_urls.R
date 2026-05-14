@@ -110,7 +110,7 @@ while (TRUE) {
 wiki_urls <- wiki_data |>
   distinct() |>
   mutate(
-    wikipedia_url = dplyr::case_match(
+    wikipedia_url = dplyr::recode_values(
       taxon.name,
       "Litoria caerulea" ~
         "https://en.wikipedia.org/wiki/Australian_green_tree_frog",
