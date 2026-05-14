@@ -10,10 +10,9 @@
 #' This function retrieves occurrences data from the Atlas of Living Australia (ALA)
 #' based on the specified year, month, and geographical limit.
 #' @param year Numeric. The year from which to start retrieving occurrences.
-#' @param month Numeric. The month from which to start retrieving occurrences.
 #' @param geo_limit A geographical limit for the occurrences data.
 #' @return A data frame containing the occurrences data.
-get_occurrences <- function(start_year, start_month, geo_limit) {
+get_occurrences <- function(start_year, geo_limit) {
   out <- galah::galah_call() |>
     galah::galah_identify(c("Aves", "Mammalia", "Reptilia", "Amphibia")) |>
     galah::galah_geolocate(geo_limit) |>
@@ -181,7 +180,15 @@ get_log_filename <- function(type = c("inat", "ala")) {
 
 
 # Construct query string for iNat API ----
-construct_api_query <- function(taxa_ids, min_date, max_date) {
+construct_api_query <- function(
+  taxa_ids,
+  min_date,
+  max_date,
+  swlat,
+  swlng,
+  nelat,
+  nelng
+) {
   # taxa_ids <- c(3, 40151, 26036, 20978)  # Birds, Mammals, Reptiles, Amphibia
   taxon_id_str <- paste0("taxon_id=", taxa_ids, collapse = "&")
 

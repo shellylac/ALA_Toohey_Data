@@ -59,7 +59,11 @@ taxa_ids <- c(3, 40151, 26036, 20978) # Birds, Mammals, Reptiles, Amphibians
 query_str <- construct_api_query(
   taxa_ids,
   min_date = base_date,
-  max_date = max_date
+  max_date = max_date,
+  nelat = nelat,
+  nelng = nelng,
+  swlat = swlat,
+  swlng = swlng
 )
 
 # Base URL for observations -----
@@ -74,7 +78,9 @@ page_num <- 1
 while (TRUE) {
   parsed <- fetch_page(base_url, query_str, page_num)
   # If there are no new occurrences  - then break loop
-  if (is.null(parsed$results$id)) break
+  if (is.null(parsed$results$id)) {
+    break
+  }
 
   fields <- c(
     "time_observed_at",

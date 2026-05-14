@@ -72,7 +72,6 @@ start_year <- 2016
 #.......................................................
 toohey_occurrences <- get_occurrences(
   start_year = start_year,
-  start_month = 1,
   geo_limit = toohey_outline
 )
 
