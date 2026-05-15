@@ -104,7 +104,7 @@ add_cladistics <- function(occ_data, clad_data, type) {
           "Tachyglossus aculeatus" ~ "Short-beaked Echidna",
           "Tropidonophis mairii" ~ "Common Keelback",
           "Colluricincla rufogaster" ~ "Rufous Shrikethrush",
-          .default = vernacular_name
+          default = vernacular_name
         )
       ) |>
       # There will be rows without species level info (normally because the scientifiName is only genus level)

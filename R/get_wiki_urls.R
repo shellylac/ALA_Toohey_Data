@@ -148,7 +148,7 @@ wiki_urls <- wiki_data |>
       "Tropidonophis mairii mairii" ~
         "https://en.wikipedia.org/wiki/Tropidonophis_mairii",
       "Vulpes vulpes crucigera" ~ "http://en.wikipedia.org/wiki/Red_fox",
-      .default = taxon.wikipedia_url
+      default = taxon.wikipedia_url
     ),
     # For each element of taxon.name, keep the first two “words” only
     species = sub("(\\w+\\s+\\w+).*", "\\1", taxon.name)
