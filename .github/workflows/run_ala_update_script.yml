@@ -48,6 +48,9 @@ jobs:
           Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
           Rscript -e 'renv::restore()'
 
+      - name: Check dplyr version
+        run: Rscript -e 'packageVersion("dplyr")'
+        
       - name: Update ALA data
         run: Rscript -e 'source("./R/get_ALA_data.R")'
 
