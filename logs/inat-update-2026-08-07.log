@@ -14,16 +14,14 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■■■                              11% |  ETA: 29s
-Querying API ■■■■■■■                           21% |  ETA: 26s
-Querying API ■■■■■■■■■■                        30% |  ETA: 23s
-Querying API ■■■■■■■■■■■■■                     39% |  ETA: 20s
-Querying API ■■■■■■■■■■■■■■■                   48% |  ETA: 17s
-Querying API ■■■■■■■■■■■■■■■■■■                57% |  ETA: 14s
-Querying API ■■■■■■■■■■■■■■■■■■■■■             66% |  ETA: 11s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■           75% |  ETA:  8s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        84% |  ETA:  5s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     93% |  ETA:  2s
+Querying API ■■■■■                             14% |  ETA: 23s
+Querying API ■■■■■■■■■                         25% |  ETA: 20s
+Querying API ■■■■■■■■■■■■                      37% |  ETA: 16s
+Querying API ■■■■■■■■■■■■■■■                   48% |  ETA: 14s
+Querying API ■■■■■■■■■■■■■■■■■■■               60% |  ETA: 10s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% |  ETA:  4s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     95% |  ETA:  1s
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -52,10 +50,10 @@ Running test suite ...
 All tests passed. Proceeding with further analysis.
 
 
-Number of new occurrences added: 15
+Number of new occurrences added: 4
 
 
-Total number of occurrences in data: 48017
+Total number of occurrences in data: 48021
 
 
 These species are missing wiki URLs - created default URLs: 
