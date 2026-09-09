@@ -14,11 +14,11 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-Querying API ■■                                 3% |  ETA:  2m
-Querying API ■■■                                5% |  ETA:  2m
+Querying API ■■                                 2% |  ETA:  2m
+Querying API ■■                                 5% |  ETA:  2m
 Querying API ■■■                                7% |  ETA:  2m
-Querying API ■■■■                              10% |  ETA:  2m
-Querying API ■■■■■                             12% |  ETA:  2m
+Querying API ■■■■                               9% |  ETA:  2m
+Querying API ■■■■                              12% |  ETA:  2m
 Querying API ■■■■■                             14% |  ETA:  2m
 Querying API ■■■■■■                            16% |  ETA:  2m
 Querying API ■■■■■■■                           19% |  ETA:  2m
@@ -26,38 +26,37 @@ Querying API ■■■■■■■                           21% |  ETA:  2m
 Querying API ■■■■■■■■                          23% |  ETA:  2m
 Querying API ■■■■■■■■■                         26% |  ETA:  2m
 Querying API ■■■■■■■■■                         28% |  ETA:  2m
-Querying API ■■■■■■■■■■                        30% |  ETA:  2m
-Querying API ■■■■■■■■■■■                       32% |  ETA:  1m
-Querying API ■■■■■■■■■■■                       35% |  ETA:  1m
-Querying API ■■■■■■■■■■■■                      37% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■                     39% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■                     42% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■                    44% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■                   46% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■                   48% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■■                  51% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■■■                 53% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■■■■                55% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■■■■                58% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■■■■■               60% |  ETA:  1m
-Querying API ■■■■■■■■■■■■■■■■■■■■              62% |  ETA: 50s
+Querying API ■■■■■■■■■■                        30% |  ETA:  1m
+Querying API ■■■■■■■■■■■                       33% |  ETA:  1m
+Querying API ■■■■■■■■■■■■                      35% |  ETA:  1m
+Querying API ■■■■■■■■■■■■                      38% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■                     40% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■                    42% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■                    45% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■                   47% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■■                  49% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■■■                 52% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■■■                 54% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■■■■                56% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■■■■■               59% |  ETA:  1m
+Querying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA: 49s
 Querying API ■■■■■■■■■■■■■■■■■■■■              64% |  ETA: 47s
-Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA: 44s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■            69% |  ETA: 41s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA: 38s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■           74% |  ETA: 35s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          76% |  ETA: 32s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          78% |  ETA: 29s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         81% |  ETA: 26s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% |  ETA: 22s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       85% |  ETA: 19s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% |  ETA: 16s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             66% |  ETA: 43s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             68% |  ETA: 40s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA: 37s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           73% |  ETA: 35s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          75% |  ETA: 31s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          78% |  ETA: 28s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA: 25s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        82% |  ETA: 22s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■        85% |  ETA: 19s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA: 16s
 Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      90% |  ETA: 13s
 Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     92% |  ETA: 10s
 Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  7s
 Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    97% |  ETA:  4s
 Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   99% |  ETA:  1s
-Matched 665 of 673 taxonomic search terms in selected atlas (Australia).
+Matched 653 of 661 taxonomic search terms in selected atlas (Australia).
 8 unmatched search terms:
 • "Tachyspiza", "Eugongylinae", "Pteropus" + 5 more"
 
@@ -89,10 +88,10 @@ Running test suite ...
 All tests passed. Proceeding with further analysis.
 
 
-Number of new occurrences added: 119
+Number of new occurrences added: 221
 
 
-Total number of occurrences in data: 48851
+Total number of occurrences in data: 48861
 
 
 These species are missing wiki URLs - created default URLs: 
@@ -106,11 +105,10 @@ character(0)
 The following name mismatches were found: 
 
 
- [1] "Alectura lathami"          "Amalosia robusta"         
- [3] "Cracticus torquatus"       "Eudynamys orientalis"     
- [5] "Ninox boobook"             "Petrochelidon nigricans"  
- [7] "Pseudocheirus peregrinus"  "Symposiachrus trivirgatus"
- [9] "Trichosurus vulpecula"     "Turnix varius"            
+[1] "Alectura lathami"         "Cracticus torquatus"     
+[3] "Eudynamys orientalis"     "Ninox boobook"           
+[5] "Petrochelidon nigricans"  "Pseudocheirus peregrinus"
+[7] "Trichosurus vulpecula"    "Turnix varius"           
 
 
 max date in updated: 
