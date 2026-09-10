@@ -35,7 +35,11 @@ sink(tmp, type = "message")
 sink(tmp, type = "output")
 
 # Configure ALA ----
-galah::galah_config(atlas = "Australia", download_reason_id = "citizen science")
+galah::galah_config(
+  atlas = "Australia",
+  email = "shelly.lachish@csiro.au",
+  download_reason_id = "citizen science"
+)
 
 # Read in the base data ----
 message("\nReading in base occurrences ...")
@@ -236,7 +240,7 @@ if (any(test_results == "expectation_failure")) {
 
   message("\n\nList of Tara Toohey species detected: ")
   # Define the species of interest
-  my_species = c(
+  my_species <- c(
     "Koala",
     "Squirrel Glider",
     "Feathertail Glider",
@@ -253,10 +257,10 @@ if (any(test_results == "expectation_failure")) {
   }
 
   # SETS DEFAULT colours for plotly plots----
-  STATS_BLUE = "#8080FF"
-  STATS_RED = "#FF8080"
-  STATS_ORANGE = "#FFD5A5"
-  STATS_GREEN = "#B3FFB3"
+  STATS_BLUE <- "#8080FF"
+  STATS_RED <- "#FF8080"
+  STATS_ORANGE <- "#FFD5A5"
+  STATS_GREEN <- "#B3FFB3"
 
   # Prepare occs data for Shiny app ----
   toohey_species_occurrences <- updated_occ_data_wikiurls |>
