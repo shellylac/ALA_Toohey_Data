@@ -55,6 +55,8 @@ tidy_ala_data <- function(data) {
 tidy_api_newoccs <- function(data) {
   new_data_formatted <- data |>
     tidyr::drop_na(any_of(c("time_observed_at", "location", "taxon.name"))) |>
+    # Remove rows where taxon.name is not a species name
+    dplyr::filter(stringr::str_detect(taxon.name, "\\s")) |>
     dplyr::rename(
       eventDate = time_observed_at,
       vernacular_name = taxon.preferred_common_name,
