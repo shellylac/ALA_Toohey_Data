@@ -11,23 +11,26 @@ Geodetic CRS:  WGS 84
 st_as_s2(): dropping Z and/or M coordinate
 Request for 69925 occurrences placed in queue.
 Current queue length: 1
-----
-.Querying API ■■                                 4% |  ETA: 50s
-Querying API ■■■■                              11% |  ETA: 44s
-Querying API ■■■■■■                            17% |  ETA: 41s
-Querying API ■■■■■■■■                          23% |  ETA: 38s
-Querying API ■■■■■■■■■■                        29% |  ETA: 34s
-Querying API ■■■■■■■■■■■■                      36% |  ETA: 31s
-Querying API ■■■■■■■■■■■■■■                    42% |  ETA: 28s
-Querying API ■■■■■■■■■■■■■■■                   48% |  ETA: 25s
-Querying API ■■■■■■■■■■■■■■■■■                 55% |  ETA: 22s
-Querying API ■■■■■■■■■■■■■■■■■■■               61% |  ETA: 19s
-Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA: 16s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■           74% |  ETA: 13s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         80% |  ETA:  9s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  6s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     93% |  ETA:  3s
-Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   99% |  ETA:  0s
+------
+.Querying API ■■■                                6% |  ETA:  1m
+Querying API ■■■■                              11% |  ETA:  1m
+Querying API ■■■■■■                            16% |  ETA:  1m
+Querying API ■■■■■■■                           21% |  ETA: 48s
+Querying API ■■■■■■■■■                         26% |  ETA: 44s
+Querying API ■■■■■■■■■■                        31% |  ETA: 41s
+Querying API ■■■■■■■■■■■■                      36% |  ETA: 38s
+Querying API ■■■■■■■■■■■■■                     41% |  ETA: 35s
+Querying API ■■■■■■■■■■■■■■■                   46% |  ETA: 32s
+Querying API ■■■■■■■■■■■■■■■■■                 52% |  ETA: 29s
+Querying API ■■■■■■■■■■■■■■■■■■                57% |  ETA: 26s
+Querying API ■■■■■■■■■■■■■■■■■■■■              62% |  ETA: 23s
+Querying API ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA: 20s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■           72% |  ETA: 17s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■          77% |  ETA: 14s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■         82% |  ETA: 11s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87% |  ETA:  8s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     92% |  ETA:  5s
+Querying API ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    97% |  ETA:  2s
 Running test suite ...
 
 ══ Testing get_alaoccs_testQA.R ════════════════════════════════════════════════
