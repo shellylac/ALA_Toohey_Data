@@ -14,9 +14,6 @@ Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
 z_range:       zmin: 0 zmax: 0
 Geodetic CRS:  WGS 84
 Adding cladistics ...
-[working] (56 + 0) -> 10 -> 16 | ■■■■■■■                           20%
-[working] (1 + 0) -> 10 -> 71 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■       87%
-[working] (0 + 0) -> 0 -> 82 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100%
 Running test suite ...
 
 ══ Testing update_occs_testQA.R ════════════════════════════════════════════════
@@ -45,10 +42,10 @@ Running test suite ...
 All tests passed. Proceeding with further analysis.
 
 
-Number of new occurrences added: 42
+Number of new occurrences added: 1
 
 
-Total number of occurrences in data: 61491
+Total number of occurrences in data: 61492
 
 
 These species are missing wiki URLs - created default URLs: 
