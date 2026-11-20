@@ -28,10 +28,10 @@
 source("./R/functions.R")
 
 # SETS DEFAULT colours for plotly plots----
-STATS_BLUE = "#8080FF"
-STATS_RED = "#FF8080"
-STATS_ORANGE = "#FFD5A5"
-STATS_GREEN = "#B3FFB3"
+STATS_BLUE <- "#8080FF"
+STATS_RED <- "#FF8080"
+STATS_ORANGE <- "#FFD5A5"
+STATS_GREEN <- "#B3FFB3"
 
 
 #.......................................................
