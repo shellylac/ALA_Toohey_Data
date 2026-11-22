@@ -1,0 +1,35 @@
+Reading layer `toohey_forest_boundary' from data source 
+  `C:\Users\Shelly\Documents\AAConsulting_DSProjects\ALA_Toohey_Data\spatial_data\toohey_forest_boundary.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 1 feature and 11 fields
+Geometry type: POLYGON
+Dimension:     XYZ
+Bounding box:  xmin: 153.0322 ymin: -27.55984 xmax: 153.0815 ymax: -27.53135
+z_range:       zmin: 0 zmax: 0
+Geodetic CRS:  WGS 84
+✔ Matched "citizen science" to valid download reason ID 11.
+st_as_s2(): dropping Z and/or M coordinate
+Request for 84310 occurrences placed in queue.
+Current queue length: 1
+-----ℹ Downloading✔ Downloading [1.7s]
+[working] (255 + 0) -> 3 -> 44 | ■■■■■                             15%[working] (244 + 0) -> 10 -> 48 | ■■■■■■                            16%[working] (232 + 0) -> 10 -> 60 | ■■■■■■■                           20%[working] (231 + 0) -> 1 -> 70 | ■■■■■■■■                          23% [working] (218 + 0) -> 2 -> 82 | ■■■■■■■■■                         27%[working] (206 + 0) -> 11 -> 85 | ■■■■■■■■■                         28%[working] (194 + 0) -> 1 -> 107 | ■■■■■■■■■■■■                      35%[working] (188 + 0) -> 7 -> 107 | ■■■■■■■■■■■■                      35%[working] (183 + 0) -> 11 -> 108 | ■■■■■■■■■■■■                      36%[working] (177 + 0) -> 7 -> 118 | ■■■■■■■■■■■■■                     39% [working] (172 + 0) -> 7 -> 123 | ■■■■■■■■■■■■■                     41%[working] (169 + 0) -> 10 -> 123 | ■■■■■■■■■■■■■                     41%[working] (162 + 0) -> 10 -> 130 | ■■■■■■■■■■■■■■                    43%[working] (148 + 0) -> 9 -> 145 | ■■■■■■■■■■■■■■■                   48% [working] (134 + 0) -> 6 -> 162 | ■■■■■■■■■■■■■■■■■                 54%[working] (118 + 0) -> 6 -> 178 | ■■■■■■■■■■■■■■■■■■■               59%[working] (98 + 0) -> 10 -> 194 | ■■■■■■■■■■■■■■■■■■■■              64%[working] (82 + 0) -> 9 -> 211 | ■■■■■■■■■■■■■■■■■■■■■■            70% [working] (60 + 0) -> 9 -> 233 | ■■■■■■■■■■■■■■■■■■■■■■■■          77%[working] (45 + 0) -> 2 -> 255 | ■■■■■■■■■■■■■■■■■■■■■■■■■■        84%[working] (33 + 0) -> 3 -> 266 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88%[working] (25 + 0) -> 8 -> 269 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89%[working] (17 + 0) -> 8 -> 277 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     92%[working] (0 + 0) -> 6 -> 296 | ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    98%                                                                      Running test suite ...
+
+══ Testing get_alaoccs_testQA.R ════════════════════════════════════════════════════════════════
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 0 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 2 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 4 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 6 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 7 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 8 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 9 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 10 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 11 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 12 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 13 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 15 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 16 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 17 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 18 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 19 ][ FAIL 0 | WARN 0 | SKIP 0 | PASS 20 ] Done!
+
+All tests passed. Proceeding with further analysis.
+
+
+Total number of occurrences in data: 61449
+
+
+max date in updated: 
+[1] "2026-11-14"
+
+
+These species are missing wiki URLs - created default URLs: 
+character(0)
+
+
+These species are missing image URLs: 
+character(0)
