@@ -1,5 +1,4 @@
 library(rvest)
-library(tidyverse)
 library(httr)
 
 get_infobox_data <- function(url) {

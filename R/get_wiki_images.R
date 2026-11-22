@@ -1,6 +1,5 @@
 # Load necessary packages
 library(rvest)
-library(tidyverse)
 library(httr)
 
 
